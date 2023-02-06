@@ -1,6 +1,6 @@
 import axios from "axios";
 
-let server_url = "http://localhost:8000/"
+let server_url = "http://localhost:7200/"
 console.log(window.location.hostname)
 class restAPI {
     checkEnv() {
