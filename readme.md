@@ -7,6 +7,6 @@ next type ```npm install axios```
 Finally run ```npm start``` now the front end is working  
   
 for the backend  
-For the server run ```pip install "fastapi[all]"```  
-start react ```npm start```  
+Make a new terminal and navigate to server with ```cd server```  
+run ```pip install "fastapi[all]"```  
 start api server ```uvicorn main:app  --reload --host 0.0.0.0 --port 8000```  
