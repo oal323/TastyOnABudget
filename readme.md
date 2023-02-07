@@ -9,4 +9,4 @@ Finally run ```npm start``` now the front end is working
 for the backend  
 Make a new terminal and navigate to server with ```cd server```  
 run ```pip install "fastapi[all]"```  
-start api server ```uvicorn main:app  --reload --host 0.0.0.0 --port 7200```  
+start api server ```python -m uvicorn main:app  --reload --host 0.0.0.0 --port 7200```  
