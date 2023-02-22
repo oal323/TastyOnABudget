@@ -3,10 +3,11 @@ import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 
 const Login = () => {
+    
     const [userName, setUserName] = React.useState("");
     const [pass, setPass] = React.useState("");
     const handleClick = (e) => {
-        console.log(userName,pass);
+        console.log(userName, pass);
         setPass("");
         setUserName("");
     }
@@ -17,7 +18,7 @@ const Login = () => {
         setPass(e.target.value);
     }
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',}}>
 
             <TextField
                 id="user-name"
@@ -25,8 +26,8 @@ const Login = () => {
                 variant="outlined"
                 margin="normal"
                 value={userName}
-                onChange={handleUsrNameChange} 
-                
+                onChange={handleUsrNameChange}
+
             />
 
             <TextField
@@ -34,13 +35,13 @@ const Login = () => {
                 label="Password"
                 variant="outlined"
                 margin="normal"
-                type = "password"
+                type="password"
                 value={pass}
                 onChange={handlePassChange}
 
             />
 
-            <Button varient="contained" onClick={handleClick}>Login</Button>
+            <Button variant="contained" onClick={handleClick} style={{padding:"0px,0px,5px,0px"}}>Login</Button>
         </div>
     )
 }
