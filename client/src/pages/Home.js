@@ -9,7 +9,7 @@ function Home() {
             <div className='headerContainer'>
                 <div className='header'>
                     <h1> Buy Potato Bake Potato </h1>
-                    <p> Curated Meal Plans For All Tatste Buds</p>
+                    <p> Curated Meal Plans For All Taste Buds</p>
                     <Link to="/signup">
                         <button> Sign Up Now</button>
                     </Link>
