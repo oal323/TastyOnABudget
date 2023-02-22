@@ -9,11 +9,6 @@ import Login from './pages/Login';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 function App() {
-  const [data, setData] = React.useState(null);
-  RestAPI.checkEnv().then(response => {
-    setData(response.data["message"])
-  })
-  console.log(data)
   return (
     <div className="App">
       <Router>
