@@ -10,7 +10,6 @@ const Login = () => {
     const handleClick = (e) => {
         console.log(userName, pass);
         RestAPI.getToken(userName,pass).then((res)=>{
-            
             sessionStorage.setItem("token",res.data['access_token'])
             console.log(sessionStorage.getItem("token"))
         })
