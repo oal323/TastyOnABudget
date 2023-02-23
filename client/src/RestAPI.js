@@ -8,6 +8,19 @@ class restAPI {
         let restEndPoint = server_url + endpoint;
         return axios.get(restEndPoint)
     }
+    getToken(username,password) {
+        const endpoint = "auth/login"
+        let restEndPoint = server_url + endpoint;
+        const json = JSON.stringify({ username:username, password:password});
+        let customConfig = {
+            headers: {
+            'Content-Type': 'application/json'
+            }
+        };
+        console.log(json);
+        
+        return axios.post(restEndPoint,json,customConfig)
+    }
 
 }
 

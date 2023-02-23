@@ -1,6 +1,7 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
+import RestAPI from '../RestAPI';
 
 const Login = () => {
     
@@ -8,6 +9,11 @@ const Login = () => {
     const [pass, setPass] = React.useState("");
     const handleClick = (e) => {
         console.log(userName, pass);
+        RestAPI.getToken(userName,pass).then((res)=>{
+            
+            sessionStorage.setItem("token",res.data['access_token'])
+            console.log(sessionStorage.getItem("token"))
+        })
         setPass("");
         setUserName("");
     }

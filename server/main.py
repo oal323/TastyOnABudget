@@ -63,15 +63,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-fake_users_db = {
-    "johndoe": {
-        "username": "johndoe",
-        "full_name": "John Doe",
-        "email": "johndoe@example.com",
-        "hashed_password": "$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
-        "disabled": False,
-    }
-}
+
 SECRET_KEY = "c43421ccc0b4a9bd1905ef5facd2bf8a4e70ffb0445a6da31d4b0ef3e246d1fb"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -84,14 +76,13 @@ def get_password_hash(password):
     return pwd_context.hash(password)
 
 
-def get_user(db, username: str):
-    if username in db:
-        user_dict = db[username]
-        return UserInDB(**user_dict)
+def get_user(username: str):
+    user = (session.query(User).filter(User.username == username).first())
+    return(user)
 
 
 def authenticate_user(username: str, password: str):
-    user = (session.query(User).filter(User.username == username).first())
+    user = get_user(username)
     if not user:
         return False
     if user.password != password:
@@ -124,7 +115,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         token_data = TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    user = get_user(fake_users_db, username=token_data.username)
+    user = get_user(username=token_data.username)
     if user is None:
         raise credentials_exception
     return user
