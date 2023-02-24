@@ -32,11 +32,15 @@ class User(Base):
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
     username = sqlalchemy.Column(sqlalchemy.String(length=100))
     password = sqlalchemy.Column(sqlalchemy.String(length=100), nullable=False)
+    email = sqlalchemy.Column(sqlalchemy.String(length=100), nullable=False)
+    firstName = sqlalchemy.Column(sqlalchemy.String(length=100), nullable=False)
 
 class UserData(BaseModel):
     username: str
     password: str
-
+    email: str
+    firstName: str
+    
 class LoginModel(BaseModel):
     username: str
     password: str
@@ -90,8 +94,8 @@ def authenticate_user(username: str, password: str):
     return user
 
 
-def create_access_token(data: dict, expires_delta: timedelta | None = None):
-    to_encode = data.copy()
+def create_access_token(user: UserData, expires_delta: timedelta | None = None):
+    to_encode = user.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
     else:
