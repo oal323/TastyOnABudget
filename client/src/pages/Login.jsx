@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import RestAPI from '../RestAPI';
 import { useNavigate } from 'react-router';
+import jwt from 'jwt-decode'
 
 const Login = () => {
     
@@ -15,10 +16,17 @@ const Login = () => {
         
         if(userName||pass!== ""){
             RestAPI.getToken(userName,pass).then((res)=>{
-                sessionStorage.setItem("token",res.data['access_token'])
-                console.log(sessionStorage.getItem("token"))
+                const token = res.data['access_token']
+                sessionStorage.setItem("token",token)
+                const user = jwt(sessionStorage.getItem("token"));
+                console.log(user)
+                navigate("/home")
+            }).catch(err => {
+                setPassError(true);
+                setPassError(true);
             })
-            navigate("/home")
+            
+            
         }else{
             setPassError(true);
             setUserNameError(true);
@@ -34,7 +42,7 @@ const Login = () => {
         setPass(e.target.value);
     }
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',}}>
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
 
             <TextField
                 id="user-name"
