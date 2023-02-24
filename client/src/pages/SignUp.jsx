@@ -39,6 +39,7 @@ const SignUp = () => {
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
     }
+
     const handleFnameChange = (e) => {
         setFirstName(e.target.value);
     }
@@ -118,7 +119,6 @@ const SignUp = () => {
                 helperText={passError?"Enter a password":""}
                 onBlur = {()=>(userName===""||userName=== null?setPassError(true):null)}
             />
-
             <Button variant="contained" onClick={handleClick} style={{padding:"0px,0px,5px,0px"}}>Sign Up</Button>
         </div>
     )
