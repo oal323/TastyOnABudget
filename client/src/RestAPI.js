@@ -24,11 +24,6 @@ class restAPI {
         const endpoint = "addUser";
         let restEndPoint = server_url + endpoint;
         const json = JSON.stringify({ username:username, password:password,email:email,firstName:firstName});
-        /* let customConfig = {
-            headers: {
-            'Content-Type': 'application/json'
-            }
-        }; */
         return axios.put(restEndPoint,json,{
             headers: {
               'Content-Type': 'application/json'

@@ -18,11 +18,16 @@ const SignUp = () => {
     
 
     const handleClick = (e) => {
+        console.log("hello world");
         if(userName||pass||pass2||email!==""){
             RestAPI.addUser(userName,pass,email,firstName).then((res)=>{
-                console.log(res.status)
+                console.log("hello world")
+                console.log(res.status['status'])
+            }).catch(err => {
+                console.log(err)
             })
         }
+        
         else{
             setPassError(true);
             setUserNameError(true);
