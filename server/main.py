@@ -33,9 +33,9 @@ class User(Base):
     username = sqlalchemy.Column(sqlalchemy.String(length=100))
     password = sqlalchemy.Column(sqlalchemy.String(length=100), nullable=False)
 
-
-""" class UserInDB(User):
-    hashed_password: str """
+class UserData(BaseModel):
+    username: str
+    password: str
 
 class LoginModel(BaseModel):
     username: str
@@ -126,7 +126,7 @@ async def get_current_active_user(current_user: User = Depends(get_current_user)
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 
-# tags=["Auth"]
+tags=["Auth"]
 @app.post("/auth/login")
 def login(login: LoginModel):
     user = authenticate_user(login.username, login.password)
@@ -148,9 +148,9 @@ async def read_users_me(current_user: User = Depends(get_current_active_user)):
     return current_user """
 
 @app.put("/addUser")
-async def addUser(username, password):
-    newUser = User(username=username, password=password)
-    if ((len(session.query(User).filter(User.username == username).all())!=0)):
+async def addUser(user: UserData):
+    newUser = User(username = user.username, password = user.password)
+    if (len(session.query(User).filter(User.username == user.username).all())!=0):
         raise HTTPException(status_code=400, detail="double user")
     session.add(newUser)
     session.commit()
@@ -160,3 +160,5 @@ async def addUser(username, password):
 @app.get("/users/me/items/")
 async def read_own_items(current_user: User = Depends(get_current_active_user)):
     return [{"item_id": "Foo", "owner": current_user.username}]
+
+

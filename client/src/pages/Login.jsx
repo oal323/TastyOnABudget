@@ -7,12 +7,21 @@ const Login = () => {
     
     const [userName, setUserName] = React.useState("");
     const [pass, setPass] = React.useState("");
+    const [userNameError, setUserNameError] = React.useState(false);
+    const [passError, setPassError] = React.useState(false);
     const handleClick = (e) => {
-        console.log(userName, pass);
-        RestAPI.getToken(userName,pass).then((res)=>{
-            sessionStorage.setItem("token",res.data['access_token'])
-            console.log(sessionStorage.getItem("token"))
-        })
+        
+        if(userName||pass!== ""){
+            RestAPI.getToken(userName,pass).then((res)=>{
+                sessionStorage.setItem("token",res.data['access_token'])
+                console.log(sessionStorage.getItem("token"))
+            })
+            
+        }else{
+            setPassError(true);
+            setUserNameError(true);
+        }
+        
         setPass("");
         setUserName("");
     }
@@ -32,7 +41,9 @@ const Login = () => {
                 margin="normal"
                 value={userName}
                 onChange={handleUsrNameChange}
-
+                error={userNameError}
+                helperText={userNameError?"Enter a username":""}
+                onBlur = {()=>(userName===""||userName=== null?setUserNameError(true):null)}
             />
 
             <TextField
@@ -43,7 +54,9 @@ const Login = () => {
                 type="password"
                 value={pass}
                 onChange={handlePassChange}
-
+                error={passError}
+                helperText={passError?"Enter a password":""}
+                onBlur = {()=>(userName===""||userName=== null?setPassError(true):null)}
             />
 
             <Button variant="contained" onClick={handleClick} style={{padding:"0px,0px,5px,0px"}}>Login</Button>
