@@ -6,20 +6,20 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
       <Router>
         <NavBar />
-        <Switch>
-          <Route path='/' exact component={Home} />
-          <Route path='/about' exact component={About} />
-          <Route path='/contact' exact component={Contact} />
-          <Route path='/signup' exact component={SignUp} />
-          <Route path='/login' exact component={Login} />
-        </Switch>
+        <Routes>
+          <Route path='/home' element={<Home />} />
+          <Route path='/about' element={<About/>} />
+          <Route path='/contact' element={<Contact/>} />
+          <Route path='/signup' element={<SignUp/>} />
+          <Route path='/login' element={<Login/>} />
+        </Routes>
         <Footer/>
       </Router>
     </div>

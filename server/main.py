@@ -40,7 +40,7 @@ class UserData(BaseModel):
     password: str
     email: str
     firstName: str
-    
+
 class LoginModel(BaseModel):
     username: str
     password: str
@@ -142,7 +142,7 @@ def login(login: LoginModel):
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.username,"test": "test"}, expires_delta=access_token_expires
+        {"username": user.username,"email": user.email,"fname": user.firstName}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer","login_status": "success"}
 
@@ -153,7 +153,7 @@ async def read_users_me(current_user: User = Depends(get_current_active_user)):
 
 @app.put("/addUser")
 async def addUser(user: UserData):
-    newUser = User(username = user.username, password = user.password)
+    newUser = User(username = user.username, password = user.password, email = user.email, firstName = user.firstName)
     if (len(session.query(User).filter(User.username == user.username).all())!=0):
         raise HTTPException(status_code=400, detail="double user")
     session.add(newUser)
