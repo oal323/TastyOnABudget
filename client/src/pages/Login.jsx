@@ -2,6 +2,7 @@ import React from 'react';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import RestAPI from '../RestAPI';
+import { useNavigate } from 'react-router';
 
 const Login = () => {
     
@@ -9,6 +10,7 @@ const Login = () => {
     const [pass, setPass] = React.useState("");
     const [userNameError, setUserNameError] = React.useState(false);
     const [passError, setPassError] = React.useState(false);
+    const navigate = useNavigate();
     const handleClick = (e) => {
         
         if(userName||pass!== ""){
@@ -16,7 +18,7 @@ const Login = () => {
                 sessionStorage.setItem("token",res.data['access_token'])
                 console.log(sessionStorage.getItem("token"))
             })
-            
+            navigate("/home")
         }else{
             setPassError(true);
             setUserNameError(true);
