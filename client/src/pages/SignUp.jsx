@@ -1,27 +1,32 @@
 import React from 'react'
 import TextField from '@mui/material/TextField';
-import { Button } from '@mui/material';
+import { Button, Card, Grid, Typography, CardContent, Checkbox } from '@mui/material';
 import RestAPI from '../RestAPI';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import BannerImage from "../assets/morefood.png";
+
 
 const SignUp = () => {
-    
+
     const [email, setEmail] = React.useState("");
     const [userName, setUserName] = React.useState("");
     const [pass, setPass] = React.useState("");
     const [pass2, setPass2] = React.useState("");
-    const [firstName,setFirstName] = React.useState("");
+    const [firstName, setFirstName] = React.useState("");
+    const [lastName, setLastName] = React.useState("");
     const [userNameError, setUserNameError] = React.useState(false);
     const [passError, setPassError] = React.useState(false);
     const [emailError, setEmailError] = React.useState(false);
-    const [firstNameError,setFirstNameError] = React.useState(false);
+    const [firstNameError, setFirstNameError] = React.useState(false);
+    const [lastNameError, setLastNameError] = React.useState(false);
 
-    
+
 
     const handleClick = (e) => {
-        if(userName||pass||pass2||email!==""){
-            RestAPI.addUser(userName,pass,email,firstName).then((res)=>{
+        if (userName || pass || pass2 || email !== "") {
+            RestAPI.addUser(userName, pass, email, firstName, lastName).then((res) => {
             }).catch(err => {
-                if(err["response"]["status"] === 400){
+                if (err["response"]["status"] === 400) {
                     setUserNameError(true)
                     alert("Username Taken")
                     setUserName("")
@@ -29,11 +34,12 @@ const SignUp = () => {
                 console.log()
             })
         }
-        
-        else{
+
+        else {
             setPassError(true);
             setUserNameError(true);
             setEmailError(true);
+            setLastNameError(true);
         }
         /* setPass("");
         setUserName(""); */
@@ -45,6 +51,9 @@ const SignUp = () => {
     const handleFnameChange = (e) => {
         setFirstName(e.target.value);
     }
+    const handleLnameChange = (e) => {
+        setLastName(e.target.value);
+    }
     const handleUsrNameChange = (e) => {
         setUserName(e.target.value);
     }
@@ -55,73 +64,129 @@ const SignUp = () => {
         setPass2(e.target.value);
     }
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',}}>
+        <div style={{ backgroundImage: `url(${BannerImage})` }}>
+            <Grid style={{ marginTop: "20px", marginBottom: "20px" }}>
+                <Card variant='outlined' style={{ maxWidth: 450, padding: "20px 5px ", margin: "0 auto" }}>
+                    <CardContent>
+                        <Typography gutterBottom variant="h3" align="center" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
+                            Sign Up
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary" component="p" gutterBottom sx={{ textAlign: 'center' }}>
+                            Create an account and start planing out your meals!
+                        </Typography>
+                        <form>
+                            <Grid container >
+                                <Grid item xs={12}>
+                                    <TextField
+                                        id="fname"
+                                        label="First Name"
+                                        variant="outlined"
+                                        margin="normal"
+                                        fullWidth
+                                        required
+                                        value={firstName}
+                                        onChange={handleFnameChange}
+                                        error={firstNameError}
+                                        helperText={firstNameError ? "Enter a First Name" : ""}
+                                        onBlur={() => (firstName === "" || firstName === null ? setFirstNameError(true) : null)}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        id="lname"
+                                        label="Last Name"
+                                        variant="outlined"
+                                        margin="normal"
+                                        fullWidth
+                                        required
+                                        value={lastName}
+                                        onChange={handleLnameChange}
+                                        error={firstNameError}
+                                        helperText={lastNameError ? "Enter a Last Name" : ""}
+                                        onBlur={() => (lastName === "" || lastName === null ? setLastNameError(true) : null)}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        id="user-name"
+                                        label="User Name"
+                                        variant="outlined"
+                                        margin="normal"
+                                        fullWidth
+                                        required
+                                        value={userName}
+                                        onChange={handleUsrNameChange}
+                                        error={userNameError}
+                                        helperText={userNameError ? "Enter a username" : ""}
+                                        onBlur={() => (userName === "" || userName === null ? setUserNameError(true) : null)}
 
-            <TextField
-                id="email"
-                label="Email"
-                variant="outlined"
-                margin="normal"
-                value={email}
-                onChange={handleEmailChange}
-                error={emailError}
-                helperText={emailError?"Enter a Email":""}
-                onBlur = {()=>(email===""||email=== null?setEmailError(true):null)}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        id="email"
+                                        label="Email"
+                                        variant="outlined"
+                                        margin="normal"
+                                        fullWidth
+                                        required
+                                        value={email}
+                                        onChange={handleEmailChange}
+                                        error={emailError}
+                                        helperText={emailError ? "Enter a Email" : ""}
+                                        onBlur={() => (email === "" || email === null ? setEmailError(true) : null)}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        id="password"
+                                        label="Password"
+                                        variant="outlined"
+                                        margin="normal"
+                                        type="password"
+                                        fullWidth
+                                        required
+                                        value={pass}
+                                        onChange={handlePassChange}
+                                        error={passError}
+                                        helperText={passError ? "Enter a password" : ""}
+                                        onBlur={() => (userName === "" || userName === null ? setPassError(true) : null)}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        id="password2"
+                                        label="Re-type password"
+                                        variant="outlined"
+                                        margin="normal"
+                                        type="password"
+                                        fullWidth
+                                        required
+                                        value={pass2}
+                                        onChange={handlePassChange2}
+                                        error={passError}
+                                        helperText={passError ? "Enter a password" : ""}
+                                        onBlur={() => (userName === "" || userName === null ? setPassError(true) : null)}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <FormControlLabel
+                                        value="termOfServ"
+                                        control={<Checkbox />}
+                                        label="Accept the Terms of Service"
+                                        labelPlacement="end"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Button variant="contained" fullWidth onClick={handleClick} style={{ padding: "0px,0px,5px,0px", backgroundColor: "#7A562E", marginTop: "10px", marginBottom: "20px" }}>Sign Up</Button>
+                                </Grid>
 
-            />
+                            </Grid>
+                        </form>
+                    </CardContent>
 
-            <TextField
-                id="fname"
-                label="First Name"
-                variant="outlined"
-                margin="normal"
-                value={firstName}
-                onChange={handleFnameChange}
-                error={firstNameError}
-                helperText={firstNameError?"Enter a First Name":""}
-                onBlur = {()=>(firstName===""||firstName === null?setFirstNameError(true):null)}
-
-            />
-
-            <TextField
-                id="user-name"
-                label="User Name"
-                variant="outlined"
-                margin="normal"
-                value={userName}
-                onChange={handleUsrNameChange}
-                error={userNameError}
-                helperText={userNameError?"Enter a username":""}
-                onBlur = {()=>(userName===""||userName=== null?setUserNameError(true):null)}
-
-            />
-
-            <TextField
-                id="password"
-                label="Password"
-                variant="outlined"
-                margin="normal"
-                type="password"
-                value={pass}
-                onChange={handlePassChange}
-                error={passError}
-                helperText={passError?"Enter a password":""}
-                onBlur = {()=>(userName===""||userName=== null?setPassError(true):null)}
-            />
-
-            <TextField
-                id="password2"
-                label="Re-type password"
-                variant="outlined"
-                margin="normal"
-                type="password"
-                value={pass2}
-                onChange={handlePassChange2}
-                error={passError}
-                helperText={passError?"Enter a password":""}
-                onBlur = {()=>(userName===""||userName=== null?setPassError(true):null)}
-            />
-            <Button variant="contained" onClick={handleClick} style={{padding:"0px,0px,5px,0px"}}>Sign Up</Button>
+                </Card>
+            </Grid>
         </div>
     )
 }
