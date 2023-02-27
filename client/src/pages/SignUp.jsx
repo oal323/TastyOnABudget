@@ -39,7 +39,6 @@ const SignUp = () => {
             setPassError(true);
             setUserNameError(true);
             setEmailError(true);
-            setLastNameError(true);
         }
         /* setPass("");
         setUserName(""); */
