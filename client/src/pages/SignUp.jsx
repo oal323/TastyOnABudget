@@ -13,7 +13,6 @@ const SignUp = () => {
     const [pass, setPass] = React.useState("");
     const [pass2, setPass2] = React.useState("");
     const [firstName, setFirstName] = React.useState("");
-    const [lastName, setLastName] = React.useState("");
     const [userNameError, setUserNameError] = React.useState(false);
     const [passError, setPassError] = React.useState(false);
     const [emailError, setEmailError] = React.useState(false);
@@ -24,7 +23,7 @@ const SignUp = () => {
 
     const handleClick = (e) => {
         if (userName || pass || pass2 || email !== "") {
-            RestAPI.addUser(userName, pass, email, firstName, lastName).then((res) => {
+            RestAPI.addUser(userName, pass, email, firstName).then((res) => {
             }).catch(err => {
                 if (err["response"]["status"] === 400) {
                     setUserNameError(true)
@@ -49,9 +48,6 @@ const SignUp = () => {
 
     const handleFnameChange = (e) => {
         setFirstName(e.target.value);
-    }
-    const handleLnameChange = (e) => {
-        setLastName(e.target.value);
     }
     const handleUsrNameChange = (e) => {
         setUserName(e.target.value);
@@ -88,21 +84,6 @@ const SignUp = () => {
                                         error={firstNameError}
                                         helperText={firstNameError ? "Enter a First Name" : ""}
                                         onBlur={() => (firstName === "" || firstName === null ? setFirstNameError(true) : null)}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        id="lname"
-                                        label="Last Name"
-                                        variant="outlined"
-                                        margin="normal"
-                                        fullWidth
-                                        required
-                                        value={lastName}
-                                        onChange={handleLnameChange}
-                                        error={firstNameError}
-                                        helperText={lastNameError ? "Enter a Last Name" : ""}
-                                        onBlur={() => (lastName === "" || lastName === null ? setLastNameError(true) : null)}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
