@@ -1,23 +1,25 @@
-import React from 'react';
+import React from 'react'
 import TextField from '@mui/material/TextField';
-import { Button } from '@mui/material';
+import { Button, Card, Grid, Typography, CardContent, Checkbox } from '@mui/material';
 import RestAPI from '../RestAPI';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import BannerImage from "../assets/morefood.png";
 import { useNavigate } from 'react-router';
 import jwt from 'jwt-decode'
 
 const Login = () => {
-    
+
     const [userName, setUserName] = React.useState("");
     const [pass, setPass] = React.useState("");
     const [userNameError, setUserNameError] = React.useState(false);
     const [passError, setPassError] = React.useState(false);
     const navigate = useNavigate();
     const handleClick = (e) => {
-        
-        if(userName||pass!== ""){
-            RestAPI.getToken(userName,pass).then((res)=>{
+
+        if (userName || pass !== "") {
+            RestAPI.getToken(userName, pass).then((res) => {
                 const token = res.data['access_token']
-                sessionStorage.setItem("token",token)
+                sessionStorage.setItem("token", token)
                 const user = jwt(sessionStorage.getItem("token"));
                 console.log(user)
                 navigate("/home")
@@ -25,13 +27,13 @@ const Login = () => {
                 setPassError(true);
                 setPassError(true);
             })
-            
-            
-        }else{
+
+
+        } else {
             setPassError(true);
             setUserNameError(true);
         }
-        
+
         setPass("");
         setUserName("");
     }
@@ -42,34 +44,57 @@ const Login = () => {
         setPass(e.target.value);
     }
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+        <div style={{ backgroundImage: `url(${BannerImage})` }}>
+            <Grid style={{ marginTop: "20px", marginBottom: "20px" }}>
+                <Card variant='outlined' style={{ maxWidth: 450, padding: "20px 5px ", margin: "0 auto" }}>
+                    <CardContent>
+                        <Typography gutterBottom variant="h3" align="center" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
+                            Login
+                        </Typography>
+                        <form>
+                            <Grid container >
+                                <Grid item xs={12}>
+                                    <TextField
+                                        id="user-name"
+                                        label="User Name"
+                                        variant="outlined"
+                                        margin="normal"
+                                        fullWidth
+                                        required
+                                        value={userName}
+                                        onChange={handleUsrNameChange}
+                                        error={userNameError}
+                                        helperText={userNameError ? "Enter a username" : ""}
+                                        onBlur={() => (userName === "" || userName === null ? setUserNameError(true) : null)}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        id="password"
+                                        label="Password"
+                                        variant="outlined"
+                                        margin="normal"
+                                        type="password"
+                                        fullWidth
+                                        required
+                                        value={pass}
+                                        onChange={handlePassChange}
+                                        error={passError}
+                                        helperText={passError ? "Enter a password" : ""}
+                                        onBlur={() => (userName === "" || userName === null ? setPassError(true) : null)}
+                                    />
+                                </Grid>
 
-            <TextField
-                id="user-name"
-                label="User Name"
-                variant="outlined"
-                margin="normal"
-                value={userName}
-                onChange={handleUsrNameChange}
-                error={userNameError}
-                helperText={userNameError?"Enter a username":""}
-                onBlur = {()=>(userName===""||userName=== null?setUserNameError(true):null)}
-            />
+                                <Grid item xs={12}>
+                                    <Button variant="contained" fullWidth onClick={handleClick} style={{ padding: "0px,0px,5px,0px", backgroundColor: "#7A562E", marginTop: "10px", marginBottom: "20px" }}>Login</Button>
+                                </Grid>
 
-            <TextField
-                id="password"
-                label="Password"
-                variant="outlined"
-                margin="normal"
-                type="password"
-                value={pass}
-                onChange={handlePassChange}
-                error={passError}
-                helperText={passError?"Enter a password":""}
-                onBlur = {()=>(userName===""||userName=== null?setPassError(true):null)}
-            />
+                            </Grid>
+                        </form>
+                    </CardContent>
 
-            <Button variant="contained" onClick={handleClick} style={{padding:"0px,0px,5px,0px"}}>Login</Button>
+                </Card>
+            </Grid>
         </div>
     )
 }
