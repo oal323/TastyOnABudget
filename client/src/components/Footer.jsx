@@ -10,8 +10,12 @@ import "../styles/Footer.css";
 function Footer() {
     return (
         <div className="footer">
-            <div className="socialmedia">
-                <InstagramIcon /> <FacebookIcon /> <TwitterIcon /> <GitHubIcon /> <ShareIcon />
+            <div className="socialMedia">
+                <InstagramIcon /> <FacebookIcon /> <TwitterIcon />
+                <a href='https://github.com/michaelwomack2001/4155-TastyOnABudget'>
+                    <GitHubIcon />
+                </a>
+                <ShareIcon />
             </div>
             <p> &copy; 2023 buypotatobakepotato.com  </p>
 
