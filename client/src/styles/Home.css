@@ -75,7 +75,7 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        background-color: #121619;
+        background-color: #7A562E;
         color: white;
     }
 
@@ -92,12 +92,12 @@
 
     .headerContainer button {
         background-color: white;
-        color: #121619;
+        color: #7A562E;
         margin-bottom: 30px;
     }
 
     .headerContainer button:hover {
         background-color: rgb(225, 225, 225);
-        color: #121619;
+        color: #FAE4B9;
     }
 }

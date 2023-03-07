@@ -1,8 +1,7 @@
 import React from 'react'
 import TextField from '@mui/material/TextField';
-import { Button, Card, Grid, Typography, CardContent, Checkbox } from '@mui/material';
+import { Button, Card, Grid, Typography, CardContent } from '@mui/material';
 import RestAPI from '../RestAPI';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import BannerImage from "../assets/morefood.png";
 import { useNavigate } from 'react-router';
 import jwt from 'jwt-decode'
