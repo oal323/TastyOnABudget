@@ -89,9 +89,9 @@ def authenticate_user(username: str, password: str):
     user = get_user(username)
     if not user:
         return False
-    if user.password != password:
-        return False
-    return user
+    if verify_password(password, user.password):
+        return user
+    return False
 
 
 def create_access_token(user: UserData, expires_delta: timedelta | None = None):
@@ -153,6 +153,7 @@ async def read_users_me(current_user: User = Depends(get_current_active_user)):
 
 @app.put("/addUser")
 async def addUser(user: UserData):
+    user.password = get_password_hash(user.password)
     newUser = User(username = user.username, password = user.password, email = user.email, firstName = user.firstName)
     if (len(session.query(User).filter(User.username == user.username).all())!=0):
         raise HTTPException(status_code=400, detail="double user")
