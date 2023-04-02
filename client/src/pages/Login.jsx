@@ -20,11 +20,13 @@ const Login = () => {
                 const token = res.data['access_token']
                 sessionStorage.setItem("token", token)
                 const user = jwt(sessionStorage.getItem("token"));
+                sessionStorage.setItem("user", JSON.stringify(user));
                 console.log(user)
                 navigate("/home")
             }).catch(err => {
                 setPassError(true);
-                setPassError(true);
+                setUserNameError(true);
+                alert("Error Wrong Credentials")
             })
 
 
