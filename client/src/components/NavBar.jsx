@@ -30,6 +30,7 @@ function NavBar() {
                         <Link to="/"> Home </Link>
                         <Link to="/about"> About</Link>
                         <Link to="/contact"> Contact </Link>
+                        <Link to="/recipes"> Recipes </Link>
                         <Link to="/login"> Logout </Link>
                     </div>
                 </div>
@@ -37,6 +38,7 @@ function NavBar() {
                     <Link to="/home"> Home </Link>
                     <Link to="/about"> About</Link>
                     <Link to="/contact"> Contact </Link>
+                    <Link to="/recipes"> Recipes </Link>
                     <Link to="/home" onClick={()=>{sessionStorage.clear(); window.location.reload(true);}}>Logout</Link>
                     <button onClick={toggleNavbar}>
                         <ReorderIcon />
