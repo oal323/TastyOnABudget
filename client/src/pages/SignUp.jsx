@@ -4,40 +4,64 @@ import { Button, Card, Grid, Typography, CardContent, Checkbox } from '@mui/mate
 import RestAPI from '../RestAPI';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import BannerImage from "../assets/morefood.png";
+import jwt from 'jwt-decode';
+
 
 
 const SignUp = () => {
-
     const [email, setEmail] = React.useState("");
     const [userName, setUserName] = React.useState("");
     const [pass, setPass] = React.useState("");
     const [pass2, setPass2] = React.useState("");
     const [firstName, setFirstName] = React.useState("");
     const [userNameError, setUserNameError] = React.useState(false);
-    const [passError, setPassError] = React.useState(false);
+    const [passError1, setPassError1] = React.useState(false);
+    const [passError2, setPassError2] = React.useState(false);
     const [emailError, setEmailError] = React.useState(false);
     const [firstNameError, setFirstNameError] = React.useState(false);
-    const [lastNameError, setLastNameError] = React.useState(false);
 
 
 
     const handleClick = (e) => {
-        if (userName || pass || pass2 || email !== "") {
-            RestAPI.addUser(userName, pass, email, firstName).then((res) => {
-            }).catch(err => {
-                if (err["response"]["status"] === 400) {
-                    setUserNameError(true)
-                    alert("Username Taken")
-                    setUserName("")
-                }
-                console.log()
-            })
+        if ((userName!== "" && pass!== "" && pass2!== "" && email !== "")) {
+            if(pass===pass2){
+                RestAPI.addUser(userName, pass, email, firstName).then((res) => {
+                    RestAPI.getToken(userName, pass).then((res) => {
+                        const token = res.data['access_token']
+                        sessionStorage.setItem("token", token)
+                        const user = jwt(sessionStorage.getItem("token"));
+                        sessionStorage.setItem("user", JSON.stringify(user));
+                        console.log(user)
+                        /* window.location.assign("/home"); */
+                    })
+                }).catch(err => {
+                    if (err["response"]["status"] === 400) {
+                        setUserNameError(true)
+                        alert("Username Taken")
+                        setUserName("")
+                    }
+                    
+                })
+            } else {
+                alert("Passwords don't match")
+                setPassError1(true);
+                setPassError2(true);
+            }
+            
         }
 
         else {
-            setPassError(true);
-            setUserNameError(true);
-            setEmailError(true);
+            if(userName!== ""){
+                setUserNameError(true);
+            } else if (pass!== "") {
+                setPassError1(true);
+            }
+            else if (pass2!== "") {
+                setPassError2(true);
+            }
+            else if (emailError!== "") {
+                setEmailError(true);
+            }
         }
         /* setPass("");
         setUserName(""); */
@@ -83,7 +107,7 @@ const SignUp = () => {
                                         onChange={handleFnameChange}
                                         error={firstNameError}
                                         helperText={firstNameError ? "Enter a First Name" : ""}
-                                        onBlur={() => (firstName === "" || firstName === null ? setFirstNameError(true) : null)}
+                                        onBlur={() => (firstName === "" || firstName === null ? setFirstNameError(true) : setFirstNameError(false))}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -98,7 +122,7 @@ const SignUp = () => {
                                         onChange={handleUsrNameChange}
                                         error={userNameError}
                                         helperText={userNameError ? "Enter a username" : ""}
-                                        onBlur={() => (userName === "" || userName === null ? setUserNameError(true) : null)}
+                                        onBlur={() => (userName === "" || userName === null ? setUserNameError(true) : setUserNameError(false))}
 
                                     />
                                 </Grid>
@@ -114,7 +138,7 @@ const SignUp = () => {
                                         onChange={handleEmailChange}
                                         error={emailError}
                                         helperText={emailError ? "Enter a Email" : ""}
-                                        onBlur={() => (email === "" || email === null ? setEmailError(true) : null)}
+                                        onBlur={() => (email === "" || email === null ? setEmailError(true) : setEmailError(false))}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -128,9 +152,9 @@ const SignUp = () => {
                                         required
                                         value={pass}
                                         onChange={handlePassChange}
-                                        error={passError}
-                                        helperText={passError ? "Enter a password" : ""}
-                                        onBlur={() => (userName === "" || userName === null ? setPassError(true) : null)}
+                                        error={passError1}
+                                        helperText={passError1 ? "Enter a password" : ""}
+                                        onBlur={() => (userName === "" || userName === null ? setPassError1(true) : setPassError1(false))}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -144,9 +168,9 @@ const SignUp = () => {
                                         required
                                         value={pass2}
                                         onChange={handlePassChange2}
-                                        error={passError}
-                                        helperText={passError ? "Enter a password" : ""}
-                                        onBlur={() => (userName === "" || userName === null ? setPassError(true) : null)}
+                                        error={passError2}
+                                        helperText={passError2 ? "Enter a password" : ""}
+                                        onBlur={() => (userName === "" || userName === null ? setPassError2(true) : setPassError2(false))}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
