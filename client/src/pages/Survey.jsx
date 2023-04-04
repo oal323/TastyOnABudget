@@ -58,6 +58,7 @@ const UserSurvey = () =>{
         
         if(calorie_goal!==""||gender!==""||height!=="" ||weight!=="" ||age!=="" ||cooking_exp!=="" ||num_days!=="" ||num_meals!=="" ||activity_level!==""){
             setSurveyData({
+                userID:"1",
                 calorie_goal:calorie_goal,
                 gender:gender,
                 height:height,
@@ -72,17 +73,11 @@ const UserSurvey = () =>{
                 dinner:dinner
             })
             console.log(surveyData)
-            /* RestAPI.addUserData().then((res)=> {
-            }).catch(err => {
-                if(err["response"]["status"] === 400){
-
-                }
-                console.log()
+            RestAPI.putUserData(surveyData).then((res)=> {
             })
-        */}
-        else{
-
-        }
+                
+       }
+        
     }
 
     /**
@@ -92,7 +87,7 @@ const UserSurvey = () =>{
      */
 
     const handleCalorieChange = (e) =>{
-        setSurveyData(setGoal);
+        setGoal(e.target.value);
     }
     const handleGenderChange = (e) =>{
         setGender(e.target.value);
@@ -135,7 +130,7 @@ const UserSurvey = () =>{
      */
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',}}>
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center'}}>
             <TextField
             id="calories"
             label="Enter Calorie Goal"
@@ -143,9 +138,9 @@ const UserSurvey = () =>{
             margin="normal"
             value={calorie_goal}
             onChange={handleCalorieChange}
-            error={setCalorieError}
+            error={calorie_error}
             helperText={calorie_error?"Enter your Daily Calorie Goal":""}
-            onBlur = {()=>(calorie_goal===""||calorie_goal===null?setCalorieError(true):null)}
+            onBlur = {()=>(calorie_goal===""||calorie_goal===null?setCalorieError(true):setCalorieError(false))}
             />
             <ButtonGroup size="lg" id="gender">
                 <Button
@@ -155,6 +150,7 @@ const UserSurvey = () =>{
                 onClick={handleGenderChange}
                 error={setGenderError}
                 helperText={gender_error?"You must select a gender":""}
+                
                 >Male</Button>
                 <Button
                 id="female"
@@ -172,9 +168,9 @@ const UserSurvey = () =>{
             margin="normal"
             value={weight}
             onChange={handleWeightChange}
-            error={setWeightError}
+            error={weight_error}
             helperText={weight_error?"Enter your weight in lbs":""}
-            onBlur = {()=>(weight===""||weight===null?setWeightError(true):null)}
+            onBlur = {()=>(weight===""||weight===null?setWeightError(true):setWeightError(false))}
             />
             <TextField
             id="height"
@@ -183,9 +179,9 @@ const UserSurvey = () =>{
             margin="normal"
             value={height}
             onChange={handleHieghtChange}
-            error={setHeightError}
+            error={height_error}
             helperText={height_error?"Enter your height inches":""}
-            onBlur = {()=>(height===""||height===null?setHeightError(true):null)}
+            onBlur = {()=>(height===""||height===null?setHeightError(true):setHeightError(false))}
             />
             <TextField
             id="age"
@@ -196,7 +192,7 @@ const UserSurvey = () =>{
             onChange={handleAgeChange}
             error={age_error}
             helperText={age_error?"Enter your Age":""}
-            onBlur = {()=>(age===""||age===null?setAgeError(true):null)}
+            onBlur = {()=>(age===""||age===null?setAgeError(true):setAgeError(false))}
             />
             <ButtonGroup size="lg" id="exp">
                 <Button
@@ -231,9 +227,9 @@ const UserSurvey = () =>{
             margin="normal"
             value={num_days}
             onChange={handleDaysChange}
-            error={setDaysError}
+            error={days_error}
             helperText={days_error?"Enter days from 1-7":""}
-            onBlur = {()=>(num_days===""||num_days===null||(num_days>7&&num_days<0)?setDaysError(true):null)}
+            onBlur = {()=>(num_days===""||num_days===null||(num_days>7&&num_days<0)?setDaysError(true):setDaysError(false))}
             />
             <ButtonGroup size="lg" id="activity">
             <Button
@@ -251,7 +247,7 @@ const UserSurvey = () =>{
                 onClick={handleActLvlChange}
                 error={setActLvlError}
                 helperText={act_lvl_error?"You must select a Activity Lvl":""}
-                >None</Button>
+                >Some (1-3 days)</Button>
                 <Button
                 id="alot"
                 label="Active(3+days)"

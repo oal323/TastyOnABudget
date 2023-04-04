@@ -227,6 +227,7 @@ async def getRecipies(num):
 
 @app.put("/userSurveyData")
 async def putUserSurveyData(user: UserSurveyData):
+    
     newUserSurveyData = UserSurveyDataSQL(users_id=user.userID,gender = user.gender,height = user.height,weight=user.weight,age=user.age,cooking_exp=user.cooking_exp,num_days=user.num_days,num_meals=user.num_meals,activity_level=user.activity_level)
     session.add(newUserSurveyData)
     session.commit()
