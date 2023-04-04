@@ -11,6 +11,10 @@ from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import aliased
+from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import mapped_column
+from sqlalchemy.orm import relationship
+from typing import List
 
 engine = sqlalchemy.create_engine("mariadb+mariadbconnector://dbuser:gj=wvK?L5Ck9+L&K7zbaKz=@localhost:3306/tasty")
 Base = declarative_base()
@@ -29,13 +33,14 @@ class TokenData(BaseModel):
 
 class User(Base):
     __tablename__ = 'users'
-    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True,autoincrement='ignore_fk')
+    children: Mapped[List["UserSurveyDataSQL"]] = relationship(back_populates="parent")
     username = sqlalchemy.Column(sqlalchemy.String(length=100))
     password = sqlalchemy.Column(sqlalchemy.String(length=100), nullable=False)
     email = sqlalchemy.Column(sqlalchemy.String(length=100), nullable=False)
     firstName = sqlalchemy.Column(sqlalchemy.String(length=100), nullable=False)
 
-class UserData(BaseModel):
+class UserLoginData(BaseModel):
     username: str
     password: str
     email: str
@@ -57,7 +62,32 @@ class Recipe(Base):
     ingredients = sqlalchemy.Column(sqlalchemy.String(length=100))
     tags = sqlalchemy.Column(sqlalchemy.String(length=100))
 
+class UserSurveyDataSQL(Base):
+    __tablename__ = 'userData'
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+    users_id = mapped_column(ForeignKey("users.id"))
+    parent = relationship("User", back_populates="children")
+    calorie_goal = sqlalchemy.Column(sqlalchemy.String(length=100))
+    gender = sqlalchemy.Column(sqlalchemy.String(length=100))
+    height = sqlalchemy.Column(sqlalchemy.String(length=100))
+    weight = sqlalchemy.Column(sqlalchemy.String(length=100))
+    age = sqlalchemy.Column(sqlalchemy.String(length=100))
+    cooking_exp = sqlalchemy.Column(sqlalchemy.String(length=100))
+    num_days = sqlalchemy.Column(sqlalchemy.String(length=100))
+    num_meals = sqlalchemy.Column(sqlalchemy.String(length=100))
+    activity_level = sqlalchemy.Column(sqlalchemy.String(length=100))
 
+class UserSurveyData(BaseModel):
+    userID:int
+    calorie_goal: str
+    gender: str
+    height: str
+    weight: str
+    age: str
+    cooking_exp: str
+    num_days: str
+    num_meals: str
+    activity_level: str
 Base.metadata.create_all(engine)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -107,7 +137,7 @@ def authenticate_user(username: str, password: str):
     return False
 
 
-def create_access_token(user: UserData, expires_delta: timedelta | None = None):
+def create_access_token(user: UserLoginData, expires_delta: timedelta | None = None):
     to_encode = user.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
@@ -165,7 +195,7 @@ async def read_users_me(current_user: User = Depends(get_current_active_user)):
     return current_user """
 
 @app.put("/addUser")
-async def addUser(user: UserData):
+async def addUser(user: UserLoginData):
     user.password = get_password_hash(user.password)
     newUser = User(username = user.username, password = user.password, email = user.email, firstName = user.firstName)
     if (len(session.query(User).filter(User.username == user.username).all())!=0):
@@ -195,4 +225,10 @@ async def getRecipies(tags):
 async def getRecipies(num):
     return(session.query(Recipe).limit(num).all())
 
+@app.put("/userSurveyData")
+async def putUserSurveyData(user: UserSurveyData):
+    newUserSurveyData = UserSurveyDataSQL(users_id=user.userID,gender = user.gender,height = user.height,weight=user.weight,age=user.age,cooking_exp=user.cooking_exp,num_days=user.num_days,num_meals=user.num_meals,activity_level=user.activity_level)
+    session.add(newUserSurveyData)
+    session.commit()
+    
 

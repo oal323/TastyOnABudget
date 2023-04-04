@@ -50,6 +50,17 @@ class restAPI {
         })
     }
 
+    putUserData(calorie_goal,gender,height,weight,age,cooking_exp,num_days,num_meals,activity_level){
+        const endpoint = "putUserData";
+        let restEndPoint = server_url + endpoint;
+        const json = JSON.stringify({ calorie_goal:calorie_goal, gender:gender,height:height,weight:weight,age:age,cooking_exp:cooking_exp,num_days:num_days,num_meals:num_meals,activity_level:activity_level});
+        return axios.get(restEndPoint,json,{
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        })
+    }
+
 }
 
 export default new restAPI();
