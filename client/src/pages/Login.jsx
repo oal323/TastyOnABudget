@@ -12,7 +12,6 @@ const Login = () => {
     const [pass, setPass] = React.useState("");
     const [userNameError, setUserNameError] = React.useState(false);
     const [passError, setPassError] = React.useState(false);
-    const navigate = useNavigate();
     const handleClick = (e) => {
 
         if (userName || pass !== "") {
@@ -21,8 +20,7 @@ const Login = () => {
                 sessionStorage.setItem("token", token)
                 const user = jwt(sessionStorage.getItem("token"));
                 sessionStorage.setItem("user", JSON.stringify(user));
-                console.log(user)
-                navigate("/home")
+                window.location.assign("/home");
             }).catch(err => {
                 setPassError(true);
                 setUserNameError(true);
