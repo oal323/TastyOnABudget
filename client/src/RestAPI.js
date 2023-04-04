@@ -31,6 +31,25 @@ class restAPI {
         })
     }
 
+    getAllRecipies(){
+        const endpoint = "recipies";
+        let restEndPoint = server_url + endpoint;
+        return axios.get(restEndPoint,{
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        })
+    }
+    getNumRecipies(totalRecipes){
+        const endpoint = "recipies/"+totalRecipes;
+        let restEndPoint = server_url + endpoint;
+        return axios.get(restEndPoint,{
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        })
+    }
+
 }
 
 export default new restAPI();

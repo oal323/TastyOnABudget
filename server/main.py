@@ -45,6 +45,19 @@ class LoginModel(BaseModel):
     username: str
     password: str
 
+class Recipe(Base):
+    __tablename__ = 'recipe'
+    id = sqlalchemy.Column(sqlalchemy.String(length=100), primary_key=True)
+    title = sqlalchemy.Column(sqlalchemy.String(length=100))
+    steps = sqlalchemy.Column(sqlalchemy.String(length=100))
+    nutrition = sqlalchemy.Column(sqlalchemy.String(length=100))
+    description = sqlalchemy.Column(sqlalchemy.String(length=100))
+    servings = sqlalchemy.Column(sqlalchemy.String(length=100))
+    thumbnail = sqlalchemy.Column(sqlalchemy.String(length=100))
+    ingredients = sqlalchemy.Column(sqlalchemy.String(length=100))
+    tags = sqlalchemy.Column(sqlalchemy.String(length=100))
+
+
 Base.metadata.create_all(engine)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -165,5 +178,21 @@ async def addUser(user: UserData):
 @app.get("/users/me/items/")
 async def read_own_items(current_user: User = Depends(get_current_active_user)):
     return [{"item_id": "Foo", "owner": current_user.username}]
+
+@app.get("/recipies")
+async def getRecipies():
+    return(session.query(Recipe).all())
+
+@app.get("/recipies{id}")
+async def getRecipies(id):
+    return(session.query(Recipe).filter(Recipe.id == id).first())
+    
+@app.get("/recipies{tags}")
+async def getRecipies(tags):
+    return(session.query(Recipe).all().filter(Recipe.tags.like("oven")))
+
+@app.get("/recipies/{num}")
+async def getRecipies(num):
+    return(session.query(Recipe).limit(num).all())
 
 
