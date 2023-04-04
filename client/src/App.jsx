@@ -6,6 +6,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
+import UserSurvey from './pages/Survey';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path='/contact' element={<Contact />} />
           <Route path='/signup' element={<SignUp />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/survey' element={<UserSurvey />} />
         </Routes>
         <Footer />
       </Router>

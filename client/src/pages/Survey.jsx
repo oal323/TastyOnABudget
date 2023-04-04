@@ -1,6 +1,6 @@
 import React from 'react'
 import TextField from '@mui/material/TextField';
-import { Button, ButtonGroup } from '@mui/material';
+import { Button, ButtonGroup, Checkbox } from '@mui/material';
 import RestAPI from '../RestAPI';
 
 const UserSurvey = () =>{
@@ -19,9 +19,23 @@ const UserSurvey = () =>{
     const [num_days, setNumDays] = React.useState(""); //setNumDays
     const [num_meals, setNumMeals] = React.useState(""); //setNumMeals
     const [activity_level, setActLvl] = React.useState(""); //Set Act Lvl
-    const [breakfast, setBreakfast] = React.useState("")
-    const [lunch, setLunch] = React.useState("")
-    const [dinner, setDinner] = React.useState("")
+    const [breakfast, setBreakfast] = React.useState("");
+    const [lunch, setLunch] = React.useState("");
+    const [dinner, setDinner] = React.useState("");
+    const [surveyData, setSurveyData] = React.useState({
+        calorie_goal:"",
+        gender:"",
+        height:"",
+        weight:"",
+        age:"",
+        cooking_exp:"",
+        num_days:"",
+        num_meals:"",
+        activity_level:"",
+        breakfast:"",
+        lunch:"",
+        dinner:""
+    });
 
     /**
      * 
@@ -29,27 +43,43 @@ const UserSurvey = () =>{
      * Error handlers
      * 
      */
-    const [calorie_error , setCalorieError] = React.userState(false);
-    const [gender_error , setGenderError] = React.userState(false);
-    const [height_error , setHeightError] = React.userState(false);
-    const [weight_error , setWeightError] = React.userState(false);
-    const [age_error , setAgeError] = React.userState(false);
-    const [cooking_exp_error , setCookingError] = React.userState(false);
-    const [days_error , setDaysError] = React.userState(false);
-    const [meals_error , setMealsError] = React.userState(false);
-    const [act_lvl_error , setActLvlError] = React.userState(false);
+    const [calorie_error , setCalorieError] = React.useState(false);
+    const [gender_error , setGenderError] = React.useState(false);
+    const [height_error , setHeightError] = React.useState(false);
+    const [weight_error , setWeightError] = React.useState(false);
+    const [age_error , setAgeError] = React.useState(false);
+    const [cooking_exp_error , setCookingError] = React.useState(false);
+    const [days_error , setDaysError] = React.useState(false);
+    const [meals_error , setMealsError] = React.useState(false);
+    const [act_lvl_error , setActLvlError] = React.useState(false);
 
 
     const handleClick = (e) => {
-        if(calorie_goal||gender||height||weight||age||cooking_exp||num_days||num_meals||activity_level!==""){
-            RestAPI.addUserData().then((res)=> {
+        
+        if(calorie_goal!==""||gender!==""||height!=="" ||weight!=="" ||age!=="" ||cooking_exp!=="" ||num_days!=="" ||num_meals!=="" ||activity_level!==""){
+            setSurveyData({
+                calorie_goal:calorie_goal,
+                gender:gender,
+                height:height,
+                weight:weight,
+                age:age,
+                cooking_exp:cooking_exp,
+                num_days:num_days,
+                num_meals:num_meals,
+                activity_level:activity_level,
+                breakfast:breakfast,
+                lunch:lunch,
+                dinner:dinner
+            })
+            console.log(surveyData)
+            /* RestAPI.addUserData().then((res)=> {
             }).catch(err => {
                 if(err["response"]["status"] === 400){
 
                 }
                 console.log()
             })
-        }
+        */}
         else{
 
         }
@@ -62,7 +92,7 @@ const UserSurvey = () =>{
      */
 
     const handleCalorieChange = (e) =>{
-        setGoal(e.target.value);
+        setSurveyData(setGoal);
     }
     const handleGenderChange = (e) =>{
         setGender(e.target.value);
@@ -125,7 +155,7 @@ const UserSurvey = () =>{
                 onClick={handleGenderChange}
                 error={setGenderError}
                 helperText={gender_error?"You must select a gender":""}
-                />
+                >Male</Button>
                 <Button
                 id="female"
                 label="FEMALE"
@@ -133,7 +163,7 @@ const UserSurvey = () =>{
                 onClick={handleGenderChange}
                 error={setGenderError}
                 helperText={gender_error?"You must select a gender":""}
-                />
+                >Female</Button>
             </ButtonGroup>
             <TextField
             id="weight"
@@ -176,7 +206,7 @@ const UserSurvey = () =>{
                 onClick={handleExpChange}
                 error={setCookingError}
                 helperText={cooking_exp_error?"You must select a experience level":""}
-                />
+                >Novice</Button>
                 <Button
                 id="imm"
                 label="Intermediate"
@@ -184,7 +214,7 @@ const UserSurvey = () =>{
                 onClick={handleExpChange}
                 error={setCookingError}
                 helperText={cooking_exp_error?"You must select a experience level":""}
-                />
+                >Intermediate</Button>
                 <Button
                 id="adv"
                 label="Advanced"
@@ -192,7 +222,7 @@ const UserSurvey = () =>{
                 onClick={handleExpChange}
                 error={setCookingError}
                 helperText={cooking_exp_error?"You must select a experience level":""}
-                />
+                >Advanced</Button>
             </ButtonGroup>
             <TextField
             id="days"
@@ -213,7 +243,7 @@ const UserSurvey = () =>{
                 onClick={handleActLvlChange}
                 error={setActLvlError}
                 helperText={act_lvl_error?"You must select a Activity Lvl":""}
-                />
+                >None</Button>
                 <Button
                 id="some"
                 label="Some (1-3 days)"
@@ -221,7 +251,7 @@ const UserSurvey = () =>{
                 onClick={handleActLvlChange}
                 error={setActLvlError}
                 helperText={act_lvl_error?"You must select a Activity Lvl":""}
-                />
+                >None</Button>
                 <Button
                 id="alot"
                 label="Active(3+days)"
@@ -229,7 +259,7 @@ const UserSurvey = () =>{
                 onClick={handleActLvlChange}
                 error={setActLvlError}
                 helperText={act_lvl_error?"You must select a Activity Lvl":""}
-                />
+                >Active(3+days)</Button>
             </ButtonGroup>
             <ButtonGroup>
             <Button
@@ -239,7 +269,7 @@ const UserSurvey = () =>{
                 onClick={handleMealsChange}
                 error={setMealsError}
                 helperText={meals_error?"You must select at least one meal":""}
-                />
+                >Breakfast</Button>
                 <Button
                 id="lunch"
                 label="Lunch"
@@ -247,7 +277,7 @@ const UserSurvey = () =>{
                 onClick={handleMealsChange}
                 error={setMealsError}
                 helperText={meals_error?"You must select at least one meal":""}
-                />
+                >Lunch</Button>
                 <Button
                 id="din"
                 label="Dinner"
@@ -255,12 +285,13 @@ const UserSurvey = () =>{
                 onClick={handleMealsChange}
                 error={setMealsError}
                 helperText={meals_error?"You must select at least one meal":""}
-                />
+                >Dinner</Button>
             </ButtonGroup>
             <Button variant="contained" onClick={handleClick} style={{padding:"0px,0px,5px,0px"}}>Submit</Button>
         </div>
     )
-
+    
+    
 }
 
 export default UserSurvey
