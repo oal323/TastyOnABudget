@@ -15,6 +15,9 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 from typing import List
+from sqlalchemy.sql import text
+import json
+
 
 engine = sqlalchemy.create_engine("mariadb+mariadbconnector://dbuser:gj=wvK?L5Ck9+L&K7zbaKz=@localhost:3306/tasty")
 Base = declarative_base()
@@ -209,21 +212,29 @@ async def addUser(user: UserLoginData):
 async def read_own_items(current_user: User = Depends(get_current_active_user)):
     return [{"item_id": "Foo", "owner": current_user.username}]
 
-@app.get("/recipies")
-async def getRecipies():
+@app.get("/recipes")
+async def getRecipes():
     return(session.query(Recipe).all())
 
-@app.get("/recipies{id}")
-async def getRecipies(id):
+
+@app.get("/recipes{id}")
+async def getRecpies(id):
     return(session.query(Recipe).filter(Recipe.id == id).first())
     
-@app.get("/recipies{tags}")
-async def getRecipies(tags):
-    return(session.query(Recipe).all().filter(Recipe.tags.like("oven")))
+@app.get("/recipes/{tags}")
+async def getRecipes(tags):
+    return(session.query(Recipe).all().filter(Recipe.tags.like(tags)))
 
-@app.get("/recipies/{num}")
-async def getRecipies(num):
+@app.get("/recipes/{num}")
+async def getRecipes(num):
     return(session.query(Recipe).limit(num).all())
+
+@app.get("/recipes/search/{searchval}")
+async def searchRecipes(searchval):
+    sqlText = text('SELECT * from recipe where title like :searchval')
+    res = session.execute(sqlText, {'searchval':'%'+searchval+'%'})
+    ret = res.mappings().all()
+    return(ret)
 
 @app.put("/userSurveyData")
 async def putUserSurveyData(user: UserSurveyData):

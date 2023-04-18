@@ -32,7 +32,7 @@ const SignUp = () => {
                         const user = jwt(sessionStorage.getItem("token"));
                         sessionStorage.setItem("user", JSON.stringify(user));
                         console.log(user)
-                        /* window.location.assign("/home"); */
+                        window.location.assign("/home");
                     })
                 }).catch(err => {
                     if (err["response"]["status"] === 400) {

@@ -31,8 +31,8 @@ class restAPI {
         })
     }
 
-    getAllRecipies(){
-        const endpoint = "recipies";
+    getAllRecipes(){
+        const endpoint = "recipes";
         let restEndPoint = server_url + endpoint;
         return axios.get(restEndPoint,{
             headers: {
@@ -40,8 +40,18 @@ class restAPI {
             }
         })
     }
-    getNumRecipies(totalRecipes){
-        const endpoint = "recipies/"+totalRecipes;
+    getNumRecipes(totalRecipes){
+        const endpoint = "recipes/"+totalRecipes;
+        let restEndPoint = server_url + endpoint;
+        return axios.get(restEndPoint,{
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        })
+    }
+
+    getRecipesSearch(searchParam){
+        const endpoint = "recipes/search/"+searchParam;
         let restEndPoint = server_url + endpoint;
         return axios.get(restEndPoint,{
             headers: {
