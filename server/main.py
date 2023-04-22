@@ -93,6 +93,12 @@ class UserSurveyData(BaseModel):
     activity_level: str
 Base.metadata.create_all(engine)
 
+class likeRecipies():
+    __tablename__ = 'likedRecipies'
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+    userId = sqlalchemy.Column(ForeignKey("users.id"))
+    recipieId = sqlalchemy.Column(ForeignKey("recipe.id"))
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
