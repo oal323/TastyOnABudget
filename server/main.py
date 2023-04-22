@@ -99,6 +99,12 @@ class likeRecipies():
     userId = sqlalchemy.Column(ForeignKey("users.id"))
     recipieId = sqlalchemy.Column(ForeignKey("recipe.id"))
 
+class dislikedRecipies():
+    __tablename__ = 'dislikedRecipies'
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+    userId = sqlalchemy.Column(ForeignKey("users.id"))
+    recipieId = sqlalchemy.Column(ForeignKey("recipe.id"))
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -126,7 +132,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
-
 
 def get_password_hash(password):
     return pwd_context.hash(password)
@@ -213,6 +218,17 @@ async def addUser(user: UserLoginData):
     session.commit()
     raise HTTPException(status_code=200, detail="Succ")
 
+@app.put("likeRecpipe")
+async def like_recipie(userId: int, recipieid: int):
+    new_like  = dislikedRecipies(userId = userId, recipieId = recipieid)
+    session.add(new_like)
+    session.commit()
+
+@app.put("dilikeRecpipe")
+async def dislike_recipie(userId: int, recipieid: int):
+    new_dislike  = dislikedRecipies(userId = userId, recipieId = recipieid)
+    session.add(new_dislike)
+    session.commit()
 
 @app.get("/users/me/items/")
 async def read_own_items(current_user: User = Depends(get_current_active_user)):
