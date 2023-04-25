@@ -28,10 +28,28 @@ function Home() {
                     <div className='headerContainer'>
                         <div className='header'>
                             <h1> Buy Potato Bake Potato </h1>
-                            <p> Curated Meal Plans For All Taste Buds</p>
+                            <h1> <Typewriter
+                                onInit={(typewriter) => {
+                                    typewriter.typeString('Welcome')
+                                        .callFunction(() => {
+                                            console.log('String typed out!');
+                                        })
+                                        .pauseFor(500)
+                                        .deleteAll()
+                                    typewriter.typeString(user.username)
+                                        .callFunction(() => {
+                                            console.log('String typed out!');
+                                        })
+                                        .pauseFor(200)
+                                        .deleteAll()
+                                        .start();
 
-                            Welcome {user.username}
+                                }}
 
+                            /></h1>
+                            <Link to="/survey">
+                                <button> Survey </button>
+                            </Link>
                         </div>
                     </div>
 
