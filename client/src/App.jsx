@@ -8,6 +8,7 @@ import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import UserSurvey from './pages/Survey';
 import Recipes from './pages/Recipes';
+import Recipe from './pages/Recipe';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/survey' element={<UserSurvey />} />
           <Route path='/recipes' element={<Recipes />} />
+          <Route path="/recipe/:recipeGUID" element={<Recipe />} exact />
         </Routes>
         <Footer />
       </Router>
