@@ -16,8 +16,7 @@ function Contact() {
                             Phone: +1 (704)123-4567
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p" gutterBottom sx={{ textAlign: 'center' }}>
-
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Viverra orci sagittis eu volutpat odio. Ipsum nunc aliquet bibendum enim. Nec sagittis aliquam malesuada bibendum arcu vitae elementum. Neque volutpat ac tincidunt vitae semper. Quam adipiscing vitae proin sagittis. Dictum sit amet justo donec enim.
+                            Have a question, comment, or suggestion? We'd love to hear from you! Please fill out the form below and we'll get back to you as soon as possible.
                         </Typography>
                         <form>
                             <Grid container >
