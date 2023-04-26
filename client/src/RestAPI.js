@@ -31,8 +31,8 @@ class restAPI {
         })
     }
 
-    getAllRecipies(){
-        const endpoint = "recipies";
+    getAllRecipes(){
+        const endpoint = "recipes";
         let restEndPoint = server_url + endpoint;
         return axios.get(restEndPoint,{
             headers: {
@@ -40,8 +40,8 @@ class restAPI {
             }
         })
     }
-    getNumRecipies(totalRecipes){
-        const endpoint = "recipies/"+totalRecipes;
+    getNumRecipes(totalRecipes){
+        const endpoint = "recipes/"+totalRecipes;
         let restEndPoint = server_url + endpoint;
         return axios.get(restEndPoint,{
             headers: {
@@ -50,11 +50,41 @@ class restAPI {
         })
     }
 
-    putUserData(calorie_goal,gender,height,weight,age,cooking_exp,num_days,num_meals,activity_level){
-        const endpoint = "putUserData";
+    getRecipesSearchTitle(searchParam){
+        const endpoint = "recipes/searchtitle/"+searchParam;
         let restEndPoint = server_url + endpoint;
-        const json = JSON.stringify({ calorie_goal:calorie_goal, gender:gender,height:height,weight:weight,age:age,cooking_exp:cooking_exp,num_days:num_days,num_meals:num_meals,activity_level:activity_level});
-        return axios.get(restEndPoint,json,{
+        return axios.get(restEndPoint,{
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        })
+    }
+
+    getRecipeByID(id){
+        const endpoint = "recipes/"+id;
+        let restEndPoint = server_url + endpoint;
+        return axios.get(restEndPoint,{
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        })
+    }
+
+    getRecipesSearchTags(searchParam){
+        const endpoint = "recipes/searchtags/"+searchParam;
+        let restEndPoint = server_url + endpoint;
+        return axios.get(restEndPoint,{
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        })
+    }
+
+    putUserData(surveyData){
+        const endpoint = "userSurveyData";
+        let restEndPoint = server_url + endpoint;
+        const json = JSON.stringify(surveyData);
+        return axios.put(restEndPoint,surveyData,{
             headers: {
               'Content-Type': 'application/json'
             }

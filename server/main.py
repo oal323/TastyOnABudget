@@ -15,6 +15,9 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 from typing import List
+from sqlalchemy.sql import text
+import json
+
 
 engine = sqlalchemy.create_engine("mariadb+mariadbconnector://dbuser:gj=wvK?L5Ck9+L&K7zbaKz=@localhost:3306/tasty")
 Base = declarative_base()
@@ -90,6 +93,18 @@ class UserSurveyData(BaseModel):
     activity_level: str
 Base.metadata.create_all(engine)
 
+class likeRecipies():
+    __tablename__ = 'likedRecipies'
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+    userId = sqlalchemy.Column(ForeignKey("users.id"))
+    recipieId = sqlalchemy.Column(ForeignKey("recipe.id"))
+
+class dislikedRecipies():
+    __tablename__ = 'dislikedRecipies'
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+    userId = sqlalchemy.Column(ForeignKey("users.id"))
+    recipieId = sqlalchemy.Column(ForeignKey("recipe.id"))
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -117,7 +132,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
-
 
 def get_password_hash(password):
     return pwd_context.hash(password)
@@ -204,29 +218,56 @@ async def addUser(user: UserLoginData):
     session.commit()
     raise HTTPException(status_code=200, detail="Succ")
 
+@app.put("likeRecpipe")
+async def like_recipie(userId: int, recipieid: int):
+    new_like  = dislikedRecipies(userId = userId, recipieId = recipieid)
+    session.add(new_like)
+    session.commit()
+
+@app.put("dilikeRecpipe")
+async def dislike_recipie(userId: int, recipieid: int):
+    new_dislike  = dislikedRecipies(userId = userId, recipieId = recipieid)
+    session.add(new_dislike)
+    session.commit()
 
 @app.get("/users/me/items/")
 async def read_own_items(current_user: User = Depends(get_current_active_user)):
     return [{"item_id": "Foo", "owner": current_user.username}]
 
-@app.get("/recipies")
-async def getRecipies():
+@app.get("/recipes")
+async def getRecipes():
     return(session.query(Recipe).all())
 
-@app.get("/recipies{id}")
-async def getRecipies(id):
+
+@app.get("/recipes/{id}")
+async def getRecpies(id):
     return(session.query(Recipe).filter(Recipe.id == id).first())
     
-@app.get("/recipies{tags}")
-async def getRecipies(tags):
-    return(session.query(Recipe).all().filter(Recipe.tags.like("oven")))
+@app.get("/recipes/{tags}")
+async def getRecipes(tags):
+    return(session.query(Recipe).all().filter(Recipe.tags.like(tags)))
 
-@app.get("/recipies/{num}")
-async def getRecipies(num):
+@app.get("/recipes/{num}")
+async def getRecipes(num):
     return(session.query(Recipe).limit(num).all())
+
+@app.get("/recipes/searchtitle/{searchval}")
+async def searchRecipes(searchval):
+    sqlText = text('SELECT * from recipe where title like :searchval')
+    res = session.execute(sqlText, {'searchval':'%'+searchval+'%'})
+    ret = res.mappings().all()
+    return(ret)
+
+@app.get("/recipes/searchtags/{searchval}")
+async def searchRecipes(searchval):
+    sqlText = text('SELECT * from recipe where tags like :searchval')
+    res = session.execute(sqlText, {'searchval':'%'+searchval+'%'})
+    ret = res.mappings().all()
+    return(ret)
 
 @app.put("/userSurveyData")
 async def putUserSurveyData(user: UserSurveyData):
+    
     newUserSurveyData = UserSurveyDataSQL(users_id=user.userID,gender = user.gender,height = user.height,weight=user.weight,age=user.age,cooking_exp=user.cooking_exp,num_days=user.num_days,num_meals=user.num_meals,activity_level=user.activity_level)
     session.add(newUserSurveyData)
     session.commit()

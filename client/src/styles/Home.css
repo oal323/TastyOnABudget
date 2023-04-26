@@ -23,16 +23,18 @@
 }
 
 .headerContainer h1 {
-    justify-content: center;
+    justify-content: left;
     align-items: center;
     font-size: 90px;
     height: 60px;
     font-weight: 50;
     color: #7A562E;
+
 }
 
 .headerContainer p {
     padding: 0;
+    margin-top: 10px;
     font-size: 40px;
     font-weight: lighter;
     color: #7A562E;
@@ -57,6 +59,16 @@
     background-color: #FAE4B9;
     cursor: pointer;
     transition: 0.3s ease-in;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+}
+
+.column {
+    flex: 33.33%;
+    padding: 5px;
 }
 
 @media only screen and (max-width: 650px) {
@@ -112,7 +124,7 @@
     .row {
         flex-direction: row;
     }
-    
+
     .column {
         flex-direction: column;
     }
