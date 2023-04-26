@@ -229,9 +229,16 @@ async def getRecipes(tags):
 async def getRecipes(num):
     return(session.query(Recipe).limit(num).all())
 
-@app.get("/recipes/search/{searchval}")
+@app.get("/recipes/searchtitle/{searchval}")
 async def searchRecipes(searchval):
     sqlText = text('SELECT * from recipe where title like :searchval')
+    res = session.execute(sqlText, {'searchval':'%'+searchval+'%'})
+    ret = res.mappings().all()
+    return(ret)
+
+@app.get("/recipes/searchtags/{searchval}")
+async def searchRecipes(searchval):
+    sqlText = text('SELECT * from recipe where tags like :searchval')
     res = session.execute(sqlText, {'searchval':'%'+searchval+'%'})
     ret = res.mappings().all()
     return(ret)
