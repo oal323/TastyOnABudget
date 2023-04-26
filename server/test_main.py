@@ -24,6 +24,21 @@ def test_overlapping_password():
     assert response.status_code == 400
     assert response.json() == {"detail": "double user"}
 
+def test_putUserSurveyData():
+    data = UserSurveyData(
+    userID= 1,
+    calorie_goal= "300",
+    gender= "male",
+    height= "3",
+    weight= "230",
+    age= "21",
+    cooking_exp= "moderate",
+    num_days= "1",
+    num_meals= "3",
+    activity_level= "moderate")
+    response = client.put("/userSurveyData", json=data.__dict__)
+    assert response.status_code == 200
+
 
 
 
