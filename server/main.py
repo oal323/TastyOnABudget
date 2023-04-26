@@ -239,7 +239,7 @@ async def getRecipes():
     return(session.query(Recipe).all())
 
 
-@app.get("/recipes{id}")
+@app.get("/recipes/{id}")
 async def getRecpies(id):
     return(session.query(Recipe).filter(Recipe.id == id).first())
     

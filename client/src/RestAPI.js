@@ -60,6 +60,16 @@ class restAPI {
         })
     }
 
+    getRecipeByID(id){
+        const endpoint = "recipes/"+id;
+        let restEndPoint = server_url + endpoint;
+        return axios.get(restEndPoint,{
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        })
+    }
+
     getRecipesSearchTags(searchParam){
         const endpoint = "recipes/searchtags/"+searchParam;
         let restEndPoint = server_url + endpoint;

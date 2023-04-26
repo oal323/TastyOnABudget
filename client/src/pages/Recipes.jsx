@@ -11,6 +11,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { Link } from 'react-router-dom';
 
 
 const Recipes = () => {
@@ -19,6 +20,7 @@ const Recipes = () => {
     const [filterText, setFilterText] = React.useState("");
     const [value, setValue] = React.useState("");
     const [tagsOrTitle, setTagsOrTitle] = React.useState(false);
+    const navigate = useNavigate();
     function unicodeToChar(text) {
         return text.replace(/\\u[\dA-F]{4}/gi,
             function (match) {
@@ -26,11 +28,11 @@ const Recipes = () => {
             });
     }
 
-    console.log(tagsOrTitle);
+    console.log(filterText)
     const handleSearch = () => {
         setRecipes([])
+        
         RestAPI.getRecipesSearchTitle(filterText).then((res) => {
-            console.log(res.data)
             res.data.map((resData) => {
                 setRecipes(prev => [
                     ...prev,
@@ -106,7 +108,7 @@ const Recipes = () => {
                                     />
                                      <ButtonBase
                                         
-                                        onClick={event => { console.log(recipe.id) }}
+                                        onClick={event => { navigate(`/recipe/${recipe.id}`) }}
                                     >
                                     <CardContent>
                                    
