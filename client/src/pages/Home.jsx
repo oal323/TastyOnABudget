@@ -4,15 +4,22 @@ import { Link } from "react-router-dom";
 import BannerImage from "../assets/morefood.png";
 import PadThai from "../assets/padthai.jpg";
 import Panang from "../assets/panang.jpg";
+import MealPlan from "../assets/mealplan.png";
+import Prep from "../assets/prep.png";
+import GetFood from "../assets/getfood.png";
 import jwt from 'jwt-decode';
 import Typewriter from 'typewriter-effect';
-import { Button, Card, Grid, Typography, CardContent } from '@mui/material';
+import { Button, Card, Grid, Typography, CardContent, ImageList, CardActions, CardHeader, IconButton, } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { CardActionArea } from '@mui/material';
 import CardMedia from '@mui/material/CardMedia';
+import DisLike from '@mui/icons-material/ThumbDownOffAlt';
+import Like from '@mui/icons-material/ThumbUpOffAlt';
 
 function Home() {
     const [user, setUser] = React.useState();
+    const [expanded, setExpanded] = React.useState(false);
+    const [recipes, setRecipes] = React.useState([]);
 
     React.useEffect(() => {
         if (sessionStorage.getItem("user") !== null) {
@@ -20,6 +27,7 @@ function Home() {
             console.log(user)
         }
     }, [])
+
 
     if (user) {
         return (
@@ -98,11 +106,26 @@ function Home() {
                     </div>
                 </div>
                 <Grid style={{ marginTop: "20px", marginBottom: "20px" }}>
+                    <Typography gutterBottom variant="h4" align="center" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
+                        Life Made Simpler
+                    </Typography>
+                    <div className='row'>
+                        <div class="column">
+                            <img src={MealPlan} alt="" />
+                        </div>
+                        <div class="column">
+                            <img src={GetFood} alt="" />
+                        </div>
+                        <div class="column">
+                            <img src={Prep} alt="" />
+                        </div>
+
+                    </div>
 
                     <Typography gutterBottom variant="h4" align="center" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
                         Recipes of the Week
                     </Typography>
-                    <Grid container >
+                    <Grid container direction="row">
                         <Grid item xs={12} style={{ marginTop: "20px", marginBottom: "20px" }}>
                             <Card variant='outlined' style={{ maxWidth: 1000, padding: "20px 5px ", margin: "0 auto" }}>
                                 <Grid container spacing={4}>
@@ -125,11 +148,6 @@ function Home() {
                                                 </CardContent>
                                             </CardActionArea>
                                         </Card>
-                                    </Grid>
-                                </Grid>
-
-                                <Grid container spacing={4}>
-                                    <Grid item xs={6} sm={6} ms={4}>
                                         <Card sx={{ maxWidth: 345 }}>
                                             <CardActionArea>
                                                 <CardMedia
@@ -151,14 +169,15 @@ function Home() {
                                     </Grid>
                                 </Grid>
 
+
                             </Card>
                         </Grid>
                     </Grid>
 
-                </Grid>
+                </Grid >
 
 
-            </div>
+            </div >
         )
     }
 }

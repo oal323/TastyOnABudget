@@ -61,6 +61,16 @@
     transition: 0.3s ease-in;
 }
 
+.row {
+    display: flex;
+    justify-content: center;
+}
+
+.column {
+    flex: 33.33%;
+    padding: 5px;
+}
+
 @media only screen and (max-width: 650px) {
     .home {
         justify-content: center;
