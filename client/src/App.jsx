@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import UserSurvey from './pages/Survey';
 import Recipes from './pages/Recipes';
 import Recipe from './pages/Recipe';
+import NotFound from './pages/NotFound';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -26,6 +27,8 @@ function App() {
           <Route path='/survey' element={<UserSurvey />} />
           <Route path='/recipes' element={<Recipes />} />
           <Route path="/recipe/:recipeGUID" element={<Recipe />} exact />
+          <Route path='*' element={<NotFound />} />
+
         </Routes>
         <Footer />
       </Router>

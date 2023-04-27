@@ -23,8 +23,8 @@ const SignUp = () => {
 
 
     const handleClick = (e) => {
-        if ((userName!== "" && pass!== "" && pass2!== "" && email !== "")) {
-            if(pass===pass2){
+        if ((userName !== "" && pass !== "" && pass2 !== "" && email !== "")) {
+            if (pass === pass2) {
                 RestAPI.addUser(userName, pass, email, firstName).then((res) => {
                     RestAPI.getToken(userName, pass).then((res) => {
                         const token = res.data['access_token']
@@ -40,26 +40,26 @@ const SignUp = () => {
                         alert("Username Taken")
                         setUserName("")
                     }
-                    
+
                 })
             } else {
                 alert("Passwords don't match")
                 setPassError1(true);
                 setPassError2(true);
             }
-            
+
         }
 
         else {
-            if(userName!== ""){
+            if (userName !== "") {
                 setUserNameError(true);
-            } else if (pass!== "") {
+            } else if (pass !== "") {
                 setPassError1(true);
             }
-            else if (pass2!== "") {
+            else if (pass2 !== "") {
                 setPassError2(true);
             }
-            else if (emailError!== "") {
+            else if (emailError !== "") {
                 setEmailError(true);
             }
         }
@@ -177,6 +177,7 @@ const SignUp = () => {
                                     <FormControlLabel
                                         value="termOfServ"
                                         control={<Checkbox />}
+                                        required
                                         label="Accept the Terms of Service"
                                         labelPlacement="end"
                                     />

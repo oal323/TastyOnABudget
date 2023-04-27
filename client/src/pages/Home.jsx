@@ -18,8 +18,6 @@ import Like from '@mui/icons-material/ThumbUpOffAlt';
 
 function Home() {
     const [user, setUser] = React.useState();
-    const [expanded, setExpanded] = React.useState(false);
-    const [recipes, setRecipes] = React.useState([]);
 
     React.useEffect(() => {
         if (sessionStorage.getItem("user") !== null) {
@@ -105,22 +103,33 @@ function Home() {
                         </div>
                     </div>
                 </div>
-                <Grid style={{ marginTop: "20px", marginBottom: "20px" }}>
-                    <Typography gutterBottom variant="h4" align="center" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
-                        Life Made Simpler
+                <Grid style={{ marginTop: "20px", marginBottom: "20px", padding: "30px" }}>
+                    <Typography gutterBottom variant="h5" align="center" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
+                        Are you tired of constantly feeling stressed and overwhelmed when it comes to planning your meals? Do you find yourself eating the same thing every day or relying on takeout and fast food because you don't have time or energy to cook? If so, a meal planning program may be just what you need!
                     </Typography>
                     <div className='row'>
                         <div class="column">
                             <img src={MealPlan} alt="" />
+                            <Typography align="center" style={{ padding: "10px" }}>
+                                By signing up for a meal planning program, you will have access to a variety of healthy and delicious recipes that are tailored to your specific dietary needs and preferences. These programs can also help you save time and money by providing weekly shopping lists and helping you make the most of your ingredients.
+                            </Typography>
                         </div>
                         <div class="column">
                             <img src={GetFood} alt="" />
+                            <Typography align="center" style={{ padding: "10px" }}>
+                                Not only will a meal planning program make your life easier and more organized, but it can also have significant health benefits. By planning your meals ahead of time, you are more likely to make nutritious choices and avoid the temptation of unhealthy options.
+                            </Typography>
                         </div>
                         <div class="column">
                             <img src={Prep} alt="" />
+                            <Typography align="center" style={{ padding: "10px" }}>
+                                If you're still on the fence, consider the long-term benefits of investing in a meal planning program. By developing healthy eating habits and sticking to a regular meal schedule, you will likely experience increased energy, improved digestion, and better overall health.  </Typography>
                         </div>
 
                     </div>
+                    <Link to="/signup">
+                        <Button align="center" fullWidth variant="contained" size="large" style={{ padding: "0px,0px,5px,0px", backgroundColor: "green", marginTop: "10px", marginBottom: "20px" }}> Sign Up Now</Button>
+                    </Link>
 
                     <Typography gutterBottom variant="h4" align="center" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
                         Recipes of the Week
@@ -176,7 +185,14 @@ function Home() {
 
                 </Grid >
 
+                <Typography gutterBottom variant="h5" align="center" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
+                    Our website is dedicated to providing you with the tools and resources you need to plan healthy and delicious meals that fit your busy lifestyle.
+                </Typography>
+                <Typography align="center" style={{ padding: "10px" }}>
+                    We understand that meal planning can be a daunting task, which is why we've created a user-friendly platform that makes it easy and enjoyable to plan your meals. Our website offers a wide variety of recipes that are tailored to your specific dietary needs and preferences, including options for gluten-free, vegetarian, and low-carb diets.
 
+                    In addition to our extensive recipe database, our website also provides customizable meal plans that can be tailored to your schedule and lifestyle. We understand that everyone's needs are different, which is why we offer flexible options for daily, weekly, and monthly meal planning.
+                </Typography>
             </div >
         )
     }
