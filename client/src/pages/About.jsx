@@ -1,6 +1,13 @@
 import React from 'react'
 import BannerImage from "../assets/morefood.png";
 import "../styles/About.css";
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Card, Box, Grid, Typography, CardContent, ToggleButtonGroup, ToggleButton, FormHelperText } from '@mui/material';
+
+
 
 function About() {
     return (
@@ -8,7 +15,10 @@ function About() {
             <div
                 className="aboutTop"
                 style={{ backgroundImage: `url(${BannerImage})` }}
-            ></div>
+            >
+
+            </div>
+
             <div className="aboutBottom">
                 <h1> ABOUT US</h1>
                 <p>
@@ -55,11 +65,82 @@ function About() {
                     Join our community today and start your journey to healthier and happier meal planning!
 
                 </p>
+
+                <Grid style={{ marginTop: "20px", marginBottom: "20px" }}>
+                    <Typography gutterBottom variant="h5" align="center" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
+                        Frequently Asked Questions
+
+                    </Typography>
+                    <Box
+
+                        sx={{ padding: '20px', display: 'flex', flexWrap: 'wrap', }}
+
+                    >
+
+
+                        <Accordion>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1a-content"
+                                id="panel1a-header"
+                            >
+                                <Typography>Is it Free?</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography>
+                                    Buy Potato Bake Potato is a web app and free meal planning tool that helps you to plan your meals and build shopping lists. It's available for free on the web (desktop and mobile). Ideal for busy people and families to plan their weekly meals and eat healthier.
+                                </Typography>
+                            </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel2a-content"
+                                id="panel2a-header"
+                            >
+                                <Typography>How to make a meal plan?</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography>
+                                    To make a weekly menu plan:
+                                </Typography>
+                                <Typography>
+                                    1. Compose a list of recipes from Eatwell101 or any website you like on the web. Make sure to ask your family what they like so you can build your meal plan with confidence.
+                                </Typography>
+                                <Typography>
+                                    2. Sort by proteins: Chicken, beef, fish, eggs, etc - Or adapt depending on your dietary preferences. This helps having a solid base for each meal.
+
+                                </Typography>
+                                <Typography>
+                                    3. Add each recipe to every days of the week on the meal planner. You can add several recipes for the same day.
+
+                                </Typography>
+                                <Typography>
+                                    4.Make your grocery list (Eatwell101's Meal Planner helps you do that!). Take into account what you already have in your pantry or fridge.
+
+                                </Typography>
+                                <Typography>
+                                    5. Shop, cook, eat!
+
+                                </Typography>
+                                <Typography>
+                                    6. Repeat: Create a new meal plan. Our Menu Planner allows you to keep your weekly meal plan in printable or PDF format. This way you can make multiple meal plans.
+
+                                </Typography>
+                                <Typography>
+                                    7.  Rotate: Alternate your meal plans and make adjustments for the next weeks.
+
+                                </Typography>
+                            </AccordionDetails>
+                        </Accordion>
+
+
+                    </Box>
+                </Grid>
+
+
             </div>
-            <div
-                className="aboutTop"
-                style={{ backgroundImage: `url(${BannerImage})` }}
-            ></div>
+
         </div>
     )
 }
