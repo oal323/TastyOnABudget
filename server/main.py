@@ -161,23 +161,6 @@ def create_access_token(user: UserLoginData, expires_delta: timedelta | None = N
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-def get_user_data():
-	User = get_current_user()
-	usersurveydata = (session.query(UserSurveyData).filter(User.id == UserSurveyDataSQL.users_id).first())
-	return(usersurveydata)
-
-def get_user_recipes(userdata: UserSurveyData):
-    calories = userdata.calorie_goal / 3
-    caloriesupper = calories + 100
-    calorieslower = calories - 100
-    recipes = []
-    query = text("SELECT Limit (:userdata.num_days) * FROM recipes WHERE calories BETWEEN :calorieslower AND :caloriesupper AND id NOT IN (SELECT recipieId FROM dislikedRecipies WHERE userId = :user_id)ORDER BY NEWID()")
-    result = session.execute(query, {'user_id': userdata.user_id, 'calorieslower': calorieslower, 'caloriesupper': caloriesupper, 'num_days': userdata.num_days})
-    rows = result.mappings().all()
-    recipes = [dict(row) for row in rows]
-    return(recipes)
-
-
 async def get_current_user(token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -202,6 +185,11 @@ async def get_current_active_user(current_user: User = Depends(get_current_user)
     if current_user.disabled:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
+
+def get_user_data():
+	User = get_current_active_user()
+	usersurveydata = (session.query(UserSurveyData).filter(User.id == UserSurveyDataSQL.users_id).first())
+	return(usersurveydata)
 
 tags=["Auth"]
 @app.post("/auth/login")
@@ -254,8 +242,9 @@ async def read_own_items(current_user: User = Depends(get_current_active_user)):
 async def getRecipes():
     return(session.query(Recipe).all())
 
-@app.get("/recipes/reccomended/{userdata}")
-async def getRecipesforUser(userdata):
+@app.get("/recipes/reccomended/")
+async def getRecipesforUser():
+    userdata = get_user_data()
     calories = userdata.calorie_goal / 3
     caloriesupper = calories + 100
     calorieslower = calories - 100
