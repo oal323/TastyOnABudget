@@ -211,7 +211,7 @@ function Home() {
 
                         In addition to our extensive recipe database, our website also provides customizable meal plans that can be tailored to your schedule and lifestyle. We understand that everyone's needs are different, which is why we offer flexible options for daily, weekly, and monthly meal planning.
                     </Typography>
-                    <Link to="/signup">
+                    <Link to="/signup"  >
                         <Button align="center" fullWidth variant="contained" size="large" style={{ padding: "0px,0px,5px,0px", backgroundColor: "green", marginTop: "10px", marginBottom: "20px" }}> Sign Up Now</Button>
                     </Link>
                 </Grid>
