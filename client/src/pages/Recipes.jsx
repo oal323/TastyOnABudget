@@ -20,6 +20,7 @@ const Recipes = () => {
     const [filterText, setFilterText] = React.useState("");
     const [tagOrTitle, setTagOrTitle] = React.useState(true);
     const [textFieldError, setTextFieldError] = React.useState(false)
+    const [user, setUser] = React.useState();
 
     function unicodeToChar(text) {
         return text.replace(/\\u[\dA-F]{4}/gi,
@@ -70,8 +71,28 @@ const Recipes = () => {
         }
 
     }
+    const putLikedRecipie=(id) =>{
+        if (sessionStorage.getItem("user") !== null) {
+            setUser(JSON.parse(sessionStorage.getItem("user")));
+            console.log(user)
+        }else{
+            alert("Must be logged in");
+            return;
+        }
 
+        RestAPI.putLikedRecipie(user.id, id)
+    }
 
+    const putDislikedRecipie=(id) =>{
+        if (sessionStorage.getItem("user") !== null) {
+            setUser(JSON.parse(sessionStorage.getItem("user")));
+            console.log(user)
+        }else{
+            alert("Must be logged in");
+            return;
+        }
+        RestAPI.putDislikedRecipie(user.id, id)
+    }
     return (
         <div >
             <Grid style={{ marginTop: "20px", marginBottom: "750px" }}>
@@ -124,10 +145,10 @@ const Recipes = () => {
                                                                 image={recipe.thumbnail} />
                                                                 
                                                             <CardActions>
-                                                                <IconButton >
+                                                                <IconButton onClick={() => putLikedRecipie(recipe.id)}>
                                                                     <Like />
                                                                 </IconButton>
-                                                                <IconButton >
+                                                                <IconButton onClick={() => putDislikedRecipie(recipe.id)}>
                                                                     <DisLike />
                                                                 </IconButton>
                                                             </CardActions>

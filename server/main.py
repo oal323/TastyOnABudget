@@ -93,7 +93,7 @@ class UserSurveyData(BaseModel):
     activity_level: str
 Base.metadata.create_all(engine)
 
-class likeRecipies():
+class likedRecipies():
     __tablename__ = 'likedRecipies'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     userId = sqlalchemy.Column(ForeignKey("users.id"))
@@ -234,14 +234,14 @@ async def addUser(user: UserLoginData):
     session.commit()
     raise HTTPException(status_code=200, detail="Succ")
 
-@app.put("likeRecpipe")
-async def like_recipie(userId: int, recipieid: int):
-    new_like  = dislikedRecipies(userId = userId, recipieId = recipieid)
+@app.put("/like_recipie")
+async def like_recipie(userId: int, recipieid: str):
+    new_like  = likedRecipies(userId = userId, recipieId = recipieid)
     session.add(new_like)
     session.commit()
 
-@app.put("dilikeRecpipe")
-async def dislike_recipie(userId: int, recipieid: int):
+@app.put("/dislike_recipie")
+async def dislike_recipie(userId: int, recipieid: str):
     new_dislike  = dislikedRecipies(userId = userId, recipieId = recipieid)
     session.add(new_dislike)
     session.commit()
