@@ -166,6 +166,18 @@ def get_user_data():
 	usersurveydata = (session.query(UserSurveyData).filter(User.id == UserSurveyDataSQL.users_id).first())
 	return(usersurveydata)
 
+def get_user_recipes(userdata: UserSurveyData):
+    calories = userdata.calorie_goal / 3
+    caloriesupper = calories + 100
+    calorieslower = calories - 100
+    recipes = []
+    query = text("SELECT Limit (:userdata.num_days) * FROM recipes WHERE calories BETWEEN :calorieslower AND :caloriesupper AND id NOT IN (SELECT recipieId FROM dislikedRecipies WHERE userId = :user_id)ORDER BY NEWID()")
+    result = session.execute(query, {'user_id': userdata.user_id, 'calorieslower': calorieslower, 'caloriesupper': caloriesupper, 'num_days': userdata.num_days})
+    rows = result.mappings().all()
+    recipes = [dict(row) for row in rows]
+    return(recipes)
+
+
 async def get_current_user(token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
