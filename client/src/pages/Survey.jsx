@@ -2,7 +2,7 @@ import React from 'react'
 import TextField from '@mui/material/TextField';
 import { Button, ButtonGroup, Checkbox } from '@mui/material';
 import RestAPI from '../RestAPI';
-import { Card, Box, Grid, Typography, CardContent, ToggleButtonGroup, ToggleButton, FormHelperText } from '@mui/material';
+import { Card, Box, Grid, Select, MenuItem, Typography, CardContent, ToggleButtonGroup, ToggleButton, FormHelperText } from '@mui/material';
 import BannerImage from "../assets/morefood.png";
 import { useNavigate } from 'react-router';
 import jwt from 'jwt-decode'
@@ -137,7 +137,7 @@ const UserSurvey = () => {
     return (
         <div>
             <div style={{ backgroundImage: `url(${BannerImage})` }}>
-                <Grid style={{ marginTop: "20px", marginBottom: "20px" }}>
+                <Grid style={{ marginBottom: "20px" }}>
                     <Card variant='outlined' style={{ maxWidth: 600, padding: "20px 5px ", margin: "0 auto" }}>
                         <CardContent>
                             <Typography gutterBottom variant="h3" align="center" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
@@ -178,8 +178,8 @@ const UserSurvey = () => {
                                         onBlur={() => (calorie_goal === "" || calorie_goal === null ? setCalorieError(true) : setCalorieError(false))}
                                     />
                                     <FormHelperText>What is your gender?</FormHelperText>
-                                    <ToggleButtonGroup size="lg" id="gender" fullWidth>
-                                        <ToggleButton
+                                    <ButtonGroup size="lg" id="gender" fullWidth>
+                                        <Button
                                             id="male"
                                             label="Male"
                                             value="male"
@@ -187,16 +187,16 @@ const UserSurvey = () => {
                                             error={setGenderError}
                                             helperText={gender_error ? "You must select a gender" : ""}
 
-                                        >Male</ToggleButton>
-                                        <ToggleButton
+                                        >Male</Button>
+                                        <Button
                                             id="female"
                                             label="FEMALE"
                                             value="female"
                                             onClick={handleGenderChange}
                                             error={setGenderError}
                                             helperText={gender_error ? "You must select a gender" : ""}
-                                        >Female</ToggleButton>
-                                    </ToggleButtonGroup>
+                                        >Female</Button>
+                                    </ButtonGroup>
                                     <div>
                                         <TextField fullWidth
                                             id="weight"
@@ -231,34 +231,37 @@ const UserSurvey = () => {
                                             helperText={age_error ? "Enter your Age" : ""}
                                             onBlur={() => (age === "" || age === null ? setAgeError(true) : setAgeError(false))}
                                         />
+
                                     </div>
                                     <FormHelperText>What is your experience level?</FormHelperText>
-                                    <ToggleButtonGroup size="lg" id="exp" fullWidth>
-                                        <ToggleButton
+                                    <ButtonGroup size="lg" id="exp" fullWidth
+
+                                    >
+                                        <Button
                                             id="NEW"
                                             label="Novice"
                                             value="new"
                                             onClick={handleExpChange}
                                             error={setCookingError}
                                             helperText={cooking_exp_error ? "You must select a experience level" : ""}
-                                        >Novice</ToggleButton>
-                                        <ToggleButton
+                                        >Novice</Button>
+                                        <Button
                                             id="imm"
                                             label="Intermediate"
                                             value="imm"
                                             onClick={handleExpChange}
                                             error={setCookingError}
                                             helperText={cooking_exp_error ? "You must select a experience level" : ""}
-                                        >Intermediate</ToggleButton>
-                                        <ToggleButton
+                                        >Intermediate</Button>
+                                        <Button
                                             id="adv"
                                             label="Advanced"
                                             value="adv"
                                             onClick={handleExpChange}
                                             error={setCookingError}
                                             helperText={cooking_exp_error ? "You must select a experience level" : ""}
-                                        >Advanced</ToggleButton>
-                                    </ToggleButtonGroup>
+                                        >Advanced</Button>
+                                    </ButtonGroup>
 
                                     <TextField fullWidth
                                         id="days"
@@ -272,59 +275,59 @@ const UserSurvey = () => {
                                         onBlur={() => (num_days === "" || num_days === null || (num_days > 7 && num_days < 0) ? setDaysError(true) : setDaysError(false))}
                                     />
                                     <FormHelperText>How active are you?</FormHelperText>
-                                    <ToggleButtonGroup size="lg" id="activity" fullWidth>
-                                        <ToggleButton
+                                    <ButtonGroup size="lg" id="activity" fullWidth>
+                                        <Button
                                             id="none"
                                             label="None"
                                             value="none"
                                             onClick={handleActLvlChange}
                                             error={setActLvlError}
                                             helperText={act_lvl_error ? "You must select a Activity Lvl" : ""}
-                                        >None</ToggleButton>
-                                        <ToggleButton
+                                        >None</Button>
+                                        <Button
                                             id="some"
                                             label="Some (1-3 days)"
                                             value="some"
                                             onClick={handleActLvlChange}
                                             error={setActLvlError}
                                             helperText={act_lvl_error ? "You must select a Activity Lvl" : ""}
-                                        >Some (1-3 days)</ToggleButton>
-                                        <ToggleButton
+                                        >Some (1-3 days)</Button>
+                                        <Button
                                             id="alot"
                                             label="Active(3+days)"
                                             value="act"
                                             onClick={handleActLvlChange}
                                             error={setActLvlError}
                                             helperText={act_lvl_error ? "You must select a Activity Lvl" : ""}
-                                        >Active(3+days)</ToggleButton>
-                                    </ToggleButtonGroup>
+                                        >Active(3+days)</Button>
+                                    </ButtonGroup>
                                     <FormHelperText>What type of meals do you prefer?</FormHelperText>
-                                    <ToggleButtonGroup fullWidth>
-                                        <ToggleButton
+                                    <ButtonGroup fullWidth>
+                                        <Button
                                             id="break"
                                             label="Breakfast"
                                             value="breakfast"
                                             onClick={handleMealsChange}
                                             error={setMealsError}
                                             helperText={meals_error ? "You must select at least one meal" : ""}
-                                        >Breakfast</ToggleButton>
-                                        <ToggleButton
+                                        >Breakfast</Button>
+                                        <Button
                                             id="lunch"
                                             label="Lunch"
                                             value="lunch"
                                             onClick={handleMealsChange}
                                             error={setMealsError}
                                             helperText={meals_error ? "You must select at least one meal" : ""}
-                                        >Lunch</ToggleButton>
-                                        <ToggleButton
+                                        >Lunch</Button>
+                                        <Button
                                             id="din"
                                             label="Dinner"
                                             value="dinner"
                                             onClick={handleMealsChange}
                                             error={setMealsError}
                                             helperText={meals_error ? "You must select at least one meal" : ""}
-                                        >Dinner</ToggleButton>
-                                    </ToggleButtonGroup>
+                                        >Dinner</Button>
+                                    </ButtonGroup>
                                 </div>
 
                                 <Button variant="contained" fullWidth onClick={handleClick} style={{ padding: "0px,0px,5px,0px", backgroundColor: "#7A562E", marginTop: "10px", marginBottom: "20px" }}>SUBMIT</Button>

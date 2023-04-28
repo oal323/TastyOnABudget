@@ -189,6 +189,14 @@ const SignUp = () => {
                                     <Button variant="contained" fullWidth onClick={handleClick} style={{ padding: "0px,0px,5px,0px", backgroundColor: "#7A562E", marginTop: "10px", marginBottom: "20px" }}>Sign Up</Button>
                                 </Grid>
 
+                                <Grid item xs={12}>
+                                    <Typography align="center"> Have an account already?</Typography>
+
+                                    <Link to="/login" underline="none">
+                                        <Typography align=" center"> Log In</Typography>
+                                    </Link>
+                                </Grid>
+
                             </Grid>
                         </form>
                     </CardContent>
