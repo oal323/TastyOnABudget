@@ -11,6 +11,8 @@ import Recipes from './pages/Recipes';
 import Recipe from './pages/Recipe';
 import NotFound from './pages/NotFound';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfUse from './pages/TermsOfUse';
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
           <Route path='/recipes' element={<Recipes />} />
           <Route path="/recipe/:recipeGUID" element={<Recipe />} exact />
           <Route path='*' element={<NotFound />} />
+          <Route path='/privacypolicy' element={<PrivacyPolicy />} />
+          <Route path='/termsofuse' element={<TermsOfUse />} />
 
         </Routes>
         <Footer />

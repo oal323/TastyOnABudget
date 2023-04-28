@@ -5,6 +5,7 @@ import RestAPI from '../RestAPI';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import BannerImage from "../assets/morefood.png";
 import jwt from 'jwt-decode';
+import { Link } from "react-router-dom";
 
 
 
@@ -174,13 +175,15 @@ const SignUp = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <FormControlLabel
-                                        value="termOfServ"
-                                        control={<Checkbox />}
-                                        required
-                                        label="Accept the Terms of Service"
-                                        labelPlacement="end"
-                                    />
+                                    <Link to='/termsofuse'>
+                                        <FormControlLabel
+                                            value="termOfServ"
+                                            control={<Checkbox />}
+                                            required
+                                            label="Accept the Terms of Service"
+                                            labelPlacement="end"
+                                        />
+                                    </Link>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Button variant="contained" fullWidth onClick={handleClick} style={{ padding: "0px,0px,5px,0px", backgroundColor: "#7A562E", marginTop: "10px", marginBottom: "20px" }}>Sign Up</Button>

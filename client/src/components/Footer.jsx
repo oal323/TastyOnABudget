@@ -5,6 +5,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import ShareIcon from '@mui/icons-material/Share';
 import "../styles/Footer.css";
+import { Link } from "react-router-dom";
 
 
 function Footer() {
@@ -17,8 +18,16 @@ function Footer() {
                 </a>
                 <ShareIcon />
             </div>
-            <p> &copy; 2023 buypotatobakepotato.com  </p>
+            <div>
+                <Link to="/privacypolicy">
+                    <p>Privacy Policy</p>
+                </Link>
 
+                <Link to="/termsofuse">
+                    <p>Terms of Use</p>
+                </Link>
+            </div>
+            <p> &copy; 2023 buypotatobakepotato.com  </p>
         </div>
     )
 }
