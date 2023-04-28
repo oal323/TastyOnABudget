@@ -88,7 +88,7 @@ function About() {
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Typography>
-                                    Buy Potato Bake Potato is a web app and free meal planning tool that helps you to plan your meals and build shopping lists. It's available for free on the web (desktop and mobile). Ideal for busy people and families to plan their weekly meals and eat healthier.
+                                    Buy Potato Bake Potato is a web app and free meal planning tool that helps you to plan your meals and build shopping lists. It's available for free on the web. Ideal for busy people and families to plan their weekly meals and eat healthier.
                                 </Typography>
                             </AccordionDetails>
                         </Accordion>
