@@ -91,6 +91,28 @@ class restAPI {
         })
     }
 
+    putLikedRecipie(userId, recipieId){
+        const endpoint = "like_recipie";
+        let restEndPoint = server_url + endpoint;
+        const json = JSON.stringify({userId:userId, recipieId:recipieId});
+        return axios.put(restEndPoint,json,{
+            headers:{
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+
+    putDislikedRecipie(userId, recipieId){
+        const endpoint = "dislike_recipie";
+        let restEndPoint = server_url + endpoint;
+        const json = JSON.stringify({userId:userId, recipieId:recipieId});
+        return axios.put(restEndPoint,json,{
+            headers:{
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+
 }
 
 export default new restAPI();
