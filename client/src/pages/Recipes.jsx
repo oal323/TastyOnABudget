@@ -2,7 +2,7 @@ import React from 'react'
 import TextField from '@mui/material/TextField';
 import { Button, IconButton, Card, Grid, Typography, CardMedia, Autocomplete, CardActions, CardHeader, CardContent, CardActionArea, Select, MenuItem } from '@mui/material';
 import RestAPI from '../RestAPI';
-import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 import jwt from 'jwt-decode';
 
 import "../styles/Recipes.css";
@@ -36,22 +36,24 @@ const Recipes = () => {
                     setRecipes(prev => [
                         ...prev,
                         {
+                            id: resData.id,
                             label: unicodeToChar(resData.title).replace(/['"]+/g, ''),
-                            thumbnail: resData.thumbnail.replace(/['"]+/g, ''),
+                            thumbnail: resData.thumbnail.replace(/['"]+/g, '')
                         }
                     ]
                     )
 
                 })
             })
-        } else {
+        } else if (!tagOrTitle) {
             RestAPI.getRecipesSearchTags(filterText).then((res) => {
                 res.data.map((resData) => {
                     setRecipes(prev => [
                         ...prev,
                         {
+                            id: resData.id,
                             label: unicodeToChar(resData.title).replace(/['"]+/g, ''),
-                            thumbnail: resData.thumbnail.replace(/['"]+/g, ''),
+                            thumbnail: resData.thumbnail.replace(/['"]+/g, '')
                         }
                     ]
                     )
@@ -106,6 +108,7 @@ const Recipes = () => {
                                     <Grid container spacing={2} direction="row" >
                                         {recipes.map((recipe) => (
                                             <Grid item xs={6} sm={6} ms={4}>
+                                                <Link to={`/recipe/${recipe.id}`}>
                                                 <Card sx={{ maxWidth: 550, maxHeight: 600 }} style={{ width: '100%', margin: '10px' }}>
                                                     <CardActionArea >
                                                         <CardHeader
@@ -128,6 +131,7 @@ const Recipes = () => {
                                                         </CardContent>
                                                     </CardActionArea>
                                                 </Card>
+                                                </Link>
                                             </Grid>
                                         ))}
                                     </Grid>
