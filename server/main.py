@@ -254,8 +254,8 @@ async def read_own_items(current_user: User = Depends(get_current_active_user)):
 async def getRecipes():
     return(session.query(Recipe).all())
 
-@app.get("/recipes/reccomended")
-async def getRecipesforUser(userdata: UserSurveyData):
+@app.get("/recipes/reccomended/{userdata}")
+async def getRecipesforUser(userdata):
     calories = userdata.calorie_goal / 3
     caloriesupper = calories + 100
     calorieslower = calories - 100

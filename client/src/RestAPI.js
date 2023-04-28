@@ -80,6 +80,16 @@ class restAPI {
         })
     }
 
+    getCustomRecipies(userdata){
+        const endpoint = "recipes/reccomended/" + userdata;
+        let restEndPoint = server_url + endpoint;
+        return axios.get(restEndPoint,{
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        })
+    }
+
     putUserData(surveyData){
         const endpoint = "userSurveyData";
         let restEndPoint = server_url + endpoint;
