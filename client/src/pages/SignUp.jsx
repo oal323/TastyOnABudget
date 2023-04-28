@@ -175,15 +175,15 @@ const SignUp = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Link to='/termsofuse'>
-                                        <FormControlLabel
-                                            value="termOfServ"
-                                            control={<Checkbox />}
-                                            required
-                                            label="Accept the Terms of Service"
-                                            labelPlacement="end"
-                                        />
-                                    </Link>
+
+                                    <FormControlLabel
+                                        value="termOfServ"
+                                        control={<Checkbox />}
+                                        required
+                                        label="Accept the Terms of Service"
+                                        labelPlacement="end"
+                                    />
+
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Button variant="contained" fullWidth onClick={handleClick} style={{ padding: "0px,0px,5px,0px", backgroundColor: "#7A562E", marginTop: "10px", marginBottom: "20px" }}>Sign Up</Button>
