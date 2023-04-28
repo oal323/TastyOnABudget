@@ -60,8 +60,22 @@ function Home() {
                     </div>
 
                 </div>
-                <div>
 
+                <div>
+                    <Grid style={{ marginBottom: "20px", padding: "30px", backgroundColor: '#7A562E' }}>
+                        <Typography gutterBottom variant="h5" align="center" sx={{ fontWeight: 'bold', color: 'white' }} >
+                            "Meal planning is a simple, yet powerful tool that can help you take control of your health and wellbeing." -Unknown
+                        </Typography>
+
+                    </Grid>
+                </div>
+                <div>
+                    <Grid style={{ marginBottom: "20px", padding: "30px" }}>
+                        <Typography gutterBottom variant="h3" align="left" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
+                            This Weeks Meals
+                        </Typography>
+
+                    </Grid>
                 </div>
             </div>
         )
