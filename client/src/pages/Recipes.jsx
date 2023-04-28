@@ -30,7 +30,7 @@ const Recipes = () => {
 
     const handleSearch = () => {
         setRecipes([])
-        if(tagOrTitle){
+        if (tagOrTitle) {
             RestAPI.getRecipesSearchTitle(filterText).then((res) => {
                 res.data.map((resData) => {
                     setRecipes(prev => [
@@ -41,7 +41,7 @@ const Recipes = () => {
                         }
                     ]
                     )
-    
+
                 })
             })
         } else {
@@ -55,18 +55,18 @@ const Recipes = () => {
                         }
                     ]
                     )
-    
+
                 })
             })
-        } 
-        
-        if (recipes.length===0){
+        }
+
+        if (recipes.length === 0) {
             setTextFieldError(true)
             alert("ERROR ENTER A CORRECT SEARCH TERM AND OR SELECT A TAG")
         } else {
             setTextFieldError(false)
         }
-       
+
     }
 
 
@@ -74,7 +74,7 @@ const Recipes = () => {
         <div >
             <Grid style={{ marginTop: "20px", marginBottom: "750px" }}>
                 <h1> What are you craving today?</h1>
-                <div style={{ paddingTop: '5px', paddingLeft: '90px', justifySelf: "center", flexDirection:"row"}}>
+                <div style={{ paddingTop: '5px', paddingLeft: '90px', justifySelf: "center", flexDirection: "row" }}>
                     <TextField
                         style={{ width: "60%" }}
                         onChange={(e) => {
@@ -83,7 +83,7 @@ const Recipes = () => {
                         error={textFieldError}
                     />
                     <Select
-                        style={{ width: "10%", margin:"5px 5px 5px 5px" }}
+                        style={{ width: "10%", margin: "5px 5px 5px 5px" }}
                         onChange={(e) => {
                             setTagOrTitle(e.target.value);
                             console.log(tagOrTitle)
