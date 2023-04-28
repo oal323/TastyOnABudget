@@ -1,6 +1,6 @@
 import React from 'react'
 import TextField from '@mui/material/TextField';
-import { Button, IconButton, Card, Grid, Typography, CardMedia, Autocomplete, CardActions, CardHeader, CardContent, CardActionArea } from '@mui/material';
+import { Button, IconButton, Card, Grid, Typography, CardMedia, Autocomplete, CardActions, CardHeader, CardContent, CardActionArea, Select, MenuItem } from '@mui/material';
 import RestAPI from '../RestAPI';
 import { useNavigate } from 'react-router';
 import jwt from 'jwt-decode';
@@ -18,6 +18,8 @@ const Recipes = () => {
     const [loading, setLoading] = React.useState(false);
     const [recipes, setRecipes] = React.useState([]);
     const [filterText, setFilterText] = React.useState("");
+    const [tagOrTitle, setTagOrTitle] = React.useState(true);
+    const [textFieldError, setTextFieldError] = React.useState(false)
 
     function unicodeToChar(text) {
         return text.replace(/\\u[\dA-F]{4}/gi,
@@ -28,19 +30,43 @@ const Recipes = () => {
 
     const handleSearch = () => {
         setRecipes([])
-        RestAPI.getRecipesSearch(filterText).then((res) => {
-            res.data.map((resData) => {
-                setRecipes(prev => [
-                    ...prev,
-                    {
-                        label: unicodeToChar(resData.title).replace(/['"]+/g, ''),
-                        thumbnail: resData.thumbnail.replace(/['"]+/g, ''),
-                    }
-                ]
-                )
-
+        if(tagOrTitle){
+            RestAPI.getRecipesSearchTitle(filterText).then((res) => {
+                res.data.map((resData) => {
+                    setRecipes(prev => [
+                        ...prev,
+                        {
+                            label: unicodeToChar(resData.title).replace(/['"]+/g, ''),
+                            thumbnail: resData.thumbnail.replace(/['"]+/g, ''),
+                        }
+                    ]
+                    )
+    
+                })
             })
-        })
+        } else {
+            RestAPI.getRecipesSearchTags(filterText).then((res) => {
+                res.data.map((resData) => {
+                    setRecipes(prev => [
+                        ...prev,
+                        {
+                            label: unicodeToChar(resData.title).replace(/['"]+/g, ''),
+                            thumbnail: resData.thumbnail.replace(/['"]+/g, ''),
+                        }
+                    ]
+                    )
+    
+                })
+            })
+        } 
+        
+        if (recipes.length===0){
+            setTextFieldError(true)
+            alert("ERROR ENTER A CORRECT SEARCH TERM AND OR SELECT A TAG")
+        } else {
+            setTextFieldError(false)
+        }
+       
     }
 
 
@@ -48,13 +74,24 @@ const Recipes = () => {
         <div >
             <Grid style={{ marginTop: "20px", marginBottom: "750px" }}>
                 <h1> What are you craving today?</h1>
-                <div style={{ paddingTop: '5px', paddingLeft: '90px', justifySelf: "center" }}>
+                <div style={{ paddingTop: '5px', paddingLeft: '90px', justifySelf: "center", flexDirection:"row"}}>
                     <TextField
-                        style={{ width: "80%" }}
+                        style={{ width: "60%" }}
                         onChange={(e) => {
                             setFilterText(e.target.value);
                         }}
+                        error={textFieldError}
                     />
+                    <Select
+                        style={{ width: "10%", margin:"5px 5px 5px 5px" }}
+                        onChange={(e) => {
+                            setTagOrTitle(e.target.value);
+                            console.log(tagOrTitle)
+                        }}
+                    >
+                        <MenuItem value={true}>Title</MenuItem>
+                        <MenuItem value={false}>Tag</MenuItem>
+                    </Select>
                     <button className="searchButton" style={{ marginLeft: '15px', marginTop: '2px' }}
                         onClick={() => handleSearch()}
                     >
