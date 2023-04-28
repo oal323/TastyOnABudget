@@ -161,9 +161,9 @@ def create_access_token(user: UserLoginData, expires_delta: timedelta | None = N
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-def get_user_data(username: str):
-	User = (session.query(User).filter(User.username == username).first())
-	usersurveydata = (session.query(UserSurveyData).filter(User.id == UserSurveyDataSQL.id).first())
+def get_user_data():
+	User = get_current_user()
+	usersurveydata = (session.query(UserSurveyData).filter(User.id == UserSurveyDataSQL.users_id).first())
 	return(usersurveydata)
 
 def get_user_recipes(userdata: UserSurveyData):
@@ -171,25 +171,10 @@ def get_user_recipes(userdata: UserSurveyData):
     caloriesupper = calories + 100
     calorieslower = calories - 100
     recipes = []
-
-    if 'dinner' in userdata.num_meals:
-        query = text("SELECT Limit (:userdata.num_days) * FROM recipes WHERE tags LIKE '%dinner%' AND calories BETWEEN :calorieslower AND :caloriesupper AND id NOT IN (SELECT recipieId FROM dislikedRecipies WHERE userId = :user_id)ORDER BY NEWID()")
-        result = session.execute(query, {'user_id': userdata.user_id, 'calorieslower': calorieslower, 'caloriesupper': caloriesupper, 'num_days': userdata.num_days})
-        rows = result.mappings().all()
-        recipes = [dict(row) for row in rows]
-
-    if 'lunch' in userdata.num_meals:
-        query = text("SELECT Limit (:userdata.num_days) * FROM recipes WHERE tags LIKE '%lunch%' AND calories BETWEEN :calorieslower AND :caloriesupper AND id NOT IN (SELECT recipieId FROM dislikedRecipies WHERE userId = :user_id)ORDER BY NEWID()")
-        result = session.execute(query, {'user_id': userdata.user_id, 'calorieslower': calorieslower, 'caloriesupper': caloriesupper, 'num_days': userdata.num_days})
-        rows = result.mappings().all()
-        recipes += [dict(row) for row in rows]
-
-    if 'breakfast' in userdata.num_meals:
-        query = text("SELECT Limit (:userdata.num_days) * FROM recipes WHERE tags LIKE '%breakfast%' AND calories BETWEEN :calorieslower AND :caloriesupper AND id NOT IN (SELECT recipieId FROM dislikedRecipies WHERE userId = :user_id)ORDER BY NEWID()")
-        result = session.execute(query, {'user_id': userdata.user_id, 'calorieslower': calorieslower, 'caloriesupper': caloriesupper, 'num_days': userdata.num_days})
-        rows = result.mappings().all()
-        recipes += [dict(row) for row in rows]
-
+    query = text("SELECT Limit (:userdata.num_days) * FROM recipes WHERE calories BETWEEN :calorieslower AND :caloriesupper AND id NOT IN (SELECT recipieId FROM dislikedRecipies WHERE userId = :user_id)ORDER BY NEWID()")
+    result = session.execute(query, {'user_id': userdata.user_id, 'calorieslower': calorieslower, 'caloriesupper': caloriesupper, 'num_days': userdata.num_days})
+    rows = result.mappings().all()
+    recipes = [dict(row) for row in rows]
     return(recipes)
 
 
@@ -268,6 +253,18 @@ async def read_own_items(current_user: User = Depends(get_current_active_user)):
 @app.get("/recipes")
 async def getRecipes():
     return(session.query(Recipe).all())
+
+@app.get("/recipes/reccomended")
+async def getRecipesIfExist(userdata: UserSurveyData):
+    calories = userdata.calorie_goal / 3
+    caloriesupper = calories + 100
+    calorieslower = calories - 100
+    ret = []
+    query = text("SELECT Limit (:userdata.num_days) * FROM recipes WHERE calories BETWEEN :calorieslower AND :caloriesupper AND id NOT IN (SELECT recipieId FROM dislikedRecipies WHERE userId = :user_id)ORDER BY NEWID()")
+    result = session.execute(query, {'user_id': userdata.user_id, 'calorieslower': calorieslower, 'caloriesupper': caloriesupper, 'num_days': userdata.num_days})
+    rows = result.mappings().all()
+    ret = [dict(row) for row in rows]
+    return (ret)
 
 
 @app.get("/recipes/{id}")
