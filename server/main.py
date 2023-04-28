@@ -214,6 +214,8 @@ async def addUser(user: UserLoginData):
     newUser = User(username = user.username, password = user.password, email = user.email, firstName = user.firstName)
     if (len(session.query(User).filter(User.username == user.username).all())!=0):
         raise HTTPException(status_code=400, detail="double user")
+    if (len(session.query(User).filter(User.email == user.email).all())!=0):
+        raise HTTPException(status_code=400, detail="double email")
     session.add(newUser)
     session.commit()
     raise HTTPException(status_code=200, detail="Succ")
