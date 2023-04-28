@@ -35,7 +35,7 @@ const SignUp = () => {
                         console.log(user)
                         window.location.assign("/home");
                     })
-                }).catch(err => {
+                }).catch(err => { 
                     if (err["response"]["status"] === 400) {
                         setUserNameError(true)
                         alert("Username Taken")
