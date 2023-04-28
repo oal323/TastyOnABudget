@@ -30,7 +30,7 @@ const Recipes = () => {
 
     const handleSearch = () => {
         setRecipes([])
-        if(tagOrTitle){
+        if (tagOrTitle) {
             RestAPI.getRecipesSearchTitle(filterText).then((res) => {
                 res.data.map((resData) => {
                     setRecipes(prev => [
@@ -42,7 +42,7 @@ const Recipes = () => {
                         }
                     ]
                     )
-    
+
                 })
             })
         } else if (!tagOrTitle) {
@@ -57,18 +57,18 @@ const Recipes = () => {
                         }
                     ]
                     )
-    
+
                 })
             })
-        } 
-        
-        if (recipes.length===0){
+        }
+
+        if (recipes.length === 0) {
             setTextFieldError(true)
             alert("ERROR ENTER A CORRECT SEARCH TERM AND OR SELECT A TAG")
         } else {
             setTextFieldError(false)
         }
-       
+
     }
 
 
@@ -76,7 +76,7 @@ const Recipes = () => {
         <div >
             <Grid style={{ marginTop: "20px", marginBottom: "750px" }}>
                 <h1> What are you craving today?</h1>
-                <div style={{ paddingTop: '5px', paddingLeft: '90px', justifySelf: "center", flexDirection:"row"}}>
+                <div style={{ paddingTop: '5px', paddingLeft: '90px', justifySelf: "center", flexDirection: "row" }}>
                     <TextField
                         style={{ width: "60%" }}
                         onChange={(e) => {
@@ -85,7 +85,7 @@ const Recipes = () => {
                         error={textFieldError}
                     />
                     <Select
-                        style={{ width: "10%", margin:"5px 5px 5px 5px" }}
+                        style={{ width: "10%", margin: "5px 5px 5px 5px" }}
                         onChange={(e) => {
                             setTagOrTitle(e.target.value);
                             console.log(tagOrTitle)
@@ -108,18 +108,21 @@ const Recipes = () => {
                                     <Grid container spacing={2} direction="row" >
                                         {recipes.map((recipe) => (
                                             <Grid item xs={6} sm={6} ms={4}>
-                                                <Link to={`/recipe/${recipe.id}`}>
+                                                
                                                 <Card sx={{ maxWidth: 550, maxHeight: 600 }} style={{ width: '100%', margin: '10px' }}>
                                                     <CardActionArea >
+                                                    <Link to={`/recipe/${recipe.id}`}>
                                                         <CardHeader
                                                             title={recipe.label}
                                                         />
+                                                        </Link>
                                                         <CardContent alignItems='center' >
                                                             <CardMedia
                                                                 square='false'
                                                                 component="img"
                                                                 height="200"
                                                                 image={recipe.thumbnail} />
+                                                                
                                                             <CardActions>
                                                                 <IconButton >
                                                                     <Like />
@@ -131,7 +134,7 @@ const Recipes = () => {
                                                         </CardContent>
                                                     </CardActionArea>
                                                 </Card>
-                                                </Link>
+                                                
                                             </Grid>
                                         ))}
                                     </Grid>
