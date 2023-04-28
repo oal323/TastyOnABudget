@@ -5,6 +5,7 @@ import RestAPI from '../RestAPI';
 import BannerImage from "../assets/morefood.png";
 import { useNavigate } from 'react-router';
 import jwt from 'jwt-decode'
+import { Link } from 'react-router-dom';
 
 const Login = () => {
 
@@ -87,6 +88,13 @@ const Login = () => {
                                 <Grid item xs={12}>
                                     <Button variant="contained" fullWidth onClick={handleClick} style={{ padding: "0px,0px,5px,0px", backgroundColor: "#7A562E", marginTop: "10px", marginBottom: "20px" }}>Login</Button>
                                 </Grid>
+                                <Grid item xs={12}>
+                                    <Typography align="center"> Dont't have an account?</Typography>
+
+                                    <Link to="/signup" underline="none">
+                                        <Typography align=" center"> Sign Up</Typography>
+                                    </Link>
+                                </Grid>
 
                             </Grid>
                         </form>
@@ -94,7 +102,7 @@ const Login = () => {
 
                 </Card>
             </Grid>
-        </div>
+        </div >
     )
 }
 

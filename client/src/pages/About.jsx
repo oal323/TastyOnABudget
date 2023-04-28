@@ -8,7 +8,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Card, Box, Grid, Typography, CardContent, ToggleButtonGroup, ToggleButton, FormHelperText } from '@mui/material';
 
 
-
 function About() {
     return (
         <div className="about">
@@ -66,18 +65,16 @@ function About() {
 
                 </p>
 
+
+
                 <Grid style={{ marginTop: "20px", marginBottom: "20px" }}>
                     <Typography gutterBottom variant="h5" align="center" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
                         Frequently Asked Questions
 
                     </Typography>
-                    <Box
-
-                        sx={{ padding: '20px', display: 'flex', flexWrap: 'wrap', }}
-
-                    >
 
 
+                    <Grid style={{ marginTop: "20px", marginBottom: "20px", padding: "30px" }}>
                         <Accordion>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
@@ -88,7 +85,7 @@ function About() {
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Typography>
-                                    Buy Potato Bake Potato is a web app and free meal planning tool that helps you to plan your meals and build shopping lists. It's available for free on the web. Ideal for busy people and families to plan their weekly meals and eat healthier.
+                                    Buy Potato Bake Potato is a web app and free meal planning tool that helps you to plan your meals and build shopping lists. It's available for free on the web (desktop and mobile). Ideal for busy people and families to plan their weekly meals and eat healthier.
                                 </Typography>
                             </AccordionDetails>
                         </Accordion>
@@ -133,11 +130,55 @@ function About() {
                                 </Typography>
                             </AccordionDetails>
                         </Accordion>
+                        <Accordion>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1a-content"
+                                id="panel1a-header"
+                            >
+                                <Typography>Why is meal planning important?</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography>
+                                    Planning your weekly menu in advance allows you to know what your meals will look like and what you need to buy at the grocery store - cutting down unplanned trips and impulse purchases. Meal planning gives you a good overview of what to include in your weekly meals if you follow a specific diet. Having a menu plan will also help you reduce food waste, which will save you money on the long run!</Typography>
+                            </AccordionDetails>
+                        </Accordion>
 
+                    </Grid>
 
-                    </Box>
                 </Grid>
+                <Grid style={{ marginTop: "20px", marginBottom: "20px" }}>
+                    <Typography gutterBottom variant="h3" align="center" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
+                        Background
+                    </Typography>
 
+                    <Typography gutterBottom>
+                        Once upon a time, there was a group of five college students who were passionate about healthy eating and living a balanced lifestyle. They often found it difficult to plan meals that were both nutritious and delicious, and they noticed that many of their peers were struggling with the same issue.
+                    </Typography>
+                    <Typography gutterBottom>
+                        One day, while sitting in the campus cafeteria, they had a brilliant idea - why not create a meal planning website that would make it easy for anyone to plan healthy meals based on their dietary preferences and restrictions? They immediately got to work, dividing up the tasks based on their individual strengths and skills.
+                    </Typography>
+                    <Typography gutterBottom>
+                        The first step was to conduct extensive research on nutrition and healthy eating habits. They consulted with nutritionists and dieticians, and scoured the latest scientific studies and articles on the topic. Armed with this knowledge, they began to develop a database of recipes that met certain nutritional criteria, such as low-fat, high-protein, and vegan.
+                    </Typography>
+                    <Typography gutterBottom>
+                        Next, they worked on the website's design and user interface. They wanted to create a platform that was easy to navigate and visually appealing, with clear and concise instructions for meal planning. They also incorporated features that allowed users to create grocery lists based on their meal plans and track their progress towards their health goals.
+                    </Typography>
+                    <Typography gutterBottom>
+                        As they worked on the website, the students faced many challenges and setbacks. They struggled with coding and programming issues, and encountered difficulties in securing funding to support their project. But they persisted, working tirelessly day and night to make their vision a reality.
+                    </Typography>
+                    <Typography gutterBottom>
+                        Finally, after months of hard work and dedication, they launched their meal planning website to the public. They promoted it on social media and reached out to health and wellness bloggers to help spread the word. To their delight, the response was overwhelmingly positive. Users praised the website's intuitive design and helpful features, and many reported significant improvements in their health and wellbeing thanks to the healthy meal plans.
+                    </Typography>
+                    <Typography gutterBottom>
+                        As the website continued to grow in popularity, the students expanded their offerings to include additional features such as customized workout plans and access to personalized coaching from certified nutritionists. Their website became a one-stop shop for all things health and wellness, and they continued to innovate and improve their platform to better serve their users.
+                    </Typography>
+                    <Typography gutterBottom>
+                        In the end, the group of college students succeeded in creating a thriving business that helped thousands of people live healthier, happier lives. Their meal planning website became a beloved and trusted resource for anyone looking to improve their nutrition and make positive changes in their lifestyle.
+                    </Typography>
+
+
+                </Grid>
 
             </div>
 

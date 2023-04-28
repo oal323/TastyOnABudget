@@ -141,20 +141,22 @@ function Home() {
                                     <Grid item xs={6} sm={6} ms={4}>
                                         <Card sx={{ maxWidth: 345 }}>
                                             <CardActionArea>
-                                                <CardMedia
-                                                    component="img"
-                                                    height="140"
-                                                    image={PadThai}
-                                                    alt="padthai"
-                                                />
-                                                <CardContent>
-                                                    <Typography gutterBottom variant="h5" component="div">
-                                                        Pad Thai
-                                                    </Typography>
-                                                    <Typography variant="body2" color="text.secondary">
-                                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Viverra orci sagittis eu volutpat odio. Ipsum nunc aliquet bibendum enim.
-                                                    </Typography>
-                                                </CardContent>
+                                                <Link to='/signup'>
+                                                    <CardMedia
+                                                        component="img"
+                                                        height="140"
+                                                        image={PadThai}
+                                                        alt="padthai"
+                                                    />
+                                                    <CardContent>
+                                                        <Typography gutterBottom variant="h5" component="div">
+                                                            Pad Thai
+                                                        </Typography>
+                                                        <Typography variant="body2" color="text.secondary">
+                                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Viverra orci sagittis eu volutpat odio. Ipsum nunc aliquet bibendum enim.
+                                                        </Typography>
+                                                    </CardContent>
+                                                </Link>
                                             </CardActionArea>
                                         </Card>
                                         <Card sx={{ maxWidth: 345 }}>
