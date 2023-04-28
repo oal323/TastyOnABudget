@@ -2,7 +2,7 @@ import React from 'react'
 import TextField from '@mui/material/TextField';
 import { Button, ButtonGroup, Checkbox } from '@mui/material';
 import RestAPI from '../RestAPI';
-import { Card, Box, Grid, Select, MenuItem, Typography, CardContent, ToggleButtonGroup, ToggleButton, FormHelperText } from '@mui/material';
+import { Card, Box, Grid, Select, MenuItem, Typography, CardContent, ToggleButtonGroup, InputLabel, FormHelperText } from '@mui/material';
 import BannerImage from "../assets/morefood.png";
 import { useNavigate } from 'react-router';
 import jwt from 'jwt-decode'
@@ -26,6 +26,15 @@ const UserSurvey = () => {
     const [breakfast, setBreakfast] = React.useState("");
     const [lunch, setLunch] = React.useState("");
     const [dinner, setDinner] = React.useState("");
+    const [user, setUser] = React.useState();
+
+    React.useEffect(() => {
+        if (sessionStorage.getItem("user") !== null) {
+            setUser(JSON.parse(sessionStorage.getItem("user")));
+            console.log(user)
+        }
+    }, [])
+
     const [surveyData, setSurveyData] = React.useState({
         calorie_goal: "",
         gender: "",
@@ -63,7 +72,7 @@ const UserSurvey = () => {
 
         if (calorie_goal !== "" || gender !== "" || height !== "" || weight !== "" || age !== "" || cooking_exp !== "" || num_days !== "" || num_meals !== "" || activity_level !== "") {
             setSurveyData({
-                userID: "1",
+                userID: user.id,
                 calorie_goal: calorie_goal,
                 gender: gender,
                 height: height,
@@ -79,6 +88,8 @@ const UserSurvey = () => {
             })
             console.log(surveyData)
             RestAPI.putUserData(surveyData).then((res) => {
+                const navigate = useNavigate;
+                navigate("/home");
             })
 
         }
@@ -177,26 +188,16 @@ const UserSurvey = () => {
                                         helperText={calorie_error ? "Enter your Daily Calorie Goal" : ""}
                                         onBlur={() => (calorie_goal === "" || calorie_goal === null ? setCalorieError(true) : setCalorieError(false))}
                                     />
-                                    <FormHelperText>What is your gender?</FormHelperText>
-                                    <ButtonGroup size="lg" id="gender" fullWidth>
-                                        <Button
-                                            id="male"
-                                            label="Male"
-                                            value="male"
-                                            onClick={handleGenderChange}
-                                            error={setGenderError}
-                                            helperText={gender_error ? "You must select a gender" : ""}
-
-                                        >Male</Button>
-                                        <Button
-                                            id="female"
-                                            label="FEMALE"
-                                            value="female"
-                                            onClick={handleGenderChange}
-                                            error={setGenderError}
-                                            helperText={gender_error ? "You must select a gender" : ""}
-                                        >Female</Button>
-                                    </ButtonGroup>
+                                    <InputLabel>Select Gender</InputLabel>
+                                    <Select
+                                        style={{ width:"25%", margin:"5px 5px 5px 5px" }}
+                                        onChange={(e) => {
+                                            setGender(e.target.value);
+                                        }}
+                                    >
+                                        <MenuItem value={"male"}>Male</MenuItem>
+                                        <MenuItem value={"female"}>Female</MenuItem>
+                                </Select>
                                     <div>
                                         <TextField fullWidth
                                             id="weight"
@@ -233,36 +234,18 @@ const UserSurvey = () => {
                                         />
 
                                     </div>
-                                    <FormHelperText>What is your experience level?</FormHelperText>
-                                    <ButtonGroup size="lg" id="exp" fullWidth
-
+                                    <InputLabel>Select Cooking Expierence</InputLabel>
+                                    <Select
+                                        style={{ width:"25%", margin:"5px 5px 5px 5px" }}
+                                        onChange={(e) => {
+                                            
+                                            setCookingExp(e.target.value);
+                                        }}
                                     >
-                                        <Button
-                                            id="NEW"
-                                            label="Novice"
-                                            value="new"
-                                            onClick={handleExpChange}
-                                            error={setCookingError}
-                                            helperText={cooking_exp_error ? "You must select a experience level" : ""}
-                                        >Novice</Button>
-                                        <Button
-                                            id="imm"
-                                            label="Intermediate"
-                                            value="imm"
-                                            onClick={handleExpChange}
-                                            error={setCookingError}
-                                            helperText={cooking_exp_error ? "You must select a experience level" : ""}
-                                        >Intermediate</Button>
-                                        <Button
-                                            id="adv"
-                                            label="Advanced"
-                                            value="adv"
-                                            onClick={handleExpChange}
-                                            error={setCookingError}
-                                            helperText={cooking_exp_error ? "You must select a experience level" : ""}
-                                        >Advanced</Button>
-                                    </ButtonGroup>
-
+                                        <MenuItem value={"new"}>Novice</MenuItem>
+                                        <MenuItem value={"imm"}>Intermediate</MenuItem>
+                                        <MenuItem value={"adv"}>Advanced</MenuItem>
+                                </Select>
                                     <TextField fullWidth
                                         id="days"
                                         label="Enter the amount of days you plan on cooking"
@@ -274,60 +257,19 @@ const UserSurvey = () => {
                                         helperText={days_error ? "Enter days from 1-7" : ""}
                                         onBlur={() => (num_days === "" || num_days === null || (num_days > 7 && num_days < 0) ? setDaysError(true) : setDaysError(false))}
                                     />
-                                    <FormHelperText>How active are you?</FormHelperText>
-                                    <ButtonGroup size="lg" id="activity" fullWidth>
-                                        <Button
-                                            id="none"
-                                            label="None"
-                                            value="none"
-                                            onClick={handleActLvlChange}
-                                            error={setActLvlError}
-                                            helperText={act_lvl_error ? "You must select a Activity Lvl" : ""}
-                                        >None</Button>
-                                        <Button
-                                            id="some"
-                                            label="Some (1-3 days)"
-                                            value="some"
-                                            onClick={handleActLvlChange}
-                                            error={setActLvlError}
-                                            helperText={act_lvl_error ? "You must select a Activity Lvl" : ""}
-                                        >Some (1-3 days)</Button>
-                                        <Button
-                                            id="alot"
-                                            label="Active(3+days)"
-                                            value="act"
-                                            onClick={handleActLvlChange}
-                                            error={setActLvlError}
-                                            helperText={act_lvl_error ? "You must select a Activity Lvl" : ""}
-                                        >Active(3+days)</Button>
-                                    </ButtonGroup>
-                                    <FormHelperText>What type of meals do you prefer?</FormHelperText>
-                                    <ButtonGroup fullWidth>
-                                        <Button
-                                            id="break"
-                                            label="Breakfast"
-                                            value="breakfast"
-                                            onClick={handleMealsChange}
-                                            error={setMealsError}
-                                            helperText={meals_error ? "You must select at least one meal" : ""}
-                                        >Breakfast</Button>
-                                        <Button
-                                            id="lunch"
-                                            label="Lunch"
-                                            value="lunch"
-                                            onClick={handleMealsChange}
-                                            error={setMealsError}
-                                            helperText={meals_error ? "You must select at least one meal" : ""}
-                                        >Lunch</Button>
-                                        <Button
-                                            id="din"
-                                            label="Dinner"
-                                            value="dinner"
-                                            onClick={handleMealsChange}
-                                            error={setMealsError}
-                                            helperText={meals_error ? "You must select at least one meal" : ""}
-                                        >Dinner</Button>
-                                    </ButtonGroup>
+
+                                    <InputLabel>How active are you?</InputLabel>
+                                    <Select
+                                        style={{ width:"25%", margin:"5px 5px 5px 5px" }}
+                                        onChange={(e) => {
+                                            setActLvl(e.target.value);
+                                        }}
+                                    >
+                                        <MenuItem value={"none"}>Novice</MenuItem>
+                                        <MenuItem value={"some"}>Intermediate</MenuItem>
+                                        <MenuItem value={"act"}>Advanced</MenuItem>
+                                    </Select>
+                    
                                 </div>
 
                                 <Button variant="contained" fullWidth onClick={handleClick} style={{ padding: "0px,0px,5px,0px", backgroundColor: "#7A562E", marginTop: "10px", marginBottom: "20px" }}>SUBMIT</Button>
