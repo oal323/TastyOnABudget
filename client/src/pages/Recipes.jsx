@@ -108,18 +108,21 @@ const Recipes = () => {
                                     <Grid container spacing={2} direction="row" >
                                         {recipes.map((recipe) => (
                                             <Grid item xs={6} sm={6} ms={4}>
-                                                <Link to={`/recipe/${recipe.id}`}>
+                                                
                                                 <Card sx={{ maxWidth: 550, maxHeight: 600 }} style={{ width: '100%', margin: '10px' }}>
                                                     <CardActionArea >
+                                                    <Link to={`/recipe/${recipe.id}`}>
                                                         <CardHeader
                                                             title={recipe.label}
                                                         />
+                                                        </Link>
                                                         <CardContent alignItems='center' >
                                                             <CardMedia
                                                                 square='false'
                                                                 component="img"
                                                                 height="200"
                                                                 image={recipe.thumbnail} />
+                                                                
                                                             <CardActions>
                                                                 <IconButton >
                                                                     <Like />
@@ -131,7 +134,7 @@ const Recipes = () => {
                                                         </CardContent>
                                                     </CardActionArea>
                                                 </Card>
-                                                </Link>
+                                                
                                             </Grid>
                                         ))}
                                     </Grid>
