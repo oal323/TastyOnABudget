@@ -200,15 +200,22 @@ function Home() {
                     </Grid>
 
                 </Grid >
+                <Grid style={{ marginTop: "20px", marginBottom: "20px", padding: "30px" }}>
 
-                <Typography gutterBottom variant="h5" align="center" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
-                    Our website is dedicated to providing you with the tools and resources you need to plan healthy and delicious meals that fit your busy lifestyle.
-                </Typography>
-                <Typography align="center" style={{ padding: "10px" }}>
-                    We understand that meal planning can be a daunting task, which is why we've created a user-friendly platform that makes it easy and enjoyable to plan your meals. Our website offers a wide variety of recipes that are tailored to your specific dietary needs and preferences, including options for gluten-free, vegetarian, and low-carb diets.
 
-                    In addition to our extensive recipe database, our website also provides customizable meal plans that can be tailored to your schedule and lifestyle. We understand that everyone's needs are different, which is why we offer flexible options for daily, weekly, and monthly meal planning.
-                </Typography>
+                    <Typography gutterBottom variant="h5" align="center" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
+                        Our website is dedicated to providing you with the tools and resources you need to plan healthy and delicious meals that fit your busy lifestyle.
+                    </Typography>
+                    <Typography align="center" style={{ padding: "10px" }}>
+                        We understand that meal planning can be a daunting task, which is why we've created a user-friendly platform that makes it easy and enjoyable to plan your meals. Our website offers a wide variety of recipes that are tailored to your specific dietary needs and preferences, including options for gluten-free, vegetarian, and low-carb diets.
+
+                        In addition to our extensive recipe database, our website also provides customizable meal plans that can be tailored to your schedule and lifestyle. We understand that everyone's needs are different, which is why we offer flexible options for daily, weekly, and monthly meal planning.
+                    </Typography>
+                    <Link to="/signup">
+                        <Button align="center" fullWidth variant="contained" size="large" style={{ padding: "0px,0px,5px,0px", backgroundColor: "green", marginTop: "10px", marginBottom: "20px" }}> Sign Up Now</Button>
+                    </Link>
+                </Grid>
+
             </div >
         )
     }
