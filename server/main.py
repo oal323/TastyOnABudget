@@ -77,7 +77,6 @@ class UserSurveyDataSQL(Base):
     age = sqlalchemy.Column(sqlalchemy.String(length=100))
     cooking_exp = sqlalchemy.Column(sqlalchemy.String(length=100))
     num_days = sqlalchemy.Column(sqlalchemy.String(length=100))
-    num_meals = sqlalchemy.Column(sqlalchemy.String(length=100))
     activity_level = sqlalchemy.Column(sqlalchemy.String(length=100))
 
 class UserSurveyData(BaseModel):
@@ -89,7 +88,6 @@ class UserSurveyData(BaseModel):
     age: str
     cooking_exp: str
     num_days: str
-    num_meals: str
     activity_level: str
 Base.metadata.create_all(engine)
 
@@ -203,7 +201,7 @@ def login(login: LoginModel):
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        {"username": user.username,"email": user.email,"fname": user.firstName}, expires_delta=access_token_expires
+        {"id":user.id,"username": user.username,"email": user.email,"fname": user.firstName}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer","login_status": "success"}
 
@@ -284,8 +282,12 @@ async def searchRecipes(searchval):
 
 @app.put("/userSurveyData")
 async def putUserSurveyData(user: UserSurveyData):
-    
-    newUserSurveyData = UserSurveyDataSQL(users_id=user.userID,gender = user.gender,height = user.height,weight=user.weight,age=user.age,cooking_exp=user.cooking_exp,num_days=user.num_days,num_meals=user.num_meals,activity_level=user.activity_level)
+    print(user)
+    newUserSurveyData = UserSurveyDataSQL(users_id=user.userID, gender = user.gender,height = user.height,weight=user.weight,age=user.age,cooking_exp=user.cooking_exp,num_days=user.num_days,activity_level=user.activity_level)
+    if(len(session.query(UserSurveyDataSQL).all())>0):   
+        temp = session.query(UserSurveyDataSQL).filter(UserSurveyDataSQL.users_id == user.userID).one()
+        session.delete(temp)
+        session.commit()
     session.add(newUserSurveyData)
     session.commit()
     
