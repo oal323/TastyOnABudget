@@ -26,12 +26,13 @@ const UserSurvey = () => {
     const [breakfast, setBreakfast] = React.useState("");
     const [lunch, setLunch] = React.useState("");
     const [dinner, setDinner] = React.useState("");
-    const [user, setUser] = React.useState();
+    const [user, setUser] = React.useState({});
 
     React.useEffect(() => {
         if (sessionStorage.getItem("user") !== null) {
-            setUser(JSON.parse(sessionStorage.getItem("user")));
-            console.log(user)
+            const temp = JSON.parse(window.sessionStorage.getItem("user"));
+            setUser(temp);
+            
         }
     }, [])
 
@@ -72,7 +73,7 @@ const UserSurvey = () => {
 
         if (calorie_goal !== "" || gender !== "" || height !== "" || weight !== "" || age !== "" || cooking_exp !== "" || num_days !== "" || num_meals !== "" || activity_level !== "") {
             setSurveyData({
-                userID: user.id,
+                userID: JSON.parse(window.sessionStorage.getItem("user")).id,
                 calorie_goal: calorie_goal,
                 gender: gender,
                 height: height,
@@ -80,11 +81,7 @@ const UserSurvey = () => {
                 age: age,
                 cooking_exp: cooking_exp,
                 num_days: num_days,
-                num_meals: num_meals,
-                activity_level: activity_level,
-                breakfast: breakfast,
-                lunch: lunch,
-                dinner: dinner
+                activity_level: activity_level
             })
             console.log(surveyData)
             RestAPI.putUserData(surveyData).then((res) => {
@@ -265,9 +262,9 @@ const UserSurvey = () => {
                                             setActLvl(e.target.value);
                                         }}
                                     >
-                                        <MenuItem value={"none"}>Novice</MenuItem>
-                                        <MenuItem value={"some"}>Intermediate</MenuItem>
-                                        <MenuItem value={"act"}>Advanced</MenuItem>
+                                        <MenuItem value={"none"}>Not at all</MenuItem>
+                                        <MenuItem value={"some"}>Some</MenuItem>
+                                        <MenuItem value={"act"}>Very Active</MenuItem>
                                     </Select>
                     
                                 </div>
