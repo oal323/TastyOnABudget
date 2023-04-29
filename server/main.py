@@ -286,6 +286,8 @@ async def getRecipes(num):
 
 @app.get("/recipes/searchtitle/{searchval}")
 async def searchRecipes(searchval):
+    if (searchval == ""):
+        raise HTTPException(status_code=400, detail="Empty Search")
     sqlText = text('SELECT * from recipe where title like :searchval')
     res = session.execute(sqlText, {'searchval':'%'+searchval+'%'})
     ret = res.mappings().all()
@@ -293,6 +295,8 @@ async def searchRecipes(searchval):
 
 @app.get("/recipes/searchtags/{searchval}")
 async def searchRecipes(searchval):
+    if (searchval == ""):
+        raise HTTPException(status_code=400, detail="Empty Search")
     sqlText = text('SELECT * from recipe where tags like :searchval')
     res = session.execute(sqlText, {'searchval':'%'+searchval+'%'})
     ret = res.mappings().all()

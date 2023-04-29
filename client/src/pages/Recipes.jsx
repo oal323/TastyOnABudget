@@ -28,7 +28,17 @@ const Recipes = () => {
             });
     }
 
-    const handleSearch = () => {
+    /*async function checkfield(){
+        await handleSearch();
+        if (recipes.length===0){
+            setTextFieldError(true)
+            alert("ERROR ENTER A CORRECT SEARCH TERM AND OR SELECT A TAG")
+        } else {
+            setTextFieldError(false)
+        }
+    }*/
+
+    const handleSearch = async () => {
         setRecipes([])
         if(tagOrTitle){
             RestAPI.getRecipesSearchTitle(filterText).then((res) => {
@@ -44,6 +54,8 @@ const Recipes = () => {
                     )
     
                 })
+            }).catch(err => { 
+                    alert("NO SEARCH VALUE ENTERED")
             })
         } else if (!tagOrTitle) {
             RestAPI.getRecipesSearchTags(filterText).then((res) => {
@@ -59,15 +71,11 @@ const Recipes = () => {
                     )
     
                 })
-            })
-        } 
-        
-        if (recipes.length===0){
-            setTextFieldError(true)
-            alert("ERROR ENTER A CORRECT SEARCH TERM AND OR SELECT A TAG")
-        } else {
-            setTextFieldError(false)
+            }).catch(err => { 
+                alert("NO SEARCH VALUE ENTERED")
+        })
         }
+        
        
     }
 
@@ -91,8 +99,10 @@ const Recipes = () => {
                             console.log(tagOrTitle)
                         }}
                     >
-                        <MenuItem value={true}>Title</MenuItem>
+                        <menu>
+                        <MenuItem value={true} default>Title</MenuItem>
                         <MenuItem value={false}>Tag</MenuItem>
+                        </menu>
                     </Select>
                     <button className="searchButton" style={{ marginLeft: '15px', marginTop: '2px' }}
                         onClick={() => handleSearch()}
