@@ -19,7 +19,6 @@ const Recipes = () => {
     const [recipes, setRecipes] = React.useState([]);
     const [filterText, setFilterText] = React.useState("");
     const [tagOrTitle, setTagOrTitle] = React.useState(true);
-    const [textFieldError, setTextFieldError] = React.useState(false)
 
     function unicodeToChar(text) {
         return text.replace(/\\u[\dA-F]{4}/gi,
@@ -27,16 +26,6 @@ const Recipes = () => {
                 return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
             });
     }
-
-    /*async function checkfield(){
-        await handleSearch();
-        if (recipes.length===0){
-            setTextFieldError(true)
-            alert("ERROR ENTER A CORRECT SEARCH TERM AND OR SELECT A TAG")
-        } else {
-            setTextFieldError(false)
-        }
-    }*/
 
     const handleSearch = async () => {
         setRecipes([])
@@ -99,10 +88,8 @@ const Recipes = () => {
                             console.log(tagOrTitle)
                         }}
                     >
-                        <menu>
                         <MenuItem value={true} default>Title</MenuItem>
                         <MenuItem value={false}>Tag</MenuItem>
-                        </menu>
                     </Select>
                     <button className="searchButton" style={{ marginLeft: '15px', marginTop: '2px' }}
                         onClick={() => handleSearch()}
