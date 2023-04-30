@@ -284,8 +284,9 @@ async def searchRecipes(searchval):
 async def putUserSurveyData(user: UserSurveyData):
     print(user)
     newUserSurveyData = UserSurveyDataSQL(users_id=user.userID, gender = user.gender,height = user.height,weight=user.weight,age=user.age,cooking_exp=user.cooking_exp,num_days=user.num_days,activity_level=user.activity_level)
-    if(len(session.query(UserSurveyDataSQL).all())>0):   
+    if(len(session.query(UserSurveyDataSQL).filter(UserSurveyDataSQL.users_id == user.userID).all())>0):   
         temp = session.query(UserSurveyDataSQL).filter(UserSurveyDataSQL.users_id == user.userID).one()
+        print(temp)
         session.delete(temp)
         session.commit()
     session.add(newUserSurveyData)

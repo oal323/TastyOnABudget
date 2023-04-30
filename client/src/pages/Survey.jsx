@@ -36,20 +36,7 @@ const UserSurvey = () => {
         }
     }, [])
 
-    const [surveyData, setSurveyData] = React.useState({
-        calorie_goal: "",
-        gender: "",
-        height: "",
-        weight: "",
-        age: "",
-        cooking_exp: "",
-        num_days: "",
-        num_meals: "",
-        activity_level: "",
-        breakfast: "",
-        lunch: "",
-        dinner: ""
-    });
+    
 
 
     /**
@@ -67,12 +54,12 @@ const UserSurvey = () => {
     const [days_error, setDaysError] = React.useState(false);
     const [meals_error, setMealsError] = React.useState(false);
     const [act_lvl_error, setActLvlError] = React.useState(false);
-
+    const navigate = useNavigate();
 
     const handleClick = (e) => {
 
         if (calorie_goal !== "" || gender !== "" || height !== "" || weight !== "" || age !== "" || cooking_exp !== "" || num_days !== "" || num_meals !== "" || activity_level !== "") {
-            setSurveyData({
+            const surveyData = ({
                 userID: JSON.parse(window.sessionStorage.getItem("user")).id,
                 calorie_goal: calorie_goal,
                 gender: gender,
@@ -83,9 +70,7 @@ const UserSurvey = () => {
                 num_days: num_days,
                 activity_level: activity_level
             })
-            console.log(surveyData)
             RestAPI.putUserData(surveyData).then((res) => {
-                const navigate = useNavigate;
                 navigate("/home");
             })
 
@@ -102,9 +87,6 @@ const UserSurvey = () => {
     const handleCalorieChange = (e) => {
         setGoal(e.target.value);
     }
-    const handleGenderChange = (e) => {
-        setGender(e.target.value);
-    }
     const handleWeightChange = (e) => {
         setWeight(e.target.value);
     }
@@ -120,22 +102,8 @@ const UserSurvey = () => {
     const handleDaysChange = (e) => {
         setNumDays(e.target.value);
     }
-    const handleMealsChange = (e) => {
-        setNumMeals(e.target.value);
-        if (e.target.value === "breakfast") {
-            setBreakfast(e.target.value);
-        }
-        if (e.target.value === "lunch") {
-            setLunch(e.target.value);
-        }
-        if (dinner !== "") {
-            setDinner(e.target.value === "dinner");
-        }
-    }
-    const handleActLvlChange = (e) => {
-        setActLvl(e.target.value);
-    }
-
+    
+    
     /**
      * 
      * Style of the page
