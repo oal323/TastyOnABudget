@@ -91,17 +91,20 @@ class UserSurveyData(BaseModel):
     activity_level: str
 Base.metadata.create_all(engine)
 
-class likedRecipies():
-    __tablename__ = 'likedRecipies'
+class LikedRecipies(Base):
+    __tablename__ = 'likedrecipies'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
-    userId = sqlalchemy.Column(ForeignKey("users.id"))
-    recipieId = sqlalchemy.Column(ForeignKey("recipe.id"))
+    userId = sqlalchemy.Column(sqlalchemy.Integer)
+    recipieId = sqlalchemy.Column(sqlalchemy.String(length=100))
 
-class dislikedRecipies():
-    __tablename__ = 'dislikedRecipies'
+class DislikedRecipies(Base):
+    __tablename__ = 'dislikedrecipies'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
-    userId = sqlalchemy.Column(ForeignKey("users.id"))
-    recipieId = sqlalchemy.Column(ForeignKey("recipe.id"))
+    userId = sqlalchemy.Column(sqlalchemy.Integer)
+    recipieId = sqlalchemy.Column(sqlalchemy.String(length=100))
+
+
+
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -206,9 +209,7 @@ def login(login: LoginModel):
     return {"access_token": access_token, "token_type": "bearer","login_status": "success"}
 
 
-""" @app.get("/users/me/", response_model=User)
-async def read_users_me(current_user: User = Depends(get_current_active_user)):
-    return current_user """
+
 
 @app.put("/addUser")
 async def addUser(user: UserLoginData):
@@ -222,15 +223,19 @@ async def addUser(user: UserLoginData):
 
 @app.put("/like_recipie")
 async def like_recipie(userId: int, recipieid: str):
-    new_like  = likedRecipies(userId = userId, recipieId = recipieid)
+    new_like  = LikedRecipies(userId = userId, recipieId = recipieid)
     session.add(new_like)
     session.commit()
 
 @app.put("/dislike_recipie")
-async def dislike_recipie(userId: int, recipieid: str):
-    new_dislike  = dislikedRecipies(userId = userId, recipieId = recipieid)
-    session.add(new_dislike)
-    session.commit()
+async def dislike_recipie(payload: dict = Body(...)):
+    print(payload)
+    sqlText = ("INSERT INTO dislikedrecipies (`userId`, `recipieId`) VALUES ("+payload["userId"]+", "+payload["userId"]+")")
+    session.execute(sqlText)
+    """ newDislike  = DislikedRecipies(userId = payload["userId"], recipieId = payload["recipieId"])
+    
+    session.add(newDislike)
+    session.commit() """
 
 @app.get("/users/me/items/")
 async def read_own_items(current_user: User = Depends(get_current_active_user)):
@@ -282,11 +287,9 @@ async def searchRecipes(searchval):
 
 @app.put("/userSurveyData")
 async def putUserSurveyData(user: UserSurveyData):
-    print(user)
     newUserSurveyData = UserSurveyDataSQL(users_id=user.userID, gender = user.gender,height = user.height,weight=user.weight,age=user.age,cooking_exp=user.cooking_exp,num_days=user.num_days,activity_level=user.activity_level)
     if(len(session.query(UserSurveyDataSQL).filter(UserSurveyDataSQL.users_id == user.userID).all())>0):   
         temp = session.query(UserSurveyDataSQL).filter(UserSurveyDataSQL.users_id == user.userID).one()
-        print(temp)
         session.delete(temp)
         session.commit()
     session.add(newUserSurveyData)

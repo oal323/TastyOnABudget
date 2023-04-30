@@ -20,7 +20,6 @@ const Recipes = () => {
     const [filterText, setFilterText] = React.useState("");
     const [tagOrTitle, setTagOrTitle] = React.useState(true);
     const [textFieldError, setTextFieldError] = React.useState(false)
-    const [user, setUser] = React.useState();
 
     function unicodeToChar(text) {
         return text.replace(/\\u[\dA-F]{4}/gi,
@@ -73,25 +72,26 @@ const Recipes = () => {
     }
     const putLikedRecipie=(id) =>{
         if (sessionStorage.getItem("user") !== null) {
-            setUser(JSON.parse(sessionStorage.getItem("user")));
-            console.log(user)
+            const user = JSON.parse(window.sessionStorage.getItem("user"));
+            RestAPI.putLikedRecipie(user.id, id)
         }else{
             alert("Must be logged in");
             return;
         }
 
-        RestAPI.putLikedRecipie(user.id, id)
+        
     }
 
     const putDislikedRecipie=(id) =>{
         if (sessionStorage.getItem("user") !== null) {
-            setUser(JSON.parse(sessionStorage.getItem("user")));
+            const user = JSON.parse(window.sessionStorage.getItem("user"));
+            RestAPI.putDislikedRecipie(user.id, id)
             console.log(user)
         }else{
             alert("Must be logged in");
             return;
         }
-        RestAPI.putDislikedRecipie(user.id, id)
+        
     }
     return (
         <div >
