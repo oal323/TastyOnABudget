@@ -1,16 +1,19 @@
 import React from 'react'
 import TextField from '@mui/material/TextField';
-import { Button, IconButton, Card, Grid, Typography, CardMedia, Autocomplete, CardActions, CardHeader, CardContent, CardActionArea, Select, MenuItem } from '@mui/material';
+import { Button, IconButton, Icon, Card, Grid, Typography, CardMedia, Autocomplete, CardActions, CardHeader, CardContent, CardActionArea, Select, MenuItem } from '@mui/material';
 import RestAPI from '../RestAPI';
 import { Link } from 'react-router-dom';
 import jwt from 'jwt-decode';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faThumbsUp, faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsUp as regularFaThumbsUp } from '@fortawesome/free-regular-svg-icons';
+import regular from '@fortawesome/react-fontawesome';
+import solid from '@fortawesome/react-fontawesome';
 import "../styles/Recipes.css";
 import SearchIcon from '@mui/icons-material/Search';
 import DisLike from '@mui/icons-material/ThumbDownOffAlt';
 import Like from '@mui/icons-material/ThumbUpOffAlt';
 import { margin } from '@mui/system';
-
 
 
 
@@ -20,6 +23,7 @@ const Recipes = () => {
     const [filterText, setFilterText] = React.useState("");
     const [tagOrTitle, setTagOrTitle] = React.useState(true);
     const [textFieldError, setTextFieldError] = React.useState(false)
+    const [user, setUser] = React.useState();
 
     function unicodeToChar(text) {
         return text.replace(/\\u[\dA-F]{4}/gi,
@@ -27,18 +31,26 @@ const Recipes = () => {
                 return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
             });
     }
+    React.useEffect(() => {
+        if (sessionStorage.getItem("user") !== null) {
+            setUser(JSON.parse(window.sessionStorage.getItem("user")));
+        }
+    }, [])
 
     const handleSearch = () => {
         setRecipes([])
         if (tagOrTitle) {
             RestAPI.getRecipesSearchTitle(filterText).then((res) => {
+                console.log(res.data)
                 res.data.map((resData) => {
                     setRecipes(prev => [
                         ...prev,
                         {
                             id: resData.id,
                             label: unicodeToChar(resData.title).replace(/['"]+/g, ''),
-                            thumbnail: resData.thumbnail.replace(/['"]+/g, '')
+                            thumbnail: resData.thumbnail.replace(/['"]+/g, ''),
+                            likedBy: resData.likedBy ? resData.likedBy.split(",") : null,
+                            dislikedBy: resData.dislikedBy ? resData.dislikedBy.split(",") : null
                         }
                     ]
                     )
@@ -47,7 +59,9 @@ const Recipes = () => {
             })
         } else if (!tagOrTitle) {
             RestAPI.getRecipesSearchTags(filterText).then((res) => {
+                
                 res.data.map((resData) => {
+                    
                     setRecipes(prev => [
                         ...prev,
                         {
@@ -61,7 +75,7 @@ const Recipes = () => {
                 })
             })
         }
-
+        console.log(recipes)
         if (recipes.length === 0) {
             setTextFieldError(true)
             alert("ERROR ENTER A CORRECT SEARCH TERM AND OR SELECT A TAG")
@@ -73,7 +87,7 @@ const Recipes = () => {
     const putLikedRecipie=(id) =>{
         if (sessionStorage.getItem("user") !== null) {
             const user = JSON.parse(window.sessionStorage.getItem("user"));
-            RestAPI.putLikedRecipie(user.id, id)
+            return RestAPI.putLikedRecipie(user.id, id)
         }else{
             alert("Must be logged in");
             return;
@@ -86,13 +100,13 @@ const Recipes = () => {
         if (sessionStorage.getItem("user") !== null) {
             const user = JSON.parse(window.sessionStorage.getItem("user"));
             RestAPI.putDislikedRecipie(user.id, id)
-            console.log(user)
         }else{
             alert("Must be logged in");
             return;
         }
         
     }
+    let liked = true;
     return (
         <div >
             <Grid style={{ marginTop: "20px", marginBottom: "750px" }}>
@@ -145,11 +159,20 @@ const Recipes = () => {
                                                                 image={recipe.thumbnail} />
                                                                 
                                                             <CardActions>
-                                                                <IconButton onClick={() => putLikedRecipie(recipe.id)}>
-                                                                    <Like />
-                                                                </IconButton>
+                                                                    <IconButton 
+                                                                    onClick={() =>{ 
+                                                                        putLikedRecipie(recipe.id)
+                                                                        
+                                                                    }
+                                                                    }> 
+                                                                    {recipe.likedBy == user.id
+                                                                    ? <FontAwesomeIcon icon={faThumbsUp} />
+                                                                    : <FontAwesomeIcon icon={regularFaThumbsUp} />
+                                                                    } 
+                                                                    </IconButton>
                                                                 <IconButton onClick={() => putDislikedRecipie(recipe.id)}>
-                                                                    <DisLike />
+                                                                    <DisLike 
+                                                                    />
                                                                 </IconButton>
                                                             </CardActions>
                                                         </CardContent>

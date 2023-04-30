@@ -225,7 +225,11 @@ async def addUser(user: UserLoginData):
 
 @app.put("/like_recipie")
 async def like_recipie(payload: dict = Body(...)):
-    
+    if(len(session.query(LikedRecipies).filter(LikedRecipies.user_id == payload["userId"] and LikedRecipies.recipie_id == payload["recipieId"]).all())>0):
+        temp = session.query(LikedRecipies).filter(LikedRecipies.user_id == payload["userId"] and LikedRecipies.recipie_id == payload["recipieId"]).one()
+        session.delete(temp)
+        session.commit()
+        return
     newDislike  = LikedRecipies(user_id = payload["userId"], recipie_id = payload["recipieId"])
     session.add(newDislike)
     session.commit()
@@ -233,6 +237,11 @@ async def like_recipie(payload: dict = Body(...)):
 
 @app.put("/dislike_recipie")
 async def dislike_recipie(payload: dict = Body(...)):
+    if(len(session.query(DislikedRecipies).filter(DislikedRecipies.user_id == payload["userId"] and DislikedRecipies.recipie_id == payload["recipieId"]).all())>0):
+        temp = session.query(DislikedRecipies).filter(DislikedRecipies.user_id == payload["userId"] and DislikedRecipies.recipie_id == payload["recipieId"]).one()
+        session.delete(temp)
+        session.commit()
+        return
     newDislike  = DislikedRecipies(user_id = payload["userId"], recipie_id = payload["recipieId"])
     session.add(newDislike)
     session.commit()
@@ -243,7 +252,17 @@ async def read_own_items(current_user: User = Depends(get_current_active_user)):
 
 @app.get("/recipes")
 async def getRecipes():
-    return(session.query(Recipe).all())
+    query = text("SELECT recipe.id,title,steps,nutrition,description,servings,thumbnail,ingredients,tags,"\
+    "group_concat(dislikedrecipies.user_id) as isDislikedRecipe,"\
+    "group_concat(likedrecipies.user_id) as isLikedRecipe"\
+    "FROM recipe"\
+    "LEFT JOIN dislikedrecipies"\
+    "ON recipe.id = dislikedrecipies.recipie_id"\
+    "LEFT JOIN likedrecipies" \
+    "ON recipe.id = dislikedrecipies.recipie_id"\
+    "where recipe.title like '%pasta%'"\
+    "GROUP BY recipe.id")
+    return(session.execute(query))
 
 @app.get("/recipes/reccomended/")
 async def getRecipesforUser():
@@ -273,7 +292,18 @@ async def getRecipes(num):
 
 @app.get("/recipes/searchtitle/{searchval}")
 async def searchRecipes(searchval):
-    sqlText = text('SELECT * from recipe where title like :searchval')
+    sqlText = text("SELECT recipe.id,title,steps,nutrition,description,servings,thumbnail,ingredients,tags, "\
+    "group_concat(dislikedrecipies.user_id) as dislikedBy, "\
+    "group_concat(likedrecipies.user_id) as likedBy "\
+    "FROM recipe "\
+    "LEFT JOIN dislikedrecipies "\
+    "ON recipe.id = dislikedrecipies.recipie_id "\
+    "LEFT JOIN likedrecipies " \
+    "ON recipe.id = dislikedrecipies.recipie_id "\
+    "where title like :searchval "\
+    "GROUP BY recipe.id ")
+
+
     res = session.execute(sqlText, {'searchval':'%'+searchval+'%'})
     ret = res.mappings().all()
     return(ret)
@@ -281,7 +311,7 @@ async def searchRecipes(searchval):
 @app.get("/recipes/searchtags/{searchval}")
 async def searchRecipes(searchval):
     sqlText = text('SELECT * from recipe where tags like :searchval')
-    res = session.execute(sqlText, {'searchval':'%'+searchval+'%'})
+    res = session.execute(sqlText, {'searchval': '%'+searchval+'%'})
     ret = res.mappings().all()
     return(ret)
 
