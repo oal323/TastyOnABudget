@@ -89,20 +89,21 @@ class UserSurveyData(BaseModel):
     cooking_exp: str
     num_days: str
     activity_level: str
-Base.metadata.create_all(engine)
+
 
 class LikedRecipies(Base):
     __tablename__ = 'likedrecipies'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
-    userId = sqlalchemy.Column(sqlalchemy.Integer)
-    recipieId = sqlalchemy.Column(sqlalchemy.String(length=100))
+    user_id = sqlalchemy.Column(sqlalchemy.Integer)
+    recipie_id = sqlalchemy.Column(sqlalchemy.String(length=100))
 
 class DislikedRecipies(Base):
     __tablename__ = 'dislikedrecipies'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
-    userId = sqlalchemy.Column(sqlalchemy.Integer)
-    recipieId = sqlalchemy.Column(sqlalchemy.String(length=100))
+    user_id = sqlalchemy.Column(sqlalchemy.Integer)
+    recipie_id = sqlalchemy.Column(sqlalchemy.String(length=100))
 
+Base.metadata.create_all(engine)
 
 
 
@@ -111,6 +112,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 app = FastAPI()
+
 
 
 origins = [
@@ -222,20 +224,17 @@ async def addUser(user: UserLoginData):
     raise HTTPException(status_code=200, detail="Succ")
 
 @app.put("/like_recipie")
-async def like_recipie(userId: int, recipieid: str):
-    new_like  = LikedRecipies(userId = userId, recipieId = recipieid)
-    session.add(new_like)
+async def like_recipie(payload: dict = Body(...)):
+    newDislike  = LikedRecipies(user_id = payload["userId"], recipie_id = payload["recipieId"])
+    session.add(newDislike)
     session.commit()
+
 
 @app.put("/dislike_recipie")
 async def dislike_recipie(payload: dict = Body(...)):
-    print(payload)
-    sqlText = ("INSERT INTO dislikedrecipies (`userId`, `recipieId`) VALUES ("+payload["userId"]+", "+payload["userId"]+")")
-    session.execute(sqlText)
-    """ newDislike  = DislikedRecipies(userId = payload["userId"], recipieId = payload["recipieId"])
-    
+    newDislike  = DislikedRecipies(user_id = payload["userId"], recipie_id = payload["recipieId"])
     session.add(newDislike)
-    session.commit() """
+    session.commit()
 
 @app.get("/users/me/items/")
 async def read_own_items(current_user: User = Depends(get_current_active_user)):
