@@ -108,7 +108,6 @@ function Home() {
                                             console.log('String typed out!');
                                         })
                                         .pauseFor(200)
-                                        .deleteAll()
                                         .start();
 
                                 }}
@@ -140,7 +139,6 @@ function Home() {
                             <Grid item xs={12} style={{ marginTop: "20px", marginBottom: "20px" }}>
                                 <Card variant='outlined' style={{ width: '80%', padding: "20px 5px ", margin: "0 auto" }}>
                                     <Grid container spacing={2} direction="row" >
-                                {console.log(recipes)}
                                 {
                                     recipes.map((recipe) => (
                                         <RecipeCard recipe={recipe} numCards={3} user={user} />
@@ -336,60 +334,11 @@ function Home() {
                                     <Grid item xs={12} style={{ marginTop: "20px", marginBottom: "20px" }}>
                                         <Card variant='outlined' style={{ width: '1005px', padding: "20px 5px ", margin: " auto" }}>
                                             <Grid container spacing={2} direction="row"  >
-                                                <Card sx={{ maxWidth: 300, height: 300 }} style={{ width: '100%', margin: '10px', padding: '10px' }}>
-                                                    <CardActionArea>
-                                                        <Link to='/signup'>
-                                                            <CardMedia
-                                                                component="img"
-                                                                height="150"
-                                                                image={'https://img.buzzfeed.com/video-api-prod/assets/814d6c9e7c26470f8941c6ad53b8a512/BFV17623_RoastedShrimpSaladThumb.jpg'}
-                                                                alt="shrimpsalad"
-                                                            />
-                                                            <CardContent>
-                                                                <Typography gutterBottom variant="h5" component="div">
-                                                                    Shrimp Salad With Creamy Avocado Dressing
-                                                                </Typography>
-
-                                                            </CardContent>
-                                                        </Link>
-                                                    </CardActionArea>
-                                                </Card>
-                                                <Card sx={{ maxWidth: 300, height: 300 }} style={{ width: '100%', margin: '10px', padding: '10px' }}>
-                                                    <CardActionArea>
-                                                        <Link to='/signup'>
-                                                            <CardMedia
-                                                                component="img"
-                                                                height="150"
-                                                                image={'https://img.buzzfeed.com/thumbnailer-prod-us-east-1/3726d37c9b684ae6b82c87c99cdeb951/MICROWAVEFB.jpg'}
-                                                                alt="MugBakedRigatoni"
-                                                            />
-                                                            <CardContent>
-                                                                <Typography gutterBottom variant="h5" component="div">
-                                                                    Mug Baked Rigatoni
-                                                                </Typography>
-
-                                                            </CardContent>
-                                                        </Link>
-                                                    </CardActionArea>
-                                                </Card>
-                                                <Card sx={{ maxWidth: 300, height: 300 }} style={{ width: '100%', margin: '10px', padding: '10px' }}>
-                                                    <CardActionArea>
-                                                        <Link to='/signup'>
-                                                            <CardMedia
-                                                                component="img"
-                                                                height="150"
-                                                                image={'https://img.buzzfeed.com/thumbnailer-prod-us-east-1/d9d4895d2490475d976e0ea3d657b94a/BFV44628_AllTheRecipesYouNeedforaGreatBBQ_FB1080SQ.jpg'}
-                                                                alt="BBQ_Chicken_Sandwich"
-                                                            />
-                                                            <CardContent>
-                                                                <Typography gutterBottom variant="h5" component="div">
-                                                                    BBQ Chicken Sandwich
-                                                                </Typography>
-
-                                                            </CardContent>
-                                                        </Link>
-                                                    </CardActionArea>
-                                                </Card>
+                                            {
+                                    recipes.map((recipe) => (
+                                        <RecipeCard recipe={recipe} numCards={3} user={user} />
+                                    ))
+                                }
                                             </Grid>
                                         </Card>
                                     </Grid>
