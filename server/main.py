@@ -335,7 +335,7 @@ async def searchRecipes(searchval):
 
 @app.put("/userSurveyData")
 async def putUserSurveyData(user: UserSurveyData):
-    newUserSurveyData = UserSurveyDataSQL(users_id=user.userID, gender = user.gender,height = user.height,weight=user.weight,age=user.age,cooking_exp=user.cooking_exp,num_days=user.num_days,activity_level=user.activity_level)
+    newUserSurveyData = UserSurveyDataSQL(users_id=user.userID, calorie_goal=user.calorie_goal, gender = user.gender,height = user.height,weight=user.weight,age=user.age,cooking_exp=user.cooking_exp,num_days=user.num_days,activity_level=user.activity_level)
     if(len(session.query(UserSurveyDataSQL).filter(UserSurveyDataSQL.users_id == user.userID).all())>0):   
         temp = session.query(UserSurveyDataSQL).filter(UserSurveyDataSQL.users_id == user.userID).one()
         session.delete(temp)
