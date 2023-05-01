@@ -15,13 +15,48 @@ import { CardActionArea } from '@mui/material';
 import CardMedia from '@mui/material/CardMedia';
 import DisLike from '@mui/icons-material/ThumbDownOffAlt';
 import Like from '@mui/icons-material/ThumbUpOffAlt';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 function Home() {
     const [user, setUser] = React.useState();
+    const [loading, setLoading] = React.useState(false);
+    const [recipes, setRecipes] = React.useState([]);
+    const [filterText, setFilterText] = React.useState("");
+    const [surveyDoneError, setsurveyDoneError] = React.useState(false)
+
+    function unicodeToChar(text) {
+        return text.replace(/\\u[\dA-F]{4}/gi,
+            function (match) {
+                return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
+            });
+    }
+
 
     React.useEffect(() => {
         if (sessionStorage.getItem("user") !== null) {
             setUser(JSON.parse(window.sessionStorage.getItem("user")));
+        }
+        const recipieget = () => {
+            setRecipes([]) 
+            RestAPI.getCustomRecipies(user.username).then((res) => {
+                res.data.map((resData) => {
+                    setRecipes(prev => [
+                        ...prev,
+                        {
+                            id: resData.id,
+                            label: unicodeToChar(resData.title).replace(/['"]+/g, ''),
+                            thumbnail: resData.thumbnail.replace(/['"]+/g, '')
+                        }
+                    ]
+                    )
+    
+                })
+            })}
+        if(user){
+            recipieget(user)
         }
     }, [])
 
@@ -73,6 +108,87 @@ function Home() {
                         <Typography gutterBottom variant="h3" align="left" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
                             This Weeks Meals
                         </Typography>
+
+                    </Grid>
+                </div>
+                <div>
+                    <Grid style={{ marginTop: "20px", marginBottom: "20px", padding: "30px" }}>
+
+
+                        <Typography gutterBottom variant="h4" align="center" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
+                            Some Helpful Tips
+                        </Typography>
+                        <Accordion>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1a-content"
+                                id="panel1a-header"
+                            >
+                                <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Stick To The Plan</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography variant="h6">
+                                    Once you've created your meal plan for the week, try to stick to it as closely as possible. This will help you avoid last-minute decisions to order takeout or eat unhealthy snacks.
+
+                                </Typography>
+                            </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel2a-content"
+                                id="panel2a-header"
+                            >
+                                <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Prep Ahead Of Time</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography variant="h6">
+                                    Prepping your ingredients and meals ahead of time can save you time and stress during the week. Try to set aside a block of time each week to prep your meals and ingredients for the upcoming week.
+                                </Typography>
+                            </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel2a-content"
+                                id="panel2a-header"
+                            >
+                                <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Don't Forget About Snacks</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography variant="h6">
+                                    Snacks can be an important part of your meal plan, especially if you tend to get hungry between meals. Include healthy snacks like fruit, veggies, nuts, or yogurt in your meal plan to help keep you satisfied throughout the day.
+                                </Typography >
+                            </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel2a-content"
+                                id="panel2a-header"
+                            >
+                                <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Shop Smart </Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography variant="h6">
+                                    When grocery shopping, stick to your list and avoid buying unnecessary items. Try to shop in the perimeter of the store where the fresh produce and protein are located, and avoid the middle aisles with processed foods and snacks.
+                                </Typography>
+                            </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel2a-content"
+                                id="panel2a-header"
+                            >
+                                <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Be Flexible</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography variant="h6">
+                                    While meal planning can be a great tool for staying on track with your health goals, it's important to be flexible and adjust your plan as needed. If you have unexpected plans or events come up, don't be too hard on yourself if you can't stick to your plan perfectly. The key is to do your best and make healthy choices whenever possible.
+                                </Typography>
+                            </AccordionDetails>
+                        </Accordion>
 
                     </Grid>
                 </div>

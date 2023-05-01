@@ -55,14 +55,14 @@ const Recipes = () => {
                     )
 
                 })
-            }).catch(err => { 
-                    alert("NO SEARCH VALUE ENTERED")
+            }).catch(err => {
+                alert("NO SEARCH VALUE ENTERED")
             })
         } else if (!tagOrTitle) {
             RestAPI.getRecipesSearchTags(filterText).then((res) => {
-                
+
                 res.data.map((resData) => {
-                    
+
                     setRecipes(prev => [
                         ...prev,
                         {
@@ -74,9 +74,9 @@ const Recipes = () => {
                     )
 
                 })
-            }).catch(err => { 
+            }).catch(err => {
                 alert("NO SEARCH VALUE ENTERED")
-        })
+            })
         }
     }
 
@@ -114,7 +114,7 @@ const Recipes = () => {
                                 <Card variant='outlined' style={{ width: '80%', padding: "20px 5px ", margin: "0 auto" }}>
                                     <Grid container spacing={2} direction="row" >
                                         {recipes.map((recipe) => (
-                                            <RecipeCard recipe={recipe} numCards={3} user={user}/>
+                                            <RecipeCard recipe={recipe} numCards={3} user={user} />
                                         ))}
                                     </Grid>
                                 </Card>
