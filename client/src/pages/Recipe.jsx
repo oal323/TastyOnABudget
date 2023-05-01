@@ -12,7 +12,7 @@ const Recipe = () => {
     const [recipe, setRecipe] = React.useState([]);
     const id = useParams()
     setRecipe([])
-    console.log(id)
+
 
     function unicodeToChar(text) {
         return text.replace(/\\u[\dA-F]{4}/gi,
@@ -24,10 +24,10 @@ const Recipe = () => {
     React.useMemo(() => {
         if (sessionStorage.getItem("user") !== null) {
             setUser(JSON.parse(sessionStorage.getItem("user")));
-            console.log(user)
+
         }
         RestAPI.getRecipeByID(id.recipeGUID).then((res) => {
-            console.log(res.data.thumbnail)
+
             setRecipe(
                 {
                     label: unicodeToChar(res.data.title).replace(/['"]+/g, ''),
@@ -39,11 +39,11 @@ const Recipe = () => {
                     steps: res.data.steps.replace(/['"]+/g, ''),
                 }
             )
-            console.log(res.data)
+
         })
 
     }, [])
-    console.log(id)
+
 
     return (
         <div>
