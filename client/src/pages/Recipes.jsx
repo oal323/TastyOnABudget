@@ -41,7 +41,6 @@ const Recipes = () => {
         setRecipes([])
         if (tagOrTitle) {
             RestAPI.getRecipesSearchTitle(filterText).then((res) => {
-                console.log(res.data)
                 res.data.map((resData) => {
                     setRecipes(prev => [
                         ...prev,
@@ -79,14 +78,6 @@ const Recipes = () => {
                 alert("NO SEARCH VALUE ENTERED")
         })
         }
-        /*console.log(recipes)
-        if (recipes.length === 0) {
-            setTextFieldError(true)
-            alert("ERROR ENTER A CORRECT SEARCH TERM AND OR SELECT A TAG")
-        } else {
-            setTextFieldError(false)
-        }*/
-
     }
 
     return (
@@ -99,13 +90,12 @@ const Recipes = () => {
                         onChange={(e) => {
                             setFilterText(e.target.value);
                         }}
-                        //error={textFieldError}
                     />
                     <Select
                         style={{ width: "10%", margin: "5px 5px 5px 5px" }}
                         onChange={(e) => {
                             setTagOrTitle(e.target.value);
-                            console.log(tagOrTitle)
+
                         }}
                     >
                         <MenuItem value={true} default>Title</MenuItem>

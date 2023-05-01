@@ -244,13 +244,19 @@ async def like_recipie(payload: dict = Body(...)):
 
 @app.put("/dislike_recipie")
 async def dislike_recipie(payload: dict = Body(...)):
-    if(len(session.query(DislikedRecipies).filter(DislikedRecipies.user_id == payload["userId"] and DislikedRecipies.recipie_id == payload["recipieId"]).all())>0):
-        temp = session.query(DislikedRecipies).filter(DislikedRecipies.user_id == payload["userId"] and DislikedRecipies.recipie_id == payload["recipieId"]).one()
-        session.delete(temp)
+    
+    query = text("SELECT * from dislikedrecipies where user_id = :user_id AND recipie_id = :recipie_id")
+    result = session.execute(query,  {'user_id': payload["userId"], 'recipie_id': payload["recipieId"]})
+    rows = result.mappings().all()
+    ret = [dict(row) for row in rows]
+    print(len(ret))
+    if(len(ret)>0):
+        crud = text("delete from dislikedrecipies where user_id = :user_id AND recipie_id = :recipie_id")
+        session.execute(crud,  {'user_id': payload["userId"], 'recipie_id': payload["recipieId"]})
         session.commit()
         return
-    newDislike  = DislikedRecipies(user_id = payload["userId"], recipie_id = payload["recipieId"])
-    session.add(newDislike)
+    newLike  = DislikedRecipies(user_id = payload["userId"], recipie_id = payload["recipieId"])
+    session.add(newLike)
     session.commit()
 
 @app.get("/users/me/items/")
