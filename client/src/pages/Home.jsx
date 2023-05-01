@@ -18,10 +18,41 @@ import Like from '@mui/icons-material/ThumbUpOffAlt';
 
 function Home() {
     const [user, setUser] = React.useState();
+    const [loading, setLoading] = React.useState(false);
+    const [recipes, setRecipes] = React.useState([]);
+    const [filterText, setFilterText] = React.useState("");
+    const [surveyDoneError, setsurveyDoneError] = React.useState(false)
+
+    function unicodeToChar(text) {
+        return text.replace(/\\u[\dA-F]{4}/gi,
+            function (match) {
+                return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
+            });
+    }
+
 
     React.useEffect(() => {
         if (sessionStorage.getItem("user") !== null) {
             setUser(JSON.parse(window.sessionStorage.getItem("user")));
+        }
+        const recipieget = () => {
+            setRecipes([]) 
+            RestAPI.getCustomRecipies(user.username).then((res) => {
+                res.data.map((resData) => {
+                    setRecipes(prev => [
+                        ...prev,
+                        {
+                            id: resData.id,
+                            label: unicodeToChar(resData.title).replace(/['"]+/g, ''),
+                            thumbnail: resData.thumbnail.replace(/['"]+/g, '')
+                        }
+                    ]
+                    )
+    
+                })
+            })}
+        if(user){
+            recipieget(user)
         }
     }, [])
 
