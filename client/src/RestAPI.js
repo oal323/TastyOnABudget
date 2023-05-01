@@ -41,7 +41,7 @@ class restAPI {
         })
     }
     getNumRecipes(totalRecipes){
-        const endpoint = "recipes/"+totalRecipes;
+        const endpoint = "recipes/num/"+totalRecipes;
         let restEndPoint = server_url + endpoint;
         return axios.get(restEndPoint,{
             headers: {

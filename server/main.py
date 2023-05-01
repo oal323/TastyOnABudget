@@ -273,7 +273,6 @@ async def getRecipes():
     "ON recipe.id = dislikedrecipies.recipie_id"\
     "LEFT JOIN likedrecipies" \
     "ON recipe.id = likedrecipies.recipie_id"\
-    "where recipe.title like '%pasta%'"\
     "GROUP BY recipe.id")
     return(session.execute(query))
 
@@ -311,9 +310,24 @@ async def getRecpies(id):
 async def getRecipes(tags):
     return(session.query(Recipe).all().filter(Recipe.tags.like(tags)))
 
-@app.get("/recipes/{num}")
+@app.get("/recipes/num/{num}")
 async def getRecipes(num):
-    return(session.query(Recipe).limit(num).all())
+    query=text(
+    "SELECT recipe.id,title,steps,nutrition,description,servings,thumbnail,ingredients,tags, "\
+    "group_concat(dislikedrecipies.user_id) as dislikedBy, "\
+    "group_concat(likedrecipies.user_id) as likedBy "\
+    "FROM recipe "\
+    "LEFT JOIN dislikedrecipies "\
+    "ON recipe.id = dislikedrecipies.recipie_id "\
+    "LEFT JOIN likedrecipies " \
+    "ON recipe.id = likedrecipies.recipie_id "\
+    "GROUP BY recipe.id "\
+    "ORDER BY RAND ( )"\
+    "limit  "+num+"  "
+    )
+    res = session.execute(query)
+    ret = res.mappings().all()
+    return(ret)
 
 @app.get("/recipes/searchtitle/{searchval}")
 async def searchRecipes(searchval):

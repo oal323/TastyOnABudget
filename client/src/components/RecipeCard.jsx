@@ -41,7 +41,6 @@ const RecipeCard = ({ recipe, numCards, user }) => {
             return;
         }
     }
-
     return (
         
         <Grid item sm={12 / numCards}>
