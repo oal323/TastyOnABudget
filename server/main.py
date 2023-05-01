@@ -294,11 +294,8 @@ async def getRecipes(num):
 
 @app.get("/recipes/searchtitle/{searchval}")
 async def searchRecipes(searchval):
-<<<<<<< HEAD
     if (searchval == ""):
         raise HTTPException(status_code=400, detail="Empty Search")
-    sqlText = text('SELECT * from recipe where title like :searchval')
-=======
     sqlText = text("SELECT recipe.id,title,steps,nutrition,description,servings,thumbnail,ingredients,tags, "\
     "group_concat(dislikedrecipies.user_id) as dislikedBy, "\
     "group_concat(likedrecipies.user_id) as likedBy "\
@@ -306,22 +303,12 @@ async def searchRecipes(searchval):
     "LEFT JOIN dislikedrecipies "\
     "ON recipe.id = dislikedrecipies.recipie_id "\
     "LEFT JOIN likedrecipies " \
-    "ON recipe.id = dislikedrecipies.recipie_id "\
+    "ON recipe.id = likedrecipies.recipie_id "\
     "where title like :searchval "\
     "GROUP BY recipe.id ")
 
 
->>>>>>> 16c4c88cd5bc8fff2fed4bec798040a94b4dfac8
     res = session.execute(sqlText, {'searchval':'%'+searchval+'%'})
-    ret = res.mappings().all()
-    return(ret)
-
-@app.get("/recipes/searchtags/{searchval}")
-async def searchRecipes(searchval):
-    if (searchval == ""):
-        raise HTTPException(status_code=400, detail="Empty Search")
-    sqlText = text('SELECT * from recipe where tags like :searchval')
-    res = session.execute(sqlText, {'searchval': '%'+searchval+'%'})
     ret = res.mappings().all()
     return(ret)
 

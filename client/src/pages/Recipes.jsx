@@ -77,10 +77,6 @@ const Recipes = () => {
                 alert("NO SEARCH VALUE ENTERED")
         })
         }
-<<<<<<< HEAD
-        
-       
-=======
         console.log(recipes)
         if (recipes.length === 0) {
             setTextFieldError(true)
@@ -100,7 +96,6 @@ const Recipes = () => {
         }
 
         
->>>>>>> 16c4c88cd5bc8fff2fed4bec798040a94b4dfac8
     }
 
     const putDislikedRecipie=(id) =>{
