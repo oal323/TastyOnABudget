@@ -22,6 +22,7 @@ const Recipes = () => {
     const [recipes, setRecipes] = React.useState([]);
     const [filterText, setFilterText] = React.useState("");
     const [tagOrTitle, setTagOrTitle] = React.useState(true);
+    const [user, setUser] = React.useState();
 
     function unicodeToChar(text) {
         return text.replace(/\\u[\dA-F]{4}/gi,
@@ -77,13 +78,13 @@ const Recipes = () => {
                 alert("NO SEARCH VALUE ENTERED")
         })
         }
-        console.log(recipes)
+        /*console.log(recipes)
         if (recipes.length === 0) {
             setTextFieldError(true)
             alert("ERROR ENTER A CORRECT SEARCH TERM AND OR SELECT A TAG")
         } else {
             setTextFieldError(false)
-        }
+        }*/
 
     }
     const putLikedRecipie=(id) =>{
@@ -119,7 +120,7 @@ const Recipes = () => {
                         onChange={(e) => {
                             setFilterText(e.target.value);
                         }}
-                        error={textFieldError}
+                        //error={textFieldError}
                     />
                     <Select
                         style={{ width: "10%", margin: "5px 5px 5px 5px" }}
