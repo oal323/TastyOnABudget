@@ -219,6 +219,8 @@ async def addUser(user: UserLoginData):
     newUser = User(username = user.username, password = user.password, email = user.email, firstName = user.firstName)
     if (len(session.query(User).filter(User.username == user.username).all())!=0):
         raise HTTPException(status_code=400, detail="double user")
+    if (len(session.query(User).filter(User.email == user.email).all())!=0):
+        raise HTTPException(status_code=400, detail="double email")
     session.add(newUser)
     session.commit()
     raise HTTPException(status_code=200, detail="Succ")
@@ -297,6 +299,8 @@ async def getRecipes(num):
 
 @app.get("/recipes/searchtitle/{searchval}")
 async def searchRecipes(searchval):
+    if (searchval == ""):
+        raise HTTPException(status_code=400, detail="Empty Search")
     sqlText = text("SELECT recipe.id,title,steps,nutrition,description,servings,thumbnail,ingredients,tags, "\
     "group_concat(dislikedrecipies.user_id) as dislikedBy, "\
     "group_concat(likedrecipies.user_id) as likedBy "\
@@ -307,16 +311,7 @@ async def searchRecipes(searchval):
     "ON recipe.id = likedrecipies.recipie_id "\
     "where title like :searchval "\
     "GROUP BY recipe.id ")
-
-
     res = session.execute(sqlText, {'searchval':'%'+searchval+'%'})
-    ret = res.mappings().all()
-    return(ret)
-
-@app.get("/recipes/searchtags/{searchval}")
-async def searchRecipes(searchval):
-    sqlText = text('SELECT * from recipe where tags like :searchval')
-    res = session.execute(sqlText, {'searchval': '%'+searchval+'%'})
     ret = res.mappings().all()
     return(ret)
 

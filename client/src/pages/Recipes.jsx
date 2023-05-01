@@ -23,7 +23,6 @@ const Recipes = () => {
     const [recipes, setRecipes] = React.useState([]);
     const [filterText, setFilterText] = React.useState("");
     const [tagOrTitle, setTagOrTitle] = React.useState(true);
-    const [textFieldError, setTextFieldError] = React.useState(false)
     const [user, setUser] = React.useState();
 
     function unicodeToChar(text) {
@@ -38,7 +37,7 @@ const Recipes = () => {
         }
     }, [])
 
-    const handleSearch = () => {
+    const handleSearch = async () => {
         setRecipes([])
         if (tagOrTitle) {
             RestAPI.getRecipesSearchTitle(filterText).then((res) => {
@@ -57,6 +56,8 @@ const Recipes = () => {
                     )
 
                 })
+            }).catch(err => { 
+                    alert("NO SEARCH VALUE ENTERED")
             })
         } else if (!tagOrTitle) {
             RestAPI.getRecipesSearchTags(filterText).then((res) => {
@@ -74,15 +75,17 @@ const Recipes = () => {
                     )
 
                 })
-            })
+            }).catch(err => { 
+                alert("NO SEARCH VALUE ENTERED")
+        })
         }
-        console.log(recipes)
+        /*console.log(recipes)
         if (recipes.length === 0) {
             setTextFieldError(true)
             alert("ERROR ENTER A CORRECT SEARCH TERM AND OR SELECT A TAG")
         } else {
             setTextFieldError(false)
-        }
+        }*/
 
     }
 
@@ -96,7 +99,7 @@ const Recipes = () => {
                         onChange={(e) => {
                             setFilterText(e.target.value);
                         }}
-                        error={textFieldError}
+                        //error={textFieldError}
                     />
                     <Select
                         style={{ width: "10%", margin: "5px 5px 5px 5px" }}
@@ -105,7 +108,7 @@ const Recipes = () => {
                             console.log(tagOrTitle)
                         }}
                     >
-                        <MenuItem value={true}>Title</MenuItem>
+                        <MenuItem value={true} default>Title</MenuItem>
                         <MenuItem value={false}>Tag</MenuItem>
                     </Select>
                     <button className="searchButton" style={{ marginLeft: '15px', marginTop: '2px' }}
