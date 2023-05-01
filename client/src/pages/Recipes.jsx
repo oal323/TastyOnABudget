@@ -14,6 +14,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import DisLike from '@mui/icons-material/ThumbDownOffAlt';
 import Like from '@mui/icons-material/ThumbUpOffAlt';
 import { margin } from '@mui/system';
+import RecipeCard from '../components/RecipeCard';
 
 
 
@@ -84,29 +85,7 @@ const Recipes = () => {
         }
 
     }
-    const putLikedRecipie=(id) =>{
-        if (sessionStorage.getItem("user") !== null) {
-            const user = JSON.parse(window.sessionStorage.getItem("user"));
-            return RestAPI.putLikedRecipie(user.id, id)
-        }else{
-            alert("Must be logged in");
-            return;
-        }
 
-        
-    }
-
-    const putDislikedRecipie=(id) =>{
-        if (sessionStorage.getItem("user") !== null) {
-            const user = JSON.parse(window.sessionStorage.getItem("user"));
-            RestAPI.putDislikedRecipie(user.id, id)
-        }else{
-            alert("Must be logged in");
-            return;
-        }
-        
-    }
-    let liked = true;
     return (
         <div >
             <Grid style={{ marginTop: "20px", marginBottom: "750px" }}>
@@ -142,44 +121,7 @@ const Recipes = () => {
                                 <Card variant='outlined' style={{ width: '80%', padding: "20px 5px ", margin: "0 auto" }}>
                                     <Grid container spacing={2} direction="row" >
                                         {recipes.map((recipe) => (
-                                            <Grid item xs={6} sm={6} ms={4}>
-                                                
-                                                <Card sx={{ maxWidth: 550, maxHeight: 600 }} style={{ width: '100%', margin: '10px' }}>
-                                                    <CardActionArea >
-                                                    <Link to={`/recipe/${recipe.id}`}>
-                                                        <CardHeader
-                                                            title={recipe.label}
-                                                        />
-                                                        </Link>
-                                                        <CardContent alignItems='center' >
-                                                            <CardMedia
-                                                                square='false'
-                                                                component="img"
-                                                                height="200"
-                                                                image={recipe.thumbnail} />
-                                                                
-                                                            <CardActions>
-                                                                    <IconButton 
-                                                                    onClick={() =>{ 
-                                                                        putLikedRecipie(recipe.id)
-                                                                        
-                                                                    }
-                                                                    }> 
-                                                                    {recipe.likedBy == user.id
-                                                                    ? <FontAwesomeIcon icon={faThumbsUp} />
-                                                                    : <FontAwesomeIcon icon={regularFaThumbsUp} />
-                                                                    } 
-                                                                    </IconButton>
-                                                                <IconButton onClick={() => putDislikedRecipie(recipe.id)}>
-                                                                    <DisLike 
-                                                                    />
-                                                                </IconButton>
-                                                            </CardActions>
-                                                        </CardContent>
-                                                    </CardActionArea>
-                                                </Card>
-                                                
-                                            </Grid>
+                                            <RecipeCard recipe={recipe} numCards={3} user={user}/>
                                         ))}
                                     </Grid>
                                 </Card>
