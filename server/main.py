@@ -77,7 +77,6 @@ class UserSurveyDataSQL(Base):
     age = sqlalchemy.Column(sqlalchemy.String(length=100))
     cooking_exp = sqlalchemy.Column(sqlalchemy.String(length=100))
     num_days = sqlalchemy.Column(sqlalchemy.String(length=100))
-    num_meals = sqlalchemy.Column(sqlalchemy.String(length=100))
     activity_level = sqlalchemy.Column(sqlalchemy.String(length=100))
 
 class UserSurveyData(BaseModel):
@@ -89,27 +88,31 @@ class UserSurveyData(BaseModel):
     age: str
     cooking_exp: str
     num_days: str
-    num_meals: str
     activity_level: str
+
+
+class LikedRecipies(Base):
+    __tablename__ = 'likedrecipies'
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+    user_id = sqlalchemy.Column(sqlalchemy.Integer)
+    recipie_id = sqlalchemy.Column(sqlalchemy.String(length=100))
+
+class DislikedRecipies(Base):
+    __tablename__ = 'dislikedrecipies'
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+    user_id = sqlalchemy.Column(sqlalchemy.Integer)
+    recipie_id = sqlalchemy.Column(sqlalchemy.String(length=100))
+
 Base.metadata.create_all(engine)
 
-class likedRecipies():
-    __tablename__ = 'likedRecipies'
-    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
-    userId = sqlalchemy.Column(ForeignKey("users.id"))
-    recipieId = sqlalchemy.Column(ForeignKey("recipe.id"))
 
-class dislikedRecipies():
-    __tablename__ = 'dislikedRecipies'
-    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
-    userId = sqlalchemy.Column(ForeignKey("users.id"))
-    recipieId = sqlalchemy.Column(ForeignKey("recipe.id"))
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 app = FastAPI()
+
 
 
 origins = [
@@ -203,14 +206,12 @@ def login(login: LoginModel):
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        {"username": user.username,"email": user.email,"fname": user.firstName}, expires_delta=access_token_expires
+        {"id":user.id,"username": user.username,"email": user.email,"fname": user.firstName}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer","login_status": "success"}
 
 
-""" @app.get("/users/me/", response_model=User)
-async def read_users_me(current_user: User = Depends(get_current_active_user)):
-    return current_user """
+
 
 @app.put("/addUser")
 async def addUser(user: UserLoginData):
@@ -225,15 +226,26 @@ async def addUser(user: UserLoginData):
     raise HTTPException(status_code=200, detail="Succ")
 
 @app.put("/like_recipie")
-async def like_recipie(userId: int, recipieid: str):
-    new_like  = likedRecipies(userId = userId, recipieId = recipieid)
-    session.add(new_like)
+async def like_recipie(payload: dict = Body(...)):
+    if(len(session.query(LikedRecipies).filter(LikedRecipies.user_id == payload["userId"] and LikedRecipies.recipie_id == payload["recipieId"]).all())>0):
+        temp = session.query(LikedRecipies).filter(LikedRecipies.user_id == payload["userId"] and LikedRecipies.recipie_id == payload["recipieId"]).one()
+        session.delete(temp)
+        session.commit()
+        return
+    newDislike  = LikedRecipies(user_id = payload["userId"], recipie_id = payload["recipieId"])
+    session.add(newDislike)
     session.commit()
 
+
 @app.put("/dislike_recipie")
-async def dislike_recipie(userId: int, recipieid: str):
-    new_dislike  = dislikedRecipies(userId = userId, recipieId = recipieid)
-    session.add(new_dislike)
+async def dislike_recipie(payload: dict = Body(...)):
+    if(len(session.query(DislikedRecipies).filter(DislikedRecipies.user_id == payload["userId"] and DislikedRecipies.recipie_id == payload["recipieId"]).all())>0):
+        temp = session.query(DislikedRecipies).filter(DislikedRecipies.user_id == payload["userId"] and DislikedRecipies.recipie_id == payload["recipieId"]).one()
+        session.delete(temp)
+        session.commit()
+        return
+    newDislike  = DislikedRecipies(user_id = payload["userId"], recipie_id = payload["recipieId"])
+    session.add(newDislike)
     session.commit()
 
 @app.get("/users/me/items/")
@@ -242,7 +254,17 @@ async def read_own_items(current_user: User = Depends(get_current_active_user)):
 
 @app.get("/recipes")
 async def getRecipes():
-    return(session.query(Recipe).all())
+    query = text("SELECT recipe.id,title,steps,nutrition,description,servings,thumbnail,ingredients,tags,"\
+    "group_concat(dislikedrecipies.user_id) as isDislikedRecipe,"\
+    "group_concat(likedrecipies.user_id) as isLikedRecipe"\
+    "FROM recipe"\
+    "LEFT JOIN dislikedrecipies"\
+    "ON recipe.id = dislikedrecipies.recipie_id"\
+    "LEFT JOIN likedrecipies" \
+    "ON recipe.id = dislikedrecipies.recipie_id"\
+    "where recipe.title like '%pasta%'"\
+    "GROUP BY recipe.id")
+    return(session.execute(query))
 
 @app.get("/recipes/reccomended/")
 async def getRecipesforUser():
@@ -272,9 +294,24 @@ async def getRecipes(num):
 
 @app.get("/recipes/searchtitle/{searchval}")
 async def searchRecipes(searchval):
+<<<<<<< HEAD
     if (searchval == ""):
         raise HTTPException(status_code=400, detail="Empty Search")
     sqlText = text('SELECT * from recipe where title like :searchval')
+=======
+    sqlText = text("SELECT recipe.id,title,steps,nutrition,description,servings,thumbnail,ingredients,tags, "\
+    "group_concat(dislikedrecipies.user_id) as dislikedBy, "\
+    "group_concat(likedrecipies.user_id) as likedBy "\
+    "FROM recipe "\
+    "LEFT JOIN dislikedrecipies "\
+    "ON recipe.id = dislikedrecipies.recipie_id "\
+    "LEFT JOIN likedrecipies " \
+    "ON recipe.id = dislikedrecipies.recipie_id "\
+    "where title like :searchval "\
+    "GROUP BY recipe.id ")
+
+
+>>>>>>> 16c4c88cd5bc8fff2fed4bec798040a94b4dfac8
     res = session.execute(sqlText, {'searchval':'%'+searchval+'%'})
     ret = res.mappings().all()
     return(ret)
@@ -284,14 +321,17 @@ async def searchRecipes(searchval):
     if (searchval == ""):
         raise HTTPException(status_code=400, detail="Empty Search")
     sqlText = text('SELECT * from recipe where tags like :searchval')
-    res = session.execute(sqlText, {'searchval':'%'+searchval+'%'})
+    res = session.execute(sqlText, {'searchval': '%'+searchval+'%'})
     ret = res.mappings().all()
     return(ret)
 
 @app.put("/userSurveyData")
 async def putUserSurveyData(user: UserSurveyData):
-    
-    newUserSurveyData = UserSurveyDataSQL(users_id=user.userID,gender = user.gender,height = user.height,weight=user.weight,age=user.age,cooking_exp=user.cooking_exp,num_days=user.num_days,num_meals=user.num_meals,activity_level=user.activity_level)
+    newUserSurveyData = UserSurveyDataSQL(users_id=user.userID, gender = user.gender,height = user.height,weight=user.weight,age=user.age,cooking_exp=user.cooking_exp,num_days=user.num_days,activity_level=user.activity_level)
+    if(len(session.query(UserSurveyDataSQL).filter(UserSurveyDataSQL.users_id == user.userID).all())>0):   
+        temp = session.query(UserSurveyDataSQL).filter(UserSurveyDataSQL.users_id == user.userID).one()
+        session.delete(temp)
+        session.commit()
     session.add(newUserSurveyData)
     session.commit()
     

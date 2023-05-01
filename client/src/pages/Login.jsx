@@ -18,9 +18,9 @@ const Login = () => {
         if (userName || pass !== "") {
             RestAPI.getToken(userName, pass).then((res) => {
                 const token = res.data['access_token']
-                sessionStorage.setItem("token", token)
+                window.sessionStorage.setItem("token", token)
                 const user = jwt(sessionStorage.getItem("token"));
-                sessionStorage.setItem("user", JSON.stringify(user));
+                window.sessionStorage.setItem("user", JSON.stringify(user));
                 window.location.assign("/home");
             }).catch(err => {
                 setPassError(true);

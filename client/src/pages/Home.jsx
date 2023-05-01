@@ -21,8 +21,7 @@ function Home() {
 
     React.useEffect(() => {
         if (sessionStorage.getItem("user") !== null) {
-            setUser(JSON.parse(sessionStorage.getItem("user")));
-            console.log(user)
+            setUser(JSON.parse(window.sessionStorage.getItem("user")));
         }
     }, [])
 

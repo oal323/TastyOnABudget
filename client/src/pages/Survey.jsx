@@ -26,29 +26,17 @@ const UserSurvey = () => {
     const [breakfast, setBreakfast] = React.useState("");
     const [lunch, setLunch] = React.useState("");
     const [dinner, setDinner] = React.useState("");
-    const [user, setUser] = React.useState();
+    const [user, setUser] = React.useState({});
 
     React.useEffect(() => {
         if (sessionStorage.getItem("user") !== null) {
-            setUser(JSON.parse(sessionStorage.getItem("user")));
-            console.log(user)
+            const temp = JSON.parse(window.sessionStorage.getItem("user"));
+            setUser(temp);
+            
         }
     }, [])
 
-    const [surveyData, setSurveyData] = React.useState({
-        calorie_goal: "",
-        gender: "",
-        height: "",
-        weight: "",
-        age: "",
-        cooking_exp: "",
-        num_days: "",
-        num_meals: "",
-        activity_level: "",
-        breakfast: "",
-        lunch: "",
-        dinner: ""
-    });
+    
 
 
     /**
@@ -66,13 +54,13 @@ const UserSurvey = () => {
     const [days_error, setDaysError] = React.useState(false);
     const [meals_error, setMealsError] = React.useState(false);
     const [act_lvl_error, setActLvlError] = React.useState(false);
-
+    const navigate = useNavigate();
 
     const handleClick = (e) => {
 
         if (calorie_goal !== "" || gender !== "" || height !== "" || weight !== "" || age !== "" || cooking_exp !== "" || num_days !== "" || num_meals !== "" || activity_level !== "") {
-            setSurveyData({
-                userID: user.id,
+            const surveyData = ({
+                userID: JSON.parse(window.sessionStorage.getItem("user")).id,
                 calorie_goal: calorie_goal,
                 gender: gender,
                 height: height,
@@ -80,15 +68,9 @@ const UserSurvey = () => {
                 age: age,
                 cooking_exp: cooking_exp,
                 num_days: num_days,
-                num_meals: num_meals,
-                activity_level: activity_level,
-                breakfast: breakfast,
-                lunch: lunch,
-                dinner: dinner
+                activity_level: activity_level
             })
-            console.log(surveyData)
             RestAPI.putUserData(surveyData).then((res) => {
-                const navigate = useNavigate;
                 navigate("/home");
             })
 
@@ -105,9 +87,6 @@ const UserSurvey = () => {
     const handleCalorieChange = (e) => {
         setGoal(e.target.value);
     }
-    const handleGenderChange = (e) => {
-        setGender(e.target.value);
-    }
     const handleWeightChange = (e) => {
         setWeight(e.target.value);
     }
@@ -123,22 +102,8 @@ const UserSurvey = () => {
     const handleDaysChange = (e) => {
         setNumDays(e.target.value);
     }
-    const handleMealsChange = (e) => {
-        setNumMeals(e.target.value);
-        if (e.target.value === "breakfast") {
-            setBreakfast(e.target.value);
-        }
-        if (e.target.value === "lunch") {
-            setLunch(e.target.value);
-        }
-        if (dinner !== "") {
-            setDinner(e.target.value === "dinner");
-        }
-    }
-    const handleActLvlChange = (e) => {
-        setActLvl(e.target.value);
-    }
-
+    
+    
     /**
      * 
      * Style of the page
@@ -265,9 +230,9 @@ const UserSurvey = () => {
                                             setActLvl(e.target.value);
                                         }}
                                     >
-                                        <MenuItem value={"none"}>Novice</MenuItem>
-                                        <MenuItem value={"some"}>Intermediate</MenuItem>
-                                        <MenuItem value={"act"}>Advanced</MenuItem>
+                                        <MenuItem value={"none"}>Not at all</MenuItem>
+                                        <MenuItem value={"some"}>Some</MenuItem>
+                                        <MenuItem value={"act"}>Very Active</MenuItem>
                                     </Select>
                     
                                 </div>

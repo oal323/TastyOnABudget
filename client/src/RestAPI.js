@@ -94,7 +94,8 @@ class restAPI {
         const endpoint = "userSurveyData";
         let restEndPoint = server_url + endpoint;
         const json = JSON.stringify(surveyData);
-        return axios.put(restEndPoint,surveyData,{
+        console.log(json)
+        return axios.put(restEndPoint,json,{
             headers: {
               'Content-Type': 'application/json'
             }
@@ -105,6 +106,7 @@ class restAPI {
         const endpoint = "like_recipie";
         let restEndPoint = server_url + endpoint;
         const json = JSON.stringify({userId:userId, recipieId:recipieId});
+        console.log(json)
         return axios.put(restEndPoint,json,{
             headers:{
                 'Content-Type': 'application/json'
@@ -116,6 +118,7 @@ class restAPI {
         const endpoint = "dislike_recipie";
         let restEndPoint = server_url + endpoint;
         const json = JSON.stringify({userId:userId, recipieId:recipieId});
+        console.log(json)
         return axios.put(restEndPoint,json,{
             headers:{
                 'Content-Type': 'application/json'
