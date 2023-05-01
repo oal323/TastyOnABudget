@@ -315,6 +315,24 @@ async def searchRecipes(searchval):
     ret = res.mappings().all()
     return(ret)
 
+@app.get("/recipes/searchtags/{searchval}")
+async def searchRecipes(searchval):
+    if (searchval == ""):
+        raise HTTPException(status_code=400, detail="Empty Search")
+    sqlText = text("SELECT recipe.id,title,steps,nutrition,description,servings,thumbnail,ingredients,tags, "\
+    "group_concat(dislikedrecipies.user_id) as dislikedBy, "\
+    "group_concat(likedrecipies.user_id) as likedBy "\
+    "FROM recipe "\
+    "LEFT JOIN dislikedrecipies "\
+    "ON recipe.id = dislikedrecipies.recipie_id "\
+    "LEFT JOIN likedrecipies " \
+    "ON recipe.id = likedrecipies.recipie_id "\
+    "where tags like :searchval "\
+    "GROUP BY recipe.id ")
+    res = session.execute(sqlText, {'searchval':'%'+searchval+'%'})
+    ret = res.mappings().all()
+    return(ret)
+
 @app.put("/userSurveyData")
 async def putUserSurveyData(user: UserSurveyData):
     newUserSurveyData = UserSurveyDataSQL(users_id=user.userID, gender = user.gender,height = user.height,weight=user.weight,age=user.age,cooking_exp=user.cooking_exp,num_days=user.num_days,activity_level=user.activity_level)

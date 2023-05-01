@@ -5,8 +5,8 @@ import RestAPI from '../RestAPI';
 import { Link } from 'react-router-dom';
 import jwt from 'jwt-decode';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp, faCoffee } from '@fortawesome/free-solid-svg-icons';
-import { faThumbsUp as regularFaThumbsUp } from '@fortawesome/free-regular-svg-icons';
+import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsUp as regularFaThumbsUp, faThumbsDown as regularFaThumbsDown } from '@fortawesome/free-regular-svg-icons';
 import regular from '@fortawesome/react-fontawesome';
 import solid from '@fortawesome/react-fontawesome';
 import "../styles/Recipes.css";
@@ -18,7 +18,13 @@ import { margin } from '@mui/system';
 
 
 const RecipeCard = ({ recipe , numCards, user }) => {
-
+    const [liked, setLiked] = React.useState(false)
+    const [disliked, setDisliked] = React.useState(false)
+   
+    React.useEffect(()=>{
+        setLiked(recipe.likedBy ? recipe.likedBy.includes(user.id.toString()):false)
+        setDisliked(recipe.dislikedBy ? recipe.dislikedBy.includes(user.id.toString()):false)
+    }, [])
     const putLikedRecipie = (id) => {
         if (sessionStorage.getItem("user") !== null) {
             return RestAPI.putLikedRecipie(user.id, id)
@@ -58,18 +64,22 @@ const RecipeCard = ({ recipe , numCards, user }) => {
                             <CardActions>
                                 <IconButton
                                     onClick={() => {
-                                        console.log(recipe.id)
+                                        setLiked(!liked);
                                         putLikedRecipie(recipe.id)
                                     }
                                     }>
-                                    {recipe.likedBy == user.id
+                                    { liked
                                         ? <FontAwesomeIcon icon={faThumbsUp} />
                                         : <FontAwesomeIcon icon={regularFaThumbsUp} />
                                     }
                                 </IconButton>
-                                <IconButton onClick={() => putDislikedRecipie(recipe.id)}>
-                                    <DisLike
-                                    />
+                                <IconButton onClick={() => {
+                                    setDisliked(!disliked);
+                                    putDislikedRecipie(recipe.id)}}>
+                                { disliked
+                                        ? <FontAwesomeIcon icon={faThumbsDown} />
+                                        : <FontAwesomeIcon icon={regularFaThumbsDown} />
+                                    }
                                 </IconButton>
                             </CardActions>
                         </CardContent>
