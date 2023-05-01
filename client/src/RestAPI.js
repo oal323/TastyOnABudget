@@ -90,6 +90,16 @@ class restAPI {
         })
     }
 
+    getLikedRecipes(userId){
+        const endpoint = "recipes/liked/"+userId;
+        let restEndPoint = server_url + endpoint;
+        return axios.get(restEndPoint,{
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        })
+    }
+
     putUserData(surveyData){
         const endpoint = "userSurveyData";
         let restEndPoint = server_url + endpoint;

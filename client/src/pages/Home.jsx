@@ -61,7 +61,6 @@ function Home() {
         
 
     React.useEffect(() => {
-        console.log("dlkajdfl;kjsaf");
         if (sessionStorage.getItem("user") !== null) {
             setUser(JSON.parse(window.sessionStorage.getItem("user")));
             recipieget(JSON.parse(window.sessionStorage.getItem("user")));

@@ -10,6 +10,7 @@ import UserSurvey from './pages/Survey';
 import Recipes from './pages/Recipes';
 import Recipe from './pages/Recipe';
 import NotFound from './pages/NotFound';
+import LikedRecipes from './pages/LikedRecipes'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfUse from './pages/TermsOfUse';
@@ -32,6 +33,7 @@ function App() {
           <Route path='*' element={<NotFound />} />
           <Route path='/privacypolicy' element={<PrivacyPolicy />} />
           <Route path='/termsofuse' element={<TermsOfUse />} />
+          <Route path='/likedrecipes' element={<LikedRecipes />} />
 
         </Routes>
         <Footer />

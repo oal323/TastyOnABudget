@@ -231,7 +231,15 @@ async def like_recipie(payload: dict = Body(...)):
     result = session.execute(query,  {'user_id': payload["userId"], 'recipie_id': payload["recipieId"]})
     rows = result.mappings().all()
     ret = [dict(row) for row in rows]
+    query = text("SELECT * from dislikedrecipies where user_id = :user_id AND recipie_id = :recipie_id")
+    result = session.execute(query,  {'user_id': payload["userId"], 'recipie_id': payload["recipieId"]})
+    rows = result.mappings().all()
+    ret2 = [dict(row) for row in rows]
     print(len(ret))
+    if(len(ret2)>0):
+        crud = text("delete from dislikedrecipies where user_id = :user_id AND recipie_id = :recipie_id")
+        session.execute(crud,  {'user_id': payload["userId"], 'recipie_id': payload["recipieId"]})
+        session.commit()
     if(len(ret)>0):
         crud = text("delete from likedrecipies where user_id = :user_id AND recipie_id = :recipie_id")
         session.execute(crud,  {'user_id': payload["userId"], 'recipie_id': payload["recipieId"]})
@@ -244,11 +252,21 @@ async def like_recipie(payload: dict = Body(...)):
 
 @app.put("/dislike_recipie")
 async def dislike_recipie(payload: dict = Body(...)):
-    
     query = text("SELECT * from dislikedrecipies where user_id = :user_id AND recipie_id = :recipie_id")
     result = session.execute(query,  {'user_id': payload["userId"], 'recipie_id': payload["recipieId"]})
     rows = result.mappings().all()
     ret = [dict(row) for row in rows]
+
+    query = text("SELECT * from likedrecipies where user_id = :user_id AND recipie_id = :recipie_id")
+    result = session.execute(query,  {'user_id': payload["userId"], 'recipie_id': payload["recipieId"]})
+    rows = result.mappings().all()
+    ret2 = [dict(row) for row in rows]
+    print(len(ret))
+    if(len(ret2)>0):
+        crud = text("delete from likedrecipies where user_id = :user_id AND recipie_id = :recipie_id")
+        session.execute(crud,  {'user_id': payload["userId"], 'recipie_id': payload["recipieId"]})
+        session.commit()
+
     print(len(ret))
     if(len(ret)>0):
         crud = text("delete from dislikedrecipies where user_id = :user_id AND recipie_id = :recipie_id")
@@ -304,6 +322,22 @@ async def getRecipesforUser(username : str):
             ret = result.mappings().all()
     else:
         ret = None
+    return (ret)
+
+@app.get("/recipes/liked/{username}")
+async def getLikedRecipes(username : str):
+    current_user = get_user(username)
+    userdata = (session.query(UserSurveyDataSQL).filter(current_user.id == UserSurveyDataSQL.users_id).first())
+    ret = None
+    query = text("SELECT recipe.id,title,steps,nutrition,description,servings,thumbnail,ingredients,tags, "\
+                "group_concat(likedrecipies.user_id) as likedBy "\
+                "FROM recipe "\
+                "LEFT JOIN likedrecipies " \
+                "ON recipe.id = likedrecipies.recipie_id " \
+                "WHERE recipe.id IN (SELECT recipie_id FROM likedrecipies) AND user_id = "+str(userdata.users_id)+" "\
+                "GROUP BY recipe.id;")
+    result = session.execute(query)
+    ret = result.mappings().all()
     return (ret)
 
 

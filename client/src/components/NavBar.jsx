@@ -14,7 +14,7 @@ function NavBar() {
     React.useEffect(() => {
         if (sessionStorage.getItem("user") !== null) {
             setUser(JSON.parse(sessionStorage.getItem("user")));
-            console.log(user)
+
         }
     }, [])
 
@@ -39,6 +39,7 @@ function NavBar() {
                     <Link to="/about"> About</Link>
                     <Link to="/contact"> Contact </Link>
                     <Link to="/recipes"> Recipes </Link>
+                    <Link to="/likedrecipes"> Liked Recipes </Link>
                     <Link to="/home" onClick={()=>{sessionStorage.clear(); window.location.reload(true);}}>Logout</Link>
                     <button onClick={toggleNavbar}>
                         <ReorderIcon />

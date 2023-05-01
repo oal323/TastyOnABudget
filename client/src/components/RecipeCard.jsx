@@ -64,6 +64,9 @@ const RecipeCard = ({ recipe, numCards, user }) => {
                             <IconButton
                                 onClick={() => {
                                     setLiked(!liked);
+                                    if(disliked){
+                                        setDisliked(!disliked);
+                                    }
                                     putLikedRecipie(recipe.id)
                                 }
                                 }>
@@ -74,6 +77,9 @@ const RecipeCard = ({ recipe, numCards, user }) => {
                             </IconButton>
                             <IconButton onClick={() => {
                                 setDisliked(!disliked);
+                                if(liked){
+                                    setLiked(!liked);
+                                }
                                 putDislikedRecipie(recipe.id)
                             }}>
                                 {disliked
