@@ -9,7 +9,7 @@ import Prep from "../assets/prep.png";
 import GetFood from "../assets/getfood.png";
 import jwt from 'jwt-decode';
 import Typewriter from 'typewriter-effect';
-import { Button, Card, Grid, Typography, CardContent, ImageList, CardActions, CardHeader, IconButton, } from '@mui/material';
+import { Button, Card, Grid, Typography, CardContent, ImageList, CardActions, CardHeader, IconButton, Carousel } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { CardActionArea } from '@mui/material';
 import CardMedia from '@mui/material/CardMedia';
@@ -20,6 +20,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import RestAPI from '../RestAPI';
+import RecipeCard from '../components/RecipeCard';
 
 function Home() {
     const [user, setUser] = React.useState();
@@ -41,7 +42,7 @@ function Home() {
             setUser(JSON.parse(window.sessionStorage.getItem("user")));
         }
         const recipieget = () => {
-            setRecipes([]) 
+            setRecipes([])
             RestAPI.getCustomRecipies(user.username).then((res) => {
                 res.data.map((resData) => {
                     setRecipes(prev => [
@@ -53,10 +54,11 @@ function Home() {
                         }
                     ]
                     )
-    
+
                 })
-            })}
-        if(user){
+            })
+        }
+        if (user) {
             recipieget(user)
         }
     }, [])
@@ -107,16 +109,77 @@ function Home() {
                 <div>
                     <Grid style={{ marginBottom: "20px", padding: "30px" }}>
                         <Typography gutterBottom variant="h3" align="left" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
-                            This Weeks Meals
+                            Trending Meals This Week
                         </Typography>
+                        <Grid style={{ marginTop: "20px", marginBottom: "20px" }}>
+                            <Grid container>
+                                <Grid item xs={12} style={{ marginTop: "20px", marginBottom: "20px" }}>
+                                    <Card variant='outlined' style={{ width: '1005px', padding: "20px 5px ", margin: " auto" }}>
+                                        <Grid container spacing={2} direction="row"  >
+                                            <Card sx={{ maxWidth: 300, height: 300 }} style={{ width: '100%', margin: '10px', padding: '10px' }}>
+                                                <CardActionArea>
+                                                    <Link to='/recipe/07-f16fd9bbdbad'>
+                                                        <CardMedia
+                                                            component="img"
+                                                            height="150"
+                                                            image={'https://img.buzzfeed.com/thumbnailer-prod-us-east-1/e506315b74ed42c8823d3582c818013f/BFV24594_Spiralizer_4_Ways_FB.jpg'}
+                                                            alt="banhmi"
+                                                        />
+                                                        <CardContent>
+                                                            <Typography gutterBottom variant="h5" component="div">
+                                                                Bánh Mì Bowl With Crispy Tofu
+                                                            </Typography>
 
+                                                        </CardContent>
+                                                    </Link>
+                                                </CardActionArea>
+                                            </Card>
+                                            <Card sx={{ maxWidth: 300, height: 300 }} style={{ width: '100%', margin: '10px', padding: '10px' }}>
+                                                <CardActionArea>
+                                                    <Link to='/recipe/06-4d0964d653c1'>
+                                                        <CardMedia
+                                                            component="img"
+                                                            height="150"
+                                                            image={'https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/202405.jpg'}
+                                                            alt="FajitaChickenAndRiceDinner"
+                                                        />
+                                                        <CardContent>
+                                                            <Typography gutterBottom variant="h5" component="div">
+                                                                Fajita Chicken And Rice Dinner
+                                                            </Typography>
+
+                                                        </CardContent>
+                                                    </Link>
+                                                </CardActionArea>
+                                            </Card>
+                                            <Card sx={{ maxWidth: 300, height: 300 }} style={{ width: '100%', margin: '10px', padding: '10px' }}>
+                                                <CardActionArea>
+                                                    <Link to='/recipe/07-f16fd9bbdbad'>
+                                                        <CardMedia
+                                                            component="img"
+                                                            height="150"
+                                                            image={'https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/249668.jpg'}
+                                                            alt="lasagna"
+                                                        />
+                                                        <CardContent>
+                                                            <Typography gutterBottom variant="h5" component="div">
+                                                                Classic Lasagna
+                                                            </Typography>
+
+                                                        </CardContent>
+                                                    </Link>
+                                                </CardActionArea>
+                                            </Card>
+                                        </Grid>
+                                    </Card>
+                                </Grid>
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </div>
                 <div>
-                    <Grid style={{ marginTop: "20px", marginBottom: "20px", padding: "30px" }}>
-
-
-                        <Typography gutterBottom variant="h4" align="center" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
+                    <Grid style={{ marginTop: "20px", marginBottom: "20px", padding: "30px", backgroundColor: '#7A562E' }}>
+                        <Typography gutterBottom variant="h4" align="center" sx={{ fontWeight: 'bold', color: 'white' }} >
                             Some Helpful Tips
                         </Typography>
                         <Accordion>
@@ -130,7 +193,6 @@ function Home() {
                             <AccordionDetails>
                                 <Typography variant="h6">
                                     Once you've created your meal plan for the week, try to stick to it as closely as possible. This will help you avoid last-minute decisions to order takeout or eat unhealthy snacks.
-
                                 </Typography>
                             </AccordionDetails>
                         </Accordion>
@@ -190,14 +252,11 @@ function Home() {
                                 </Typography>
                             </AccordionDetails>
                         </Accordion>
-
                     </Grid>
                 </div>
             </div>
         )
     } else {
-
-
         return (
             <div>
                 <div className='home' style={{ backgroundImage: `url(${BannerImage})` }}>
@@ -260,63 +319,80 @@ function Home() {
                     <Link to="/signup">
                         <Button align="center" fullWidth variant="contained" size="large" style={{ padding: "0px,0px,5px,0px", backgroundColor: "green", marginTop: "10px", marginBottom: "20px" }}> Sign Up Now</Button>
                     </Link>
+                    <div>
+                        <Grid style={{ marginBottom: "20px", padding: "30px" }}>
+                            <Typography variant="h3" align="center" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
+                                Recipes of the Week
+                            </Typography>
+                            <Grid style={{ marginTop: "20px", marginBottom: "20px" }}>
+                                <Grid container>
+                                    <Grid item xs={12} style={{ marginTop: "20px", marginBottom: "20px" }}>
+                                        <Card variant='outlined' style={{ width: '1005px', padding: "20px 5px ", margin: " auto" }}>
+                                            <Grid container spacing={2} direction="row"  >
+                                                <Card sx={{ maxWidth: 300, height: 300 }} style={{ width: '100%', margin: '10px', padding: '10px' }}>
+                                                    <CardActionArea>
+                                                        <Link to='/signup'>
+                                                            <CardMedia
+                                                                component="img"
+                                                                height="150"
+                                                                image={'https://img.buzzfeed.com/video-api-prod/assets/814d6c9e7c26470f8941c6ad53b8a512/BFV17623_RoastedShrimpSaladThumb.jpg'}
+                                                                alt="shrimpsalad"
+                                                            />
+                                                            <CardContent>
+                                                                <Typography gutterBottom variant="h5" component="div">
+                                                                    Shrimp Salad With Creamy Avocado Dressing
+                                                                </Typography>
 
-                    <Typography gutterBottom variant="h4" align="center" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
-                        Recipes of the Week
-                    </Typography>
-                    <Grid container direction="row">
-                        <Grid item xs={12} style={{ marginTop: "20px", marginBottom: "20px" }}>
-                            <Card variant='outlined' style={{ maxWidth: 1000, padding: "20px 5px ", margin: "0 auto" }}>
-                                <Grid container spacing={4}>
-                                    <Grid item xs={6} sm={6} ms={4}>
-                                        <Card sx={{ maxWidth: 345 }}>
-                                            <CardActionArea>
-                                                <Link to='/signup'>
-                                                    <CardMedia
-                                                        component="img"
-                                                        height="140"
-                                                        image={PadThai}
-                                                        alt="padthai"
-                                                    />
-                                                    <CardContent>
-                                                        <Typography gutterBottom variant="h5" component="div">
-                                                            Pad Thai
-                                                        </Typography>
-                                                        <Typography variant="body2" color="text.secondary">
-                                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Viverra orci sagittis eu volutpat odio. Ipsum nunc aliquet bibendum enim.
-                                                        </Typography>
-                                                    </CardContent>
-                                                </Link>
-                                            </CardActionArea>
-                                        </Card>
-                                        <Card sx={{ maxWidth: 345 }}>
-                                            <CardActionArea>
-                                                <CardMedia
-                                                    component="img"
-                                                    height="140"
-                                                    image={Panang}
-                                                    alt="padthai"
-                                                />
-                                                <CardContent>
-                                                    <Typography gutterBottom variant="h5" component="div">
-                                                        Panang Curry
-                                                    </Typography>
-                                                    <Typography variant="body2" color="text.secondary">
-                                                        Integer maximus interdum posuere. Pellentesque nunc enim, cursus eget erat ac, pharetra ullamcorper erat. Nullam fringilla laoreet bibendum.
-                                                    </Typography>
-                                                </CardContent>
-                                            </CardActionArea>
+                                                            </CardContent>
+                                                        </Link>
+                                                    </CardActionArea>
+                                                </Card>
+                                                <Card sx={{ maxWidth: 300, height: 300 }} style={{ width: '100%', margin: '10px', padding: '10px' }}>
+                                                    <CardActionArea>
+                                                        <Link to='/signup'>
+                                                            <CardMedia
+                                                                component="img"
+                                                                height="150"
+                                                                image={'https://img.buzzfeed.com/thumbnailer-prod-us-east-1/3726d37c9b684ae6b82c87c99cdeb951/MICROWAVEFB.jpg'}
+                                                                alt="MugBakedRigatoni"
+                                                            />
+                                                            <CardContent>
+                                                                <Typography gutterBottom variant="h5" component="div">
+                                                                    Mug Baked Rigatoni
+                                                                </Typography>
+
+                                                            </CardContent>
+                                                        </Link>
+                                                    </CardActionArea>
+                                                </Card>
+                                                <Card sx={{ maxWidth: 300, height: 300 }} style={{ width: '100%', margin: '10px', padding: '10px' }}>
+                                                    <CardActionArea>
+                                                        <Link to='/signup'>
+                                                            <CardMedia
+                                                                component="img"
+                                                                height="150"
+                                                                image={'https://img.buzzfeed.com/thumbnailer-prod-us-east-1/d9d4895d2490475d976e0ea3d657b94a/BFV44628_AllTheRecipesYouNeedforaGreatBBQ_FB1080SQ.jpg'}
+                                                                alt="BBQ_Chicken_Sandwich"
+                                                            />
+                                                            <CardContent>
+                                                                <Typography gutterBottom variant="h5" component="div">
+                                                                    BBQ Chicken Sandwich
+                                                                </Typography>
+
+                                                            </CardContent>
+                                                        </Link>
+                                                    </CardActionArea>
+                                                </Card>
+                                            </Grid>
                                         </Card>
                                     </Grid>
                                 </Grid>
-
-
-                            </Card>
+                            </Grid>
                         </Grid>
-                    </Grid>
 
+                    </div>
                 </Grid >
-                <Grid style={{ marginTop: "20px", marginBottom: "20px", padding: "30px" }}>
+                <Grid style={{ marginBottom: "20px", padding: "30px" }}>
 
 
                     <Typography gutterBottom variant="h5" align="center" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
