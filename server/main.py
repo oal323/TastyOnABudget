@@ -306,8 +306,6 @@ async def searchRecipes(searchval):
     "ON recipe.id = likedrecipies.recipie_id "\
     "where title like :searchval "\
     "GROUP BY recipe.id ")
-
-
     res = session.execute(sqlText, {'searchval':'%'+searchval+'%'})
     ret = res.mappings().all()
     return(ret)
