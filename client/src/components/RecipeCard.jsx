@@ -1,4 +1,4 @@
-import React,{ Component } from 'react'
+import React, { Component } from 'react'
 import TextField from '@mui/material/TextField';
 import { Button, IconButton, Icon, Card, Grid, Typography, CardMedia, Autocomplete, CardActions, CardHeader, CardContent, CardActionArea, Select, MenuItem } from '@mui/material';
 import RestAPI from '../RestAPI';
@@ -17,13 +17,13 @@ import { margin } from '@mui/system';
 
 
 
-const RecipeCard = ({ recipe , numCards, user }) => {
+const RecipeCard = ({ recipe, numCards, user }) => {
     const [liked, setLiked] = React.useState(false)
     const [disliked, setDisliked] = React.useState(false)
-   
-    React.useEffect(()=>{
-        setLiked(recipe.likedBy ? recipe.likedBy.includes(user.id.toString()):false)
-        setDisliked(recipe.dislikedBy ? recipe.dislikedBy.includes(user.id.toString()):false)
+
+    React.useEffect(() => {
+        setLiked(recipe.likedBy ? recipe.likedBy.includes(user.id.toString()) : false)
+        setDisliked(recipe.dislikedBy ? recipe.dislikedBy.includes(user.id.toString()) : false)
     }, [])
     const putLikedRecipie = (id) => {
         if (sessionStorage.getItem("user") !== null) {
@@ -45,49 +45,50 @@ const RecipeCard = ({ recipe , numCards, user }) => {
         }
     }
 
-        return (
-            <Grid item sm={12/numCards}>
-                <Card sx={{ maxWidth: 550, maxHeight: 600 }} style={{ width: '100%', margin: '10px' }}>
-                    <CardActionArea >
-                        <Link to={`/recipe/${recipe.id}`}>
-                            <CardHeader
-                                title={recipe.label}
-                            />
-                        </Link>
-                        <CardContent alignItems='center' >
-                            <CardMedia
-                                square='false'
-                                component="img"
-                                height="200"
-                                image={recipe.thumbnail} />
+    return (
+        <Grid item sm={12 / numCards}>
+            <Card sx={{ width: 550, height: 400 }} style={{ width: '100%', margin: '10px' }}>
+                <CardActionArea >
+                    <Link to={`/recipe/${recipe.id}`}>
+                        <CardHeader
+                            title={recipe.label}
+                        />
+                    </Link>
+                    <CardContent alignItems='center' >
+                        <CardMedia
+                            square='false'
+                            component="img"
+                            height="200"
+                            image={recipe.thumbnail} />
 
-                            <CardActions>
-                                <IconButton
-                                    onClick={() => {
-                                        setLiked(!liked);
-                                        putLikedRecipie(recipe.id)
-                                    }
-                                    }>
-                                    { liked
-                                        ? <FontAwesomeIcon icon={faThumbsUp} />
-                                        : <FontAwesomeIcon icon={regularFaThumbsUp} />
-                                    }
-                                </IconButton>
-                                <IconButton onClick={() => {
-                                    setDisliked(!disliked);
-                                    putDislikedRecipie(recipe.id)}}>
-                                { disliked
-                                        ? <FontAwesomeIcon icon={faThumbsDown} />
-                                        : <FontAwesomeIcon icon={regularFaThumbsDown} />
-                                    }
-                                </IconButton>
-                            </CardActions>
-                        </CardContent>
-                    </CardActionArea>
-                </Card>
-            </Grid>
-        )
-    }
+                        <CardActions>
+                            <IconButton
+                                onClick={() => {
+                                    setLiked(!liked);
+                                    putLikedRecipie(recipe.id)
+                                }
+                                }>
+                                {liked
+                                    ? <FontAwesomeIcon icon={faThumbsUp} />
+                                    : <FontAwesomeIcon icon={regularFaThumbsUp} />
+                                }
+                            </IconButton>
+                            <IconButton onClick={() => {
+                                setDisliked(!disliked);
+                                putDislikedRecipie(recipe.id)
+                            }}>
+                                {disliked
+                                    ? <FontAwesomeIcon icon={faThumbsDown} />
+                                    : <FontAwesomeIcon icon={regularFaThumbsDown} />
+                                }
+                            </IconButton>
+                        </CardActions>
+                    </CardContent>
+                </CardActionArea>
+            </Card>
+        </Grid>
+    )
+}
 
 
 export default RecipeCard
