@@ -323,7 +323,7 @@ async def getRecipes(num):
     "ON recipe.id = likedrecipies.recipie_id "\
     "GROUP BY recipe.id "\
     "ORDER BY RAND ( )"\
-    "limit  "+num+"  "
+    "limit  "+num
     )
     res = session.execute(query)
     ret = res.mappings().all()
