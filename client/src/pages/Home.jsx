@@ -53,6 +53,9 @@ function Home() {
             })
         })
     }
+        
+
+        
 
     React.useEffect(() => {
         console.log("dlkajdfl;kjsaf");
@@ -60,6 +63,25 @@ function Home() {
             setUser(JSON.parse(window.sessionStorage.getItem("user")));
             recipieget(JSON.parse(window.sessionStorage.getItem("user")));
         }
+        RestAPI.getNumRecipes(3).then((res) => {
+            setRecipes([])
+            console.log(res.data)
+            res.data.map((resData) => {
+                console.log(resData.likedBy ? resData.likedBy.split(",") : null)
+                setRecipes(prev => [
+                    ...prev,
+                    {
+                        id: resData.id,
+                        label: unicodeToChar(resData.title).replace(/['"]+/g, ''),
+                        thumbnail: resData.thumbnail.replace(/['"]+/g, ''),
+                        likedBy: resData.likedBy ? resData.likedBy.split(",") : null,
+                        dislikedBy: resData.dislikedBy ? resData.dislikedBy.split(",") : null
+                    }
+                ]
+                )
+
+            })
+        })
         
     }, [])
 
@@ -112,8 +134,20 @@ function Home() {
                             Trending Meals This Week
                         </Typography>
                         <Grid style={{ marginTop: "20px", marginBottom: "20px" }}>
-                            <Grid container>
-                                <Grid item xs={12} style={{ marginTop: "20px", marginBottom: "20px" }}>
+                        <Grid container>
+                            <Grid item xs={12} style={{ marginTop: "20px", marginBottom: "20px" }}>
+                                <Card variant='outlined' style={{ width: '80%', padding: "20px 5px ", margin: "0 auto" }}>
+                                    <Grid container spacing={2} direction="row" >
+                                {console.log(recipes)}
+                                {
+                                    recipes.map((recipe) => (
+                                        <RecipeCard recipe={recipe} numCards={3} user={user} />
+                                    ))
+                                }
+                                </Grid>
+                                </Card>
+                                </Grid>
+                                {/* <Grid item xs={12} style={{ marginTop: "20px", marginBottom: "20px" }}>
                                     <Card variant='outlined' style={{ width: '1005px', padding: "20px 5px ", margin: " auto" }}>
                                         <Grid container spacing={2} direction="row"  >
                                             <Card sx={{ maxWidth: 300, height: 300 }} style={{ width: '100%', margin: '10px', padding: '10px' }}>
@@ -172,7 +206,7 @@ function Home() {
                                             </Card>
                                         </Grid>
                                     </Card>
-                                </Grid>
+                                </Grid> */}
                             </Grid>
                         </Grid>
                     </Grid>

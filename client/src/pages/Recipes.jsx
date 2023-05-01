@@ -15,6 +15,7 @@ import DisLike from '@mui/icons-material/ThumbDownOffAlt';
 import Like from '@mui/icons-material/ThumbUpOffAlt';
 import { margin } from '@mui/system';
 import RecipeCard from '../components/RecipeCard';
+import BannerImage from "../assets/morefood.png";
 
 
 
@@ -81,18 +82,22 @@ const Recipes = () => {
     }
 
     return (
-        <div >
-            <Grid style={{ marginTop: "20px", marginBottom: "750px" }}>
+        <div>
+            <Grid style={{ marginTop: "20px" }}>
+                <div>
                 <h1> What are you craving today?</h1>
-                <div style={{ paddingTop: '5px', paddingLeft: '90px', justifySelf: "center", flexDirection: "row" }}>
+                </div>
+                
+                <div style={{ paddingTop: '5px', paddingLeft: '10%', justifySelf: "center", flexDirection: "row" }}>
                     <TextField
-                        style={{ width: "60%" }}
+                        style={{ backgroundColor: 'white', paddingTop: '3px', width: "67%" }}
+                        label="Search"
                         onChange={(e) => {
                             setFilterText(e.target.value);
                         }}
                     />
                     <Select
-                        style={{ width: "10%", margin: "5px 5px 5px 5px" }}
+                        style={{ backgroundColor: 'white', width: "10%", margin: "0px 0px 0px 5px" }}
                         onChange={(e) => {
                             setTagOrTitle(e.target.value);
 
@@ -107,15 +112,30 @@ const Recipes = () => {
                         <SearchIcon></SearchIcon>
                     </button>
                 </div>
-                <div>
+                <div >
                     <Grid style={{ marginTop: "20px", marginBottom: "20px" }}>
                         <Grid container>
                             <Grid item xs={12} style={{ marginTop: "20px", marginBottom: "20px" }}>
                                 <Card variant='outlined' style={{ width: '80%', padding: "20px 5px ", margin: "0 auto" }}>
                                     <Grid container spacing={2} direction="row" >
-                                        {recipes.map((recipe) => (
+                                        {
+                                        recipes.length>0
+                                        ? recipes.map((recipe) => (
                                             <RecipeCard recipe={recipe} numCards={3} user={user} />
-                                        ))}
+                                        ))
+                                        :<Grid item sm={12}>
+                                        <Card sx={{ width: 550, height: 400 }} style={{ width: '100%', margin: '10px' }}>
+                                            
+                                                    <CardHeader
+                                                    sx={{justifyContent:"center"}}
+                                                        title = {"Enter a search term"}
+                                                    />
+                                                        
+
+
+                                        </Card>
+                                        </Grid>
+                                        }
                                     </Grid>
                                 </Card>
                             </Grid>

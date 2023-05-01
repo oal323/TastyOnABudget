@@ -64,6 +64,13 @@ def test_putUserSurveyData():
     response = client.put("/userSurveyData", json=data.__dict__)
     assert response.status_code == 200
 
+def test_searchemptytitle():
+    searchval = None
+    response = client.put("/recipes/searchtitle/{searchval}", searchval)
+    assert response.status_code == 400
+    assert response.json() == {"detail": "Empty Search"}
+
+
 
 
 

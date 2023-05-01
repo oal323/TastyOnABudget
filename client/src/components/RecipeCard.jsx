@@ -41,19 +41,20 @@ const RecipeCard = ({ recipe, numCards, user }) => {
             return;
         }
     }
-
     return (
         
         <Grid item sm={12 / numCards}>
             <Card sx={{ width: 550, height: 400 }} style={{ width: '100%', margin: '10px' }}>
                 <CardActionArea
-                onClick={()=>navigate(`/recipe/${recipe.id}`)}
+                
                 >
                         <CardHeader
+                        onClick={()=>navigate(`/recipe/${recipe.id}`)}
                             title={recipe.label}
                         />
                     <CardContent alignItems='center' >
                         <CardMedia
+                        onClick={()=>navigate(`/recipe/${recipe.id}`)}
                             square='false'
                             component="img"
                             height="200"
