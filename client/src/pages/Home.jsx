@@ -36,29 +36,33 @@ function Home() {
             });
     }
 
+    const recipieget = (user) => {
+        RestAPI.getCustomRecipies(user.username).then((res) => {
+            setRecipes([])
+            res.data.map((resData) => {
+                setRecipes(prev => [
+                    ...prev,
+                    {
+                        id: resData.id,
+                        label: unicodeToChar(resData.title).replace(/['"]+/g, ''),
+                        thumbnail: resData.thumbnail.replace(/['"]+/g, '')
+                    }
+                ]
+                )
+
+            })
+        })
+    }
+        
+
+        
 
     React.useEffect(() => {
+        console.log("dlkajdfl;kjsaf");
         if (sessionStorage.getItem("user") !== null) {
             setUser(JSON.parse(window.sessionStorage.getItem("user")));
+            recipieget(JSON.parse(window.sessionStorage.getItem("user")));
         }
-        const recipieget = () => {
-            setRecipes([])
-            RestAPI.getCustomRecipies(user.username).then((res) => {
-                res.data.map((resData) => {
-                    setRecipes(prev => [
-                        ...prev,
-                        {
-                            id: resData.id,
-                            label: unicodeToChar(resData.title).replace(/['"]+/g, ''),
-                            thumbnail: resData.thumbnail.replace(/['"]+/g, '')
-                        }
-                    ]
-                    )
-
-                })
-            })
-        }
-        
         RestAPI.getNumRecipes(3).then((res) => {
             setRecipes([])
             console.log(res.data)
@@ -79,9 +83,6 @@ function Home() {
             })
         })
         
-        if (user) {
-            recipieget(user)
-        }
     }, [])
 
 
@@ -208,6 +209,32 @@ function Home() {
                                 </Grid> */}
                             </Grid>
                         </Grid>
+                    </Grid>
+                </div>
+                <div>
+                    <Grid style={{ marginBottom: "20px", padding: "30px" }}>
+                        <Typography gutterBottom variant="h3" align="left" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
+                            This Weeks Meals
+                        </Typography>
+                        <div>
+                        <div>
+                    <Grid style={{ marginTop: "20px", marginBottom: "20px" }}>
+                        <Grid container>
+                            <Grid item xs={12} style={{ marginTop: "20px", marginBottom: "20px" }}>
+                                <Card variant='outlined' style={{ width: '80%', padding: "20px 5px ", margin: "0 auto" }}>
+                                    <Grid container spacing={2} direction="row" >
+                                        {recipes.map((recipe) => (
+                                            <RecipeCard recipe={recipe} numCards={3} user={user} />
+                                        ))}
+                                    </Grid>
+                                </Card>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </div>
+
+
+                </div>
                     </Grid>
                 </div>
                 <div>
