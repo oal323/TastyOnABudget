@@ -178,6 +178,32 @@ function Home() {
                     </Grid>
                 </div>
                 <div>
+                    <Grid style={{ marginBottom: "20px", padding: "30px" }}>
+                        <Typography gutterBottom variant="h3" align="left" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
+                            This Weeks Meals
+                        </Typography>
+                        <div>
+                        <div>
+                    <Grid style={{ marginTop: "20px", marginBottom: "20px" }}>
+                        <Grid container>
+                            <Grid item xs={12} style={{ marginTop: "20px", marginBottom: "20px" }}>
+                                <Card variant='outlined' style={{ width: '80%', padding: "20px 5px ", margin: "0 auto" }}>
+                                    <Grid container spacing={2} direction="row" >
+                                        {recipes.map((recipe) => (
+                                            <RecipeCard recipe={recipe} numCards={3} user={user} />
+                                        ))}
+                                    </Grid>
+                                </Card>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </div>
+
+
+                </div>
+                    </Grid>
+                </div>
+                <div>
                     <Grid style={{ marginTop: "20px", marginBottom: "20px", padding: "30px", backgroundColor: '#7A562E' }}>
                         <Typography gutterBottom variant="h4" align="center" sx={{ fontWeight: 'bold', color: 'white' }} >
                             Some Helpful Tips
