@@ -26,6 +26,7 @@ function Home() {
     const [user, setUser] = React.useState();
     const [loading, setLoading] = React.useState(false);
     const [recipes, setRecipes] = React.useState([]);
+    const [suggestedRecipes, setSuggestedRecipes] = React.useState([]);
     const [filterText, setFilterText] = React.useState("");
     const [surveyDoneError, setsurveyDoneError] = React.useState(false)
 
@@ -38,14 +39,16 @@ function Home() {
 
     const recipieget = (user) => {
         RestAPI.getCustomRecipies(user.username).then((res) => {
-            setRecipes([])
+            setSuggestedRecipes([])
             res.data.map((resData) => {
-                setRecipes(prev => [
+                setSuggestedRecipes(prev => [
                     ...prev,
                     {
                         id: resData.id,
                         label: unicodeToChar(resData.title).replace(/['"]+/g, ''),
-                        thumbnail: resData.thumbnail.replace(/['"]+/g, '')
+                        thumbnail: resData.thumbnail.replace(/['"]+/g, ''),
+                        likedBy: resData.likedBy ? resData.likedBy.split(",") : null,
+                        dislikedBy: resData.dislikedBy ? resData.dislikedBy.split(",") : null
                     }
                 ]
                 )
@@ -67,7 +70,6 @@ function Home() {
             setRecipes([])
             console.log(res.data)
             res.data.map((resData) => {
-                console.log(resData.likedBy ? resData.likedBy.split(",") : null)
                 setRecipes(prev => [
                     ...prev,
                     {
@@ -85,7 +87,7 @@ function Home() {
         
     }, [])
 
-
+    console.log(suggestedRecipes)
     if (user) {
         return (
             <div>
@@ -147,71 +149,13 @@ function Home() {
                                 </Grid>
                                 </Card>
                                 </Grid>
-                                {/* <Grid item xs={12} style={{ marginTop: "20px", marginBottom: "20px" }}>
-                                    <Card variant='outlined' style={{ width: '1005px', padding: "20px 5px ", margin: " auto" }}>
-                                        <Grid container spacing={2} direction="row"  >
-                                            <Card sx={{ maxWidth: 300, height: 300 }} style={{ width: '100%', margin: '10px', padding: '10px' }}>
-                                                <CardActionArea>
-                                                    <Link to='/recipe/07-f16fd9bbdbad'>
-                                                        <CardMedia
-                                                            component="img"
-                                                            height="150"
-                                                            image={'https://img.buzzfeed.com/thumbnailer-prod-us-east-1/e506315b74ed42c8823d3582c818013f/BFV24594_Spiralizer_4_Ways_FB.jpg'}
-                                                            alt="banhmi"
-                                                        />
-                                                        <CardContent>
-                                                            <Typography gutterBottom variant="h5" component="div">
-                                                                Bánh Mì Bowl With Crispy Tofu
-                                                            </Typography>
-
-                                                        </CardContent>
-                                                    </Link>
-                                                </CardActionArea>
-                                            </Card>
-                                            <Card sx={{ maxWidth: 300, height: 300 }} style={{ width: '100%', margin: '10px', padding: '10px' }}>
-                                                <CardActionArea>
-                                                    <Link to='/recipe/06-4d0964d653c1'>
-                                                        <CardMedia
-                                                            component="img"
-                                                            height="150"
-                                                            image={'https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/202405.jpg'}
-                                                            alt="FajitaChickenAndRiceDinner"
-                                                        />
-                                                        <CardContent>
-                                                            <Typography gutterBottom variant="h5" component="div">
-                                                                Fajita Chicken And Rice Dinner
-                                                            </Typography>
-
-                                                        </CardContent>
-                                                    </Link>
-                                                </CardActionArea>
-                                            </Card>
-                                            <Card sx={{ maxWidth: 300, height: 300 }} style={{ width: '100%', margin: '10px', padding: '10px' }}>
-                                                <CardActionArea>
-                                                    <Link to='/recipe/07-f16fd9bbdbad'>
-                                                        <CardMedia
-                                                            component="img"
-                                                            height="150"
-                                                            image={'https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/249668.jpg'}
-                                                            alt="lasagna"
-                                                        />
-                                                        <CardContent>
-                                                            <Typography gutterBottom variant="h5" component="div">
-                                                                Classic Lasagna
-                                                            </Typography>
-
-                                                        </CardContent>
-                                                    </Link>
-                                                </CardActionArea>
-                                            </Card>
-                                        </Grid>
-                                    </Card>
-                                </Grid> */}
                             </Grid>
                         </Grid>
                     </Grid>
                 </div>
-                <div>
+                {
+                    suggestedRecipes.length>0 &&
+                    <div>
                     <Grid style={{ marginBottom: "20px", padding: "30px" }}>
                         <Typography gutterBottom variant="h3" align="left" sx={{ fontWeight: 'bold', color: '#7A562E' }} >
                             This Weeks Meals
@@ -223,7 +167,7 @@ function Home() {
                             <Grid item xs={12} style={{ marginTop: "20px", marginBottom: "20px" }}>
                                 <Card variant='outlined' style={{ width: '80%', padding: "20px 5px ", margin: "0 auto" }}>
                                     <Grid container spacing={2} direction="row" >
-                                        {recipes.map((recipe) => (
+                                        {suggestedRecipes.map((recipe) => (
                                             <RecipeCard recipe={recipe} numCards={3} user={user} />
                                         ))}
                                     </Grid>
@@ -237,6 +181,9 @@ function Home() {
                 </div>
                     </Grid>
                 </div>
+                    
+                }
+                
                 <div>
                     <Grid style={{ marginTop: "20px", marginBottom: "20px", padding: "30px", backgroundColor: '#7A562E' }}>
                         <Typography gutterBottom variant="h4" align="center" sx={{ fontWeight: 'bold', color: 'white' }} >

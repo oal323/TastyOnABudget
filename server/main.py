@@ -283,7 +283,7 @@ async def getRecipesforUser(username : str):
     ret = None
     if(userdata != None):
         if(int(userdata.calorie_goal) != None):
-            calories = int(int(userdata.calorie_goal) / 3)
+            calories = int(userdata.calorie_goal)
             if(calories < 400):
                 calories = 400
             if(calories > 1400):
