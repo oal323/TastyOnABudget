@@ -36,31 +36,31 @@ function Home() {
             });
     }
 
+    const recipieget = (user) => {
+        RestAPI.getCustomRecipies(user.username).then((res) => {
+            setRecipes([])
+            res.data.map((resData) => {
+                setRecipes(prev => [
+                    ...prev,
+                    {
+                        id: resData.id,
+                        label: unicodeToChar(resData.title).replace(/['"]+/g, ''),
+                        thumbnail: resData.thumbnail.replace(/['"]+/g, '')
+                    }
+                ]
+                )
+
+            })
+        })
+    }
 
     React.useEffect(() => {
+        console.log("dlkajdfl;kjsaf");
         if (sessionStorage.getItem("user") !== null) {
             setUser(JSON.parse(window.sessionStorage.getItem("user")));
+            recipieget(JSON.parse(window.sessionStorage.getItem("user")));
         }
-        const recipieget = () => {
-            setRecipes([])
-            RestAPI.getCustomRecipies(user.username).then((res) => {
-                res.data.map((resData) => {
-                    setRecipes(prev => [
-                        ...prev,
-                        {
-                            id: resData.id,
-                            label: unicodeToChar(resData.title).replace(/['"]+/g, ''),
-                            thumbnail: resData.thumbnail.replace(/['"]+/g, '')
-                        }
-                    ]
-                    )
-
-                })
-            })
-        }
-        if (user) {
-            recipieget(user)
-        }
+        
     }, [])
 
 

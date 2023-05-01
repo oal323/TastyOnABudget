@@ -283,20 +283,25 @@ async def getRecipesforUser(username : str):
     userdata = (session.query(UserSurveyDataSQL).filter(current_user.id == UserSurveyDataSQL.users_id).first())
     ret = None
     if(userdata != None):
-        if(userdata.calorie_goal != None):
-            calories = userdata.calorie_goal / 3
-            print(calories)
+        if(int(userdata.calorie_goal) != None):
+            calories = int(int(userdata.calorie_goal) / 3)
             if(calories < 400):
                 calories = 400
             if(calories > 1400):
                 calories = 1400
+            print(calories)
             caloriesupper = calories + 100
             calorieslower = calories - 100
-            query = text("SELECT  * FROM recipe WHERE nutrition REGEXP '\"calories\":[9][0-9]{2}|1[0-1][0-9]{2}' \
-                         AND JSON_EXTRACT(nutrition, '$.calories') BETWEEN :calorieslower AND :caloriesupper \
-                         AND id NOT IN (SELECT recipieId FROM dislikedRecipies WHERE userId = :user_id) \
-                         ORDER BY RAND() Limit (:userdata.num_days);")
-            result = session.execute(query, {'user_id': userdata.user_id, 'calorieslower': calorieslower, 'caloriesupper': caloriesupper, 'num_days': userdata.num_days})
+            query = text("SELECT DISTINCT recipe.id,title,steps,nutrition,description,servings,thumbnail,ingredients,tags, \
+                         group_concat(dislikedrecipies.user_id) as dislikedBy, \
+                         group_concat(likedrecipies.user_id) as likedBy FROM recipe LEFT JOIN dislikedrecipies \
+                         ON recipe.id = dislikedrecipies.recipie_id \
+                         LEFT JOIN likedrecipies ON recipe.id = likedrecipies.recipie_id  \
+                         WHERE nutrition REGEXP '\"calories\":([1-9][0-9]{0,2}|[0-9]{1,2})' \
+                         AND JSON_EXTRACT(nutrition, '$.calories') BETWEEN "+str(calorieslower)+" AND "+str(caloriesupper)+" \
+                         AND recipe.id NOT IN (SELECT recipie_id FROM dislikedRecipies WHERE user_id = "+str(userdata.users_id)+") \
+                         GROUP BY recipe.id ORDER BY RAND() Limit "+ str(userdata.num_days) +";")
+            result = session.execute(query)
             ret = result.mappings().all()
     else:
         ret = None
