@@ -82,9 +82,9 @@ const Recipes = () => {
     }
 
     return (
-        <div style={{ backgroundImage: `url(${BannerImage})` }}>
+        <div>
             <Grid style={{ marginTop: "20px" }}>
-                <div style={{backgroundColor: 'white', height:'100%'}}>
+                <div>
                 <h1> What are you craving today?</h1>
                 </div>
                 
