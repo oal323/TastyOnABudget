@@ -1,21 +1,12 @@
 import React from 'react'
-import TextField from '@mui/material/TextField';
-import { Button, IconButton, Icon, Card, Grid, Typography, CardMedia, Autocomplete, CardActions, CardHeader, CardContent, CardActionArea, Select, MenuItem } from '@mui/material';
+
+import {  Card, Grid,  CardHeader } from '@mui/material';
 import RestAPI from '../RestAPI';
-import { Link } from 'react-router-dom';
-import jwt from 'jwt-decode';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp, faCoffee } from '@fortawesome/free-solid-svg-icons';
-import { faThumbsUp as regularFaThumbsUp } from '@fortawesome/free-regular-svg-icons';
-import regular from '@fortawesome/react-fontawesome';
-import solid from '@fortawesome/react-fontawesome';
+
 import "../styles/Recipes.css";
-import SearchIcon from '@mui/icons-material/Search';
-import DisLike from '@mui/icons-material/ThumbDownOffAlt';
-import Like from '@mui/icons-material/ThumbUpOffAlt';
-import { margin } from '@mui/system';
+
 import RecipeCard from '../components/RecipeCard';
-import BannerImage from "../assets/morefood.png";
+
 
 const LikedRecipes = () => {
 

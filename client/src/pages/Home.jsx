@@ -2,19 +2,11 @@ import React from 'react'
 import "../styles/Home.css";
 import { Link } from "react-router-dom";
 import BannerImage from "../assets/morefood.png";
-import PadThai from "../assets/padthai.jpg";
-import Panang from "../assets/panang.jpg";
 import MealPlan from "../assets/mealplan.png";
 import Prep from "../assets/prep.png";
 import GetFood from "../assets/getfood.png";
-import jwt from 'jwt-decode';
 import Typewriter from 'typewriter-effect';
 import { Button, Card, Grid, Typography, CardContent, ImageList, CardActions, CardHeader, IconButton, Carousel } from '@mui/material';
-import TextField from '@mui/material/TextField';
-import { CardActionArea } from '@mui/material';
-import CardMedia from '@mui/material/CardMedia';
-import DisLike from '@mui/icons-material/ThumbDownOffAlt';
-import Like from '@mui/icons-material/ThumbUpOffAlt';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -27,8 +19,6 @@ function Home() {
     const [loading, setLoading] = React.useState(false);
     const [recipes, setRecipes] = React.useState([]);
     const [suggestedRecipes, setSuggestedRecipes] = React.useState([]);
-    const [filterText, setFilterText] = React.useState("");
-    const [surveyDoneError, setsurveyDoneError] = React.useState(false)
 
     function unicodeToChar(text) {
         return text.replace(/\\u[\dA-F]{4}/gi,

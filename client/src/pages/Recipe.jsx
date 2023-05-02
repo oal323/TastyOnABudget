@@ -1,8 +1,7 @@
 import React from 'react'
 import "../styles/Home.css";
 import BannerImage from "../assets/morefood.png";
-import jwt from 'jwt-decode';
-import { Button, Card, Grid, Typography, CardContent, CardHeader } from '@mui/material';
+import { Card, Grid, Typography, CardContent } from '@mui/material';
 import CardMedia from '@mui/material/CardMedia';
 import { useParams } from "react-router-dom"
 import RestAPI from '../RestAPI';
