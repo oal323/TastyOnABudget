@@ -327,14 +327,15 @@ async def getRecipesforUser(username : str):
 @app.get("/recipes/liked/{username}")
 async def getLikedRecipes(username : str):
     current_user = get_user(username)
-    userdata = (session.query(UserSurveyDataSQL).filter(current_user.id == UserSurveyDataSQL.users_id).first())
+    userdata = (session.query(User).filter(current_user.id == User.id).first())
+    print(userdata)
     ret = None
     query = text("SELECT recipe.id,title,steps,nutrition,description,servings,thumbnail,ingredients,tags, "\
                 "group_concat(likedrecipies.user_id) as likedBy "\
                 "FROM recipe "\
                 "LEFT JOIN likedrecipies " \
                 "ON recipe.id = likedrecipies.recipie_id " \
-                "WHERE recipe.id IN (SELECT recipie_id FROM likedrecipies) AND user_id = "+str(userdata.users_id)+" "\
+                "WHERE recipe.id IN (SELECT recipie_id FROM likedrecipies) AND user_id = "+str(userdata.id)+" "\
                 "GROUP BY recipe.id;")
     result = session.execute(query)
     ret = result.mappings().all()

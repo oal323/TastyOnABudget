@@ -69,7 +69,7 @@ const LikedRecipes = () => {
                                             
                                                     <CardHeader
                                                     sx={{justifyContent:"center"}}
-                                                        title = {"Enter a search term"}
+                                                       
                                                     />
                                                         
 

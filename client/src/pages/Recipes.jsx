@@ -69,7 +69,9 @@ const Recipes = () => {
                         {
                             id: resData.id,
                             label: unicodeToChar(resData.title).replace(/['"]+/g, ''),
-                            thumbnail: resData.thumbnail.replace(/['"]+/g, '')
+                            thumbnail: resData.thumbnail.replace(/['"]+/g, ''),
+                            likedBy: resData.likedBy ? resData.likedBy.split(",") : null,
+                            dislikedBy: resData.dislikedBy ? resData.dislikedBy.split(",") : null
                         }
                     ]
                     )
