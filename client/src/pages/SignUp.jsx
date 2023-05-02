@@ -25,6 +25,11 @@ const SignUp = () => {
 
     const handleClick = (e) => {
         if ((userName !== "" && pass !== "" && pass2 !== "" && email !== "")) {
+            let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if ( !re.test(email) ) {
+                setEmailError(true)
+                return
+            }
             if (pass === pass2) {
                 RestAPI.addUser(userName, pass, email, firstName).then((res) => {
                     RestAPI.getToken(userName, pass).then((res) => {
@@ -38,7 +43,6 @@ const SignUp = () => {
                     if (err["response"]["status"] === 400) {
                         setUserNameError(true)
                         alert("Username Taken")
-                        setUserName("")
                     }
 
                 })
@@ -132,6 +136,7 @@ const SignUp = () => {
                                         label="Email"
                                         variant="outlined"
                                         margin="normal"
+                                        input type="email"
                                         fullWidth
                                         required
                                         value={email}
