@@ -370,7 +370,7 @@ async def getRecipes(num):
 
 @app.get("/recipes/searchtitle/{searchval}")
 async def searchRecipes(searchval):
-    if (searchval == ""):
+    if not searchval:
         raise HTTPException(status_code=400, detail="Empty Search")
     sqlText = text("SELECT recipe.id,title,steps,nutrition,description,servings,thumbnail,ingredients,tags, "\
     "group_concat(dislikedrecipies.user_id) as dislikedBy, "\
@@ -388,7 +388,7 @@ async def searchRecipes(searchval):
 
 @app.get("/recipes/searchtags/{searchval}")
 async def searchRecipes(searchval):
-    if (searchval == ""):
+    if not searchval:
         raise HTTPException(status_code=400, detail="Empty Search")
     sqlText = text("SELECT recipe.id,title,steps,nutrition,description,servings,thumbnail,ingredients,tags, "\
     "group_concat(dislikedrecipies.user_id) as dislikedBy, "\
